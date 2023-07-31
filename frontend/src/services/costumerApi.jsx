@@ -23,8 +23,10 @@ em caso de sucesso */
 async function signIn(idToken) {
   try {
     const result = await api.post('/login', { idToken });
+    console.log('result', result);
 
     if (result.status !== 200) {
+      console.log('result.status', result.status);
       throw new Error(`HTTP error! Status: ${result.status}`);
     }
 

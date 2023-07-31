@@ -35,17 +35,26 @@ const getUserFromFirestore = async (uid) => {
   }
 };
 
-const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura) => {
+const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura, uid) => {
+  const usersCollection = admin.firestore().collection('usuarios');
+  
   if (!assinaturaAtiva) {
-    throw boom.paymentRequired('Assinatura inativa. Por favor, assine para continuar usando o serviço.');
+    return 'Assinatura inativa. Por favor, assine para usar o serviço.';
   }
   
   const currentDate = new Date();
   const subscriptionExpiryDate = new Date(dataExpiracaoAssinatura);
 
   if (currentDate >= subscriptionExpiryDate) {
-    throw boom.paymentRequired('Assinatura expirada. Por favor, renove sua assinatura para continuar usando o serviço.');
+    // Atualiza o valor de assinaturaAtiva para false
+    await usersCollection.doc(uid).update({
+      assinaturaAtiva: false,
+    });
+
+    return 'Assinatura expirada. Por favor, renove sua assinatura para continuar usando o serviço.';
   }
+
+  return 'OK';
 };
 
 const login = async (userData) => {
@@ -60,10 +69,14 @@ const login = async (userData) => {
 
   if (!user) throw boom.notFound('Usuário não encontrado');
 
-  await checkSubscription(user.assinaturaAtiva, user.dataExpiracaoAssinatura);
+  const check = await checkSubscription(user.assinaturaAtiva, user.dataExpiracaoAssinatura, user.uid);
 
-  const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: user.assinaturaAtiva };
-  // console.log('result', result);
+  const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
+    status: user.assinaturaAtiva,
+    message: check,
+  } };
+
+  console.log('result', result);
   return result;
 };
 
@@ -89,7 +102,12 @@ const verifyUser = async (userId) => {
 
   if (!user) throw boom.notFound('Usuário não encontrado');
 
-  return { assinaturaAtiva: user.assinaturaAtiva };
+  const check = await checkSubscription(user.assinaturaAtiva, user.dataExpiracaoAssinatura, user.uid);
+
+  return { assinaturaAtiva: {
+    status: user.assinaturaAtiva,
+    message: check,
+  } };
 };
 
 module.exports = {

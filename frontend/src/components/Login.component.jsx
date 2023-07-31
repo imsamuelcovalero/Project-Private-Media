@@ -27,6 +27,8 @@ function LoginComponent() {
         const data = await api.checkToken();
         if (data && data.assinaturaAtiva) {
           navigate('/main');
+        } else if (data && !data.assinaturaAtiva) {
+          navigate('/visitors');
         }
       } catch (error) {
         console.error(error);
@@ -102,19 +104,16 @@ function LoginComponent() {
 
       const { id, nome, assinaturaAtiva } = response;
 
-      if (!assinaturaAtiva) {
-        toast.warning('Sua assinatura está inativa. Por favor, renove sua assinatura.', {
-          position: 'bottom-right',
-        });
-        navigate('/visitors');
-        return null;
-      }
-
       saveUserInfo({
         id, email, nome, assinaturaAtiva,
       });
 
-      navigate('/main');
+      if (!assinaturaAtiva.status) {
+        toast.warning(assinaturaAtiva.message, {
+          position: 'bottom-right',
+        });
+        navigate('/visitors');
+      } else navigate('/main');
     } catch (error) {
       if (error.message === 'Authentication error') {
         toast.error('Erro na autenticação. Por favor, tente novamente.');

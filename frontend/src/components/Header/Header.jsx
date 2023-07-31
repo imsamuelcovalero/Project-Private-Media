@@ -1,24 +1,31 @@
-/* File: src/components/Header/Header.jsx */
-import React/* , {  useState, useEffect, useContext } */ from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ThemeComponent from './ThemeComponent';
 import { HeaderS, BtnMain } from './Style';
 import api from '../../services';
-// import getCartInfo from '../../helpers/getCartInfo';
-// import formatCurrency from '../FormatCurrency';
-// import CognyContext from '../../context/CognyContext';
+import { getUserInfo, removeUserInfo } from '../../helpers/localStorage.helper';
 
 function Header() {
   const navigate = useNavigate();
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
   const handleLogout = async () => {
     try {
       await api.logout();
-      navigate('/login');
+      removeUserInfo();
+      navigate('/visitors');
+      setIsUserLoggedIn(false);
     } catch (error) {
       console.error('Error during logout:', error);
     }
   };
+
+  useEffect(() => {
+    const userInfo = getUserInfo();
+    if (userInfo && userInfo.assinaturaAtiva) {
+      setIsUserLoggedIn(true);
+    }
+  }, []);
 
   return (
     <HeaderS>
@@ -38,17 +45,14 @@ function Header() {
           Seja bem-vindo(a)!
         </span>
       </div>
+      {isUserLoggedIn ? (
+        <button type="button" onClick={handleLogout}>Sair</button>
+      ) : (
+        <button type="button" onClick={() => navigate('/login')}>Logar</button>
+      )}
       <div id="themeDiv">
         <ThemeComponent />
       </div>
-      <button
-        type="button"
-        onClick={handleLogout}
-      >
-        Logout
-      </button>
-      {' '}
-      {/* botão de logout */}
     </HeaderS>
   );
 }
