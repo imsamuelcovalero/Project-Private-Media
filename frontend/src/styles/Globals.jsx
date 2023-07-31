@@ -25,13 +25,22 @@ export default createGlobalStyle`
     height: 100%;
   }
 
-  input:-webkit-autofill,
+  input:-webkit-autofill::first-line {
+    font-size: 1em;
+    box-shadow: none !important;
+  }
+  /* Aqui está o truque para substituir as cores de autofill */
+  input:-webkit-autofill {
+    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s !important;
+  }
+
+  /* input:-webkit-autofill,
   input:-webkit-autofill:hover, 
   input:-webkit-autofill:focus, 
   input:-webkit-autofill:active  {
       -webkit-appearance: none !important;
       -webkit-box-shadow: 0 0 0 30px white inset !important;
-  }
+  } */
 
   //define as cores do root
   :root {

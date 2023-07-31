@@ -29,8 +29,8 @@ function RegisterComponent() {
 
   /* Função que valida os dados digitados e habilita ou desabilita o botão de Entrar */
   const validateField = (field) => {
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    const emailRegex = /\S+@\S+\.\S+/;
+    // const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    const emailRegex = /\S+@\S+\.\S{2,}/;
 
     if (field === 'name') {
       if (!formRegister.name) return 'Campo de nome é obrigatório';
@@ -46,15 +46,15 @@ function RegisterComponent() {
       }
     }
 
-    if (field === 'password') {
-      if (!formRegister.password) return 'Campo de senha é obrigatório';
-      if (formRegister.password.length < 8) {
-        return 'Senha deve ter ao menos 8 caracteres';
-      }
-      if (!passwordRegex.test(formRegister.password)) {
-        return 'Senha em formato inválido';
-      }
-    }
+    // if (field === 'password') {
+    //   if (!formRegister.password) return 'Campo de senha é obrigatório';
+    //   if (formRegister.password.length < 8) {
+    //     return 'Senha deve ter ao menos 8 caracteres';
+    //   }
+    //   if (!passwordRegex.test(formRegister.password)) {
+    //     return 'Senha em formato inválido';
+    //   }
+    // }
 
     if (field === 'passwordConfirm') {
       if (!formRegister.passwordConfirm) return 'Campo de confirmação de senha é obrigatório';
@@ -66,25 +66,41 @@ function RegisterComponent() {
     return '';
   };
 
+  /* Função que valida os dados digitados e habilita ou desabilita o botão de Entrar */
+  const validatePassword = (password) => {
+    const hasEightCharacters = /.{8,}/.test(password);
+    const hasUpperCaseLetter = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+
+    let error = '';
+
+    if (!hasEightCharacters) error += 'Senha deve ter ao menos 8 caracteres. ';
+    if (!hasUpperCaseLetter) error += 'Senha deve ter ao menos uma letra maiúscula. ';
+    if (!hasNumber) error += 'Senha deve ter ao menos um número.';
+
+    return error;
+  };
+
   /* useEffect que chama a função validateField e atualiza o estado de acordo com o retorno */
   useEffect(() => {
     const emailError = (touchedEmail || formRegister.email) ? validateField('email') : '';
-    const passwordError = (touchedPassword || formRegister.password) ? validateField('password') : '';
+    // const passwordError = (touchedPassword || formRegister.password)
+    //   ? validateField('password') : '';
     const nameError = (touchedName || formRegister.name) ? validateField('name') : '';
     const passwordConfirmError = (touchedPasswordConfirm || formRegister.passwordConfirm) ? validateField('passwordConfirm') : '';
 
     setNameErrorMessage(nameError);
     setEmailErrorMessage(emailError);
-    setPasswordErrorMessage(passwordError);
+    // setPasswordErrorMessage(passwordError);
     setPasswordConfirmErrorMessage(passwordConfirmError);
 
     setIsDisabled(
       !formRegister.email
-    || !formRegister.password
+    // || !formRegister.password
     || !formRegister.name
     || !formRegister.passwordConfirm
     || emailError
-    || passwordError
+    // || passwordError
     || nameError
     || passwordConfirmError,
     );
@@ -94,12 +110,20 @@ function RegisterComponent() {
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
+    if (name === 'password') {
+      setTouchedPassword(true);
+      const passwordError = validatePassword(value);
+      setPasswordErrorMessage(passwordError);
+      setIsDisabled(!!passwordError || !formRegister.email || !formRegister.name);
+    }
+
     if (name === 'name') {
       setTouchedName(true);
     } else if (name === 'email') {
       setTouchedEmail(true);
-    } else if (name === 'password') {
-      setTouchedPassword(true);
+      if (serverError === 'email') {
+        setServerError('');
+      }
     } else if (name === 'passwordConfirm') {
       setTouchedPasswordConfirm(true);
     }
@@ -196,11 +220,22 @@ function RegisterComponent() {
               value={formRegister.password}
               onChange={handleChange}
               onBlur={() => { setTouchedPassword(true); }}
-              required
+              onInvalid={(e) => {
+                e.target.setCustomValidity('');
+                if (!e.target.validity.valid) {
+                  e.target.setCustomValidity('A senha deve conter pelo menos 8 caracteres, uma letra maiúscula e um dígito numérico');
+                }
+              }}
+              onInput={(e) => e.target.setCustomValidity('')}
             />
             {touchedPassword && formRegister.password && passwordErrorMessage && (
             <p id="ErrorMsg">{passwordErrorMessage}</p>
             )}
+            {/* <ul>
+              <li>A senha deve conter pelo menos 8 caracteres</li>
+              <li>A senha deve conter pelo menos uma letra maiúscula</li>
+              <li>A senha deve conter pelo menos um dígito numérico</li>
+            </ul> */}
           </label>
           <label htmlFor="passwordConfirm">
             <p id="inputTitle">Confirmar senha</p>

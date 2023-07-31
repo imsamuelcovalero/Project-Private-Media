@@ -24,8 +24,8 @@ export const RegisterS = styled.div`
   }
   #registerForm {
     border: 1px solid var(--buttonBorder);
-    height: 300px;
-    width: 250px;
+    height: 400px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -33,26 +33,22 @@ export const RegisterS = styled.div`
     border-radius: 4px;
     box-shadow: 0 5px 3px rgb(145 103 172 / 12%), 0 3px 2px rgb(145 103 172 / 24%);
     #inputs {
+      /* border: 1px solid red; */
+      width: 250px;
       padding: 5px;
       label {
         display: flex;
         flex-direction: column;
         justify-content: space-evenly;
-        align-items: flex-start;
+        align-items: center;
         gap: 5px; 
         margin-bottom: 10px;
         #inputTitle {
           font-size: 18px;
-          margin-left: 10px;
-        }   
-        /* input {
-          border: 1px solid var(--headline);
-          height: 40px;
-          width: 200px;
-          padding: 5px;
-          border-radius: 4px;
-          box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
-        } */
+          text-align: left;
+          width: 100%;
+          margin-left: 40px;
+        }  
       }
     }
 

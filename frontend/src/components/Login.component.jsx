@@ -140,6 +140,7 @@ function LoginComponent() {
               value={formLogin.email}
               onChange={handleChange}
               onBlur={() => { setTouchedEmail(true); }}
+              required
             />
             {touchedEmail && formLogin.email && emailErrorMessage && (
             <p id="ErrorMsg">{emailErrorMessage}</p>
@@ -157,6 +158,7 @@ function LoginComponent() {
               value={formLogin.password}
               onChange={handleChange}
               onBlur={() => { setTouchedPassword(true); }}
+              required
             />
             {touchedPassword && formLogin.password && passwordErrorMessage && (
             <p id="ErrorMsg">{passwordErrorMessage}</p>
