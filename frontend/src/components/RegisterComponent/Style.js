@@ -15,7 +15,7 @@ export const RegisterS = styled.div`
   }
   #registerForm {
     border: 1px solid var(--buttonBorder);
-    height: 400px;
+    height: 550px;
     width: 300px;
     display: flex;
     flex-direction: column;
@@ -47,7 +47,7 @@ export const RegisterS = styled.div`
       color: red;
     }
 
-    #registerButton {
+    #registerButton, #backBtn {
       background-color: var(--buttonBackground);
       :disabled { background-color: var(--buttonBackgroundDisabled); }
       color: var(--buttonText);

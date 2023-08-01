@@ -188,7 +188,7 @@ function LoginComponent() {
           <button
             id="registerButton"
             type="submit"
-            onClick={() => navigate('/register', { replace: true })}
+            onClick={() => navigate('/register')}
           >
             Ainda não tenho conta
           </button>
@@ -197,7 +197,7 @@ function LoginComponent() {
           <button
             id="visitorsButton"
             type="button"
-            onClick={() => navigate('/visitors', { replace: true })}
+            onClick={() => navigate('/visitors')}
           >
             Acessar página de visitantes
           </button>

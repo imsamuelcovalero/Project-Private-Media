@@ -73,23 +73,18 @@ function RegisterComponent() {
   /* useEffect que chama a função validateField e atualiza o estado de acordo com o retorno */
   useEffect(() => {
     const emailError = (touchedEmail || formRegister.email) ? validateField('email') : '';
-    // const passwordError = (touchedPassword || formRegister.password)
-    //   ? validateField('password') : '';
     const nameError = (touchedName || formRegister.name) ? validateField('name') : '';
     const passwordConfirmError = (touchedPasswordConfirm || formRegister.passwordConfirm) ? validateField('passwordConfirm') : '';
 
     setNameErrorMessage(nameError);
     setEmailErrorMessage(emailError);
-    // setPasswordErrorMessage(passwordError);
     setPasswordConfirmErrorMessage(passwordConfirmError);
 
     setIsDisabled(
       !formRegister.email
-    // || !formRegister.password
     || !formRegister.name
     || !formRegister.passwordConfirm
     || emailError
-    // || passwordError
     || nameError
     || passwordConfirmError,
     );
@@ -251,6 +246,13 @@ function RegisterComponent() {
           )}
         >
           Cadastrar
+        </button>
+        <button
+          id="backBtn"
+          type="button"
+          onClick={() => navigate(-1)}
+        >
+          Voltar
         </button>
       </form>
     </RegisterS>

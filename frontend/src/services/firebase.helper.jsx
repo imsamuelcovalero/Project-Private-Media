@@ -39,10 +39,11 @@ const firebaseSignUp = async ({ name: nome, email, password }) => {
     return idToken;
   } catch (error) {
     console.error(error);
-    if (error.message.includes('auth/email-already-in-use')) {
-      throw new Error('O e-mail já está em uso. Por favor, tente outro.');
-    }
-    return null;
+    throw error;
+    // if (error.message.includes('auth/email-already-in-use')) {
+    //   throw new Error('O e-mail já está em uso. Por favor, tente outro.');
+    // }
+    // return null;
   }
 };
 
