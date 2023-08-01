@@ -1,13 +1,11 @@
 import React from 'react';
-import RegisterComponent from '../../components/Register.component';
-import { DivExterna, RegisterS } from './Style';
+import RegisterComponent from '../../components/RegisterComponent/Register.component';
+import DivExterna from './Style';
 
 function Register() {
   return (
     <DivExterna>
-      <RegisterS>
-        <RegisterComponent />
-      </RegisterS>
+      <RegisterComponent />
     </DivExterna>
   );
 }

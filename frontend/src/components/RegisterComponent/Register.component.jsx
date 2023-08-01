@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { firebaseSignUp } from '../services/firebase.helper';
-import { saveUserInfo } from '../helpers/localStorage.helper';
-import api from '../services';
-import InputS from './Style';
+import { firebaseSignUp } from '../../services/firebase.helper';
+import { saveUserInfo } from '../../helpers/localStorage.helper';
+import api from '../../services';
+import { RegisterS, InputS } from './Style';
 
 function RegisterComponent() {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -29,7 +29,6 @@ function RegisterComponent() {
 
   /* Função que valida os dados digitados e habilita ou desabilita o botão de Entrar */
   const validateField = (field) => {
-    // const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     const emailRegex = /\S+@\S+\.\S{2,}/;
 
     if (field === 'name') {
@@ -45,16 +44,6 @@ function RegisterComponent() {
         return 'Email inválido';
       }
     }
-
-    // if (field === 'password') {
-    //   if (!formRegister.password) return 'Campo de senha é obrigatório';
-    //   if (formRegister.password.length < 8) {
-    //     return 'Senha deve ter ao menos 8 caracteres';
-    //   }
-    //   if (!passwordRegex.test(formRegister.password)) {
-    //     return 'Senha em formato inválido';
-    //   }
-    // }
 
     if (field === 'passwordConfirm') {
       if (!formRegister.passwordConfirm) return 'Campo de confirmação de senha é obrigatório';
@@ -170,7 +159,7 @@ function RegisterComponent() {
   };
 
   return (
-    <div>
+    <RegisterS>
       <div>
         <h1>
           Cadastro
@@ -264,7 +253,7 @@ function RegisterComponent() {
           Cadastrar
         </button>
       </form>
-    </div>
+    </RegisterS>
   );
 }
 
