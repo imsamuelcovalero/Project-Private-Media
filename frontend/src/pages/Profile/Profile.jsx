@@ -1,11 +1,15 @@
 /* File: src/pages/Profile/Profile.jsx */
 import React from 'react';
+import Header from '../../components/Header/Header';
+import ProfileComponent from '../../components/ProfileComponent/Profile.component';
+import DivExterna from './Style';
 
 function Profile() {
   return (
-    <div>
-      <h1>Profile</h1>
-    </div>
+    <DivExterna>
+      <Header />
+      <ProfileComponent />
+    </DivExterna>
   );
 }
 

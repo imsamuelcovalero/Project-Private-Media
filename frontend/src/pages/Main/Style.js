@@ -8,7 +8,6 @@ export const DivExterna = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-bottom: 20px;
 `;
 
 export const MainS = styled.div`  

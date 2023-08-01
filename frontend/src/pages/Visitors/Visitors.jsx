@@ -1,19 +1,17 @@
 import React from 'react';
 import VisitorsComponent from '../../components/VisitorsComponent/Visitors.component';
 import Header from '../../components/Header/Header';
-import { DivExterna, MainS } from './Style';
+import DivExterna from './Style';
 
-function Main() {
+function Visitors() {
   return (
     <DivExterna>
       <div id="header">
         <Header />
       </div>
-      <MainS>
-        <VisitorsComponent />
-      </MainS>
+      <VisitorsComponent />
     </DivExterna>
   );
 }
 
-export default Main;
+export default Visitors;

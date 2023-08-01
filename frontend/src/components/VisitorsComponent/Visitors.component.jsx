@@ -3,13 +3,13 @@ import React from 'react';
 // import ReactNodeContext from '../../context/ReactNodeContext';
 // import formatCurrency from '../FormatCurrency';
 // import ProductsCard from './ProductsCard';
-// import { ProductsDivS } from './Style';
+import { VisitorsS } from './Style';
 
 function VisitorsComponent() {
   // const { products, balance } = useContext(ReactNodeContext);
 
   return (
-    <div id="mainDiv">
+    <VisitorsS>
       {/* <ProductsDivS>
         {productsToRender?.map((product) => (
           <div key={product.id}>
@@ -18,7 +18,7 @@ function VisitorsComponent() {
         ))}
       </ProductsDivS> */}
       <h1>Página de Visitantes</h1>
-    </div>
+    </VisitorsS>
   );
 }
 
