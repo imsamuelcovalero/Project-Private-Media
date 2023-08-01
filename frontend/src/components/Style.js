@@ -1,3 +1,5 @@
+/* File: src/components/Style.js que contém o estilo do input usado
+no formulário de cadastro */
 import styled from 'styled-components';
 
 const InputS = styled.input`

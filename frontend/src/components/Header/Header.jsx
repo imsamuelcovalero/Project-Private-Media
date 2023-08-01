@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ThemeComponent from './ThemeComponent';
 import { HeaderS, BtnMain } from './Style';
 import api from '../../services';
 import { getUserInfo, removeUserInfo } from '../../helpers/localStorage.helper';
 
 function Header() {
+  // toast.configure({
+  //   toastClassName: 'my-toast-class',
+  // });
   const navigate = useNavigate();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isSignatureActive, setIsSignatureActive] = useState(false);
@@ -30,6 +34,8 @@ function Header() {
       if (userInfo.assinaturaAtiva.status) {
         console.log('userInfo.assinaturaAtiva.status', userInfo.assinaturaAtiva.status);
         setIsSignatureActive(true);
+      } else {
+        toast.warning(userInfo.assinaturaAtiva.message);
       }
     }
   }, []);
@@ -44,7 +50,7 @@ function Header() {
         {' '}
         Main
       </BtnMain>
-      <div id="main">
+      <div id="centerHeaderSpace">
         <span id="name">
           {isUserLoggedIn
             ? `Olá, ${getUserInfo().nome}!`

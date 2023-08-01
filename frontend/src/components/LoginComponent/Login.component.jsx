@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { firebaseSignIn } from '../services/firebase.helper';
-import { saveUserInfo } from '../helpers/localStorage.helper';
-import api from '../services';
+import { firebaseSignIn } from '../../services/firebase.helper';
+import { saveUserInfo } from '../../helpers/localStorage.helper';
+import api from '../../services';
+import LoginS from './Style';
 
 function LoginComponent() {
   const [isDisabled, setIsDisabled] = useState(true);
@@ -110,15 +111,24 @@ function LoginComponent() {
 
       if (!assinaturaAtiva.status) {
         toast.warning(assinaturaAtiva.message, {
-          position: 'bottom-right',
+          position: 'top-right',
         });
         navigate('/visitors');
       } else navigate('/main');
     } catch (error) {
-      if (error.message === 'Authentication error') {
-        toast.error('Erro na autenticação. Por favor, tente novamente.');
-      } else {
-        toast.error(error.message || 'Erro ao tentar fazer login');
+      // Check the code property of the error to determine the type of the error
+      switch (error.code) {
+        case 'auth/user-not-found':
+          toast.error('Usuário não encontrado. Por favor, tente novamente.');
+          break;
+        case 'auth/invalid-email':
+          toast.error('O email informado não é válido. Por favor, tente novamente.');
+          break;
+        case 'auth/wrong-password':
+          toast.error('Senha incorreta. Por favor, tente novamente.');
+          break;
+        default:
+          toast.error('Erro ao tentar fazer login. Por favor, tente novamente.');
       }
       navigate('/login');
     }
@@ -126,7 +136,7 @@ function LoginComponent() {
   };
 
   return (
-    <div id="loginDiv">
+    <LoginS>
       <form id="loginForm">
         <div id="inputs">
           <label htmlFor="email">
@@ -193,7 +203,7 @@ function LoginComponent() {
           </button>
         </div>
       </form>
-    </div>
+    </LoginS>
   );
 }
 

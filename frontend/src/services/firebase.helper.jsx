@@ -12,7 +12,7 @@ const firebaseSignIn = async (email, password) => {
     return idToken;
   } catch (error) {
     console.error(error);
-    return null;
+    throw error;
   }
 };
 

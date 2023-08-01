@@ -1,15 +1,16 @@
 import React from 'react';
-import LoginComponent from '../../components/Login.component';
-import { DivExterna, LoginS } from './Style';
-// import Logo from '../../images/pinacolada app.png';
+import LoginComponent from '../../components/LoginComponent/Login.component';
+import DivExterna from './Style';
+// import Logo from '../../images/logo.png';
 
 function Login() {
   return (
     <DivExterna>
-      <LoginS>
-        {/* <img id="logo" src={ Logo } alt="Logo" /> */}
-        <LoginComponent />
-      </LoginS>
+      {/* <img id="logo" src={ Logo } alt="Logo" /> */}
+      <LoginComponent />
+      {/* <LoginS>
+
+      </LoginS> */}
     </DivExterna>
   );
 }

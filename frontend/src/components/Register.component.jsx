@@ -231,11 +231,6 @@ function RegisterComponent() {
             {touchedPassword && formRegister.password && passwordErrorMessage && (
             <p id="ErrorMsg">{passwordErrorMessage}</p>
             )}
-            {/* <ul>
-              <li>A senha deve conter pelo menos 8 caracteres</li>
-              <li>A senha deve conter pelo menos uma letra maiúscula</li>
-              <li>A senha deve conter pelo menos um dígito numérico</li>
-            </ul> */}
           </label>
           <label htmlFor="passwordConfirm">
             <p id="inputTitle">Confirmar senha</p>

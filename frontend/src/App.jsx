@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { ThemeProvider } from 'styled-components';
-import { ToastContainer } from 'react-toastify';
+import StyledToastContainer from './App.style';
 import Content from './routes/Content';
 import GlobalStyle from './styles/Globals';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,7 +13,7 @@ function App() {
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
       <div>
-        <ToastContainer />
+        <StyledToastContainer />
         <GlobalStyle />
         <Content />
       </div>
