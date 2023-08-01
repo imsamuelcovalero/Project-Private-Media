@@ -1,5 +1,5 @@
 import React from 'react';
-// import MainComponent from '../../components/MainComponent/MainComponent';
+import VisitorsComponent from '../../components/VisitorsComponent/Visitors.component';
 import Header from '../../components/Header/Header';
 import { DivExterna, MainS } from './Style';
 
@@ -10,7 +10,7 @@ function Main() {
         <Header />
       </div>
       <MainS>
-        <h1>Página de Visitantes</h1>
+        <VisitorsComponent />
       </MainS>
     </DivExterna>
   );

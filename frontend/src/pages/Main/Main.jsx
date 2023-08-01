@@ -1,5 +1,5 @@
 import React from 'react';
-import MainComponent from '../../components/MainComponent/MainComponent';
+import MainComponent from '../../components/MainComponent/Main.component';
 import Header from '../../components/Header/Header';
 import { DivExterna, MainS } from './Style';
 
