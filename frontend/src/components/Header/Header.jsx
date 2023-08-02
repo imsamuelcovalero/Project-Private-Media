@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useNavigate, useLocation } from 'react-router-dom';
+// import { toast } from 'react-toastify';
 import ThemeComponent from './ThemeComponent';
 import { HeaderS, BtnMain } from './Style';
 import api from '../../services';
 import { getUserInfo, removeUserInfo } from '../../helpers/localStorage.helper';
+// import useThrottledToast from '../../hooks/useThrottledToast';
 
 function Header() {
-  // toast.configure({
-  //   toastClassName: 'my-toast-class',
-  // });
   const navigate = useNavigate();
+  const location = useLocation();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [isSignatureActive, setIsSignatureActive] = useState(false);
+  // const throttledToast = useThrottledToast();
+
+  // const lastToastTimeRef = useRef(Date.now());
+  // const lastToastContentRef = useRef('');
 
   const handleLogout = async () => {
     try {
@@ -27,15 +30,13 @@ function Header() {
 
   useEffect(() => {
     const userInfo = getUserInfo();
-    console.log('userInfo', userInfo);
+    // console.log('userInfo', userInfo);
     if (userInfo && userInfo.assinaturaAtiva) {
-      console.log('userInfo.assinaturaAtiva', userInfo.assinaturaAtiva);
+      // console.log('userInfo.assinaturaAtiva', userInfo.assinaturaAtiva);
       setIsUserLoggedIn(true);
       if (userInfo.assinaturaAtiva.status) {
-        console.log('userInfo.assinaturaAtiva.status', userInfo.assinaturaAtiva.status);
+        // console.log('userInfo.assinaturaAtiva.status', userInfo.assinaturaAtiva.status);
         setIsSignatureActive(true);
-      } else {
-        toast.warning(userInfo.assinaturaAtiva.message);
       }
     }
   }, []);
@@ -62,11 +63,13 @@ function Header() {
       </div>
       {isUserLoggedIn ? (
         <>
-          <button type="button" onClick={() => navigate('/profile')}>Perfil</button>
+          {location.pathname !== '/profile' && (
+            <button type="button" onClick={() => navigate('/profile')}>Perfil</button>
+          )}
           <button type="button" onClick={handleLogout}>Sair</button>
         </>
       ) : (
-        <button type="button" onClick={() => navigate('/login')}>Logar</button>
+        <button type="button" onClick={() => navigate('/login')}>Entrar</button>
       )}
       <div id="themeDiv">
         <ThemeComponent />

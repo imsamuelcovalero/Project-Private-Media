@@ -26,9 +26,10 @@ function LoginComponent() {
     const verifyToken = async () => {
       try {
         const data = await api.checkToken();
-        if (data && data.assinaturaAtiva) {
+        if (data && data.assinaturaAtiva.status) {
           navigate('/main');
-        } else if (data && !data.assinaturaAtiva) {
+        } else if (data && !data.assinaturaAtiva.status) {
+          toast.warning(data.assinaturaAtiva.message);
           navigate('/visitors');
         }
       } catch (error) {
