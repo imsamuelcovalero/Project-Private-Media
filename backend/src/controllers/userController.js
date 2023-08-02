@@ -4,34 +4,22 @@ const userService = require('../services/userService');
 
 // const tokenFunctions = require('../middlewares/tokenFunctions');
 
-const login = async (req, res, _next) => {
-  // console.log('login', req.body);
-  const result = await userService.login(req.body);
+const handleUserRequest = (serviceFunction, status) => async (req, res, _next) => {
+  const result = await serviceFunction(req.body);
 
-  // Definindo o token no cookie httpOnly
-  // console.log('token', result.token);
   res.cookie('token', result.token, { httpOnly: true, secure: false, path: '/', maxAge: 3600000 });
 
   const { token, ...rest } = result;
-  return res.status(200).json(rest);
+  return res.status(status).json(rest);
 };
+
+const login = handleUserRequest(userService.login, 200);
+const register = handleUserRequest(userService.createAndUpdateUser, 201);
+const update = handleUserRequest(userService.createAndUpdateUser, 200);
 
 const logout = async (_req, res, _next) => {
   res.clearCookie('token');
   return res.status(200).json({ message: 'Logout realizado com sucesso' });
-};
-
-const register = async (req, res, _next) => {
-  console.log('registerController', req.body);
-  // const { name, username, email } = req.body;
-  const result = await userService.createNewUser(req.body);
-  
-   // Definindo o token no cookie httpOnly
-  // console.log('token', result.token);
-  res.cookie('token', result.token, { httpOnly: true, secure: false, path: '/', maxAge: 3600000 });
-
-  const { token, ...rest } = result;
-  return res.status(201).json(rest);
 };
 
 const verifyUser = async (req, res, _next) => {
@@ -50,4 +38,5 @@ module.exports = {
   logout,
   register,
   verifyUser,
+  update,
 };

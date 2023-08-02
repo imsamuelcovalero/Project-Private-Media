@@ -1,4 +1,5 @@
 /* File: src/helpers/localStorage.helper.jsx */
+
 export const getUserInfo = () => {
   const userInfo = localStorage.getItem('reactNodeUser');
   return userInfo ? JSON.parse(userInfo) : {};

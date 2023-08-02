@@ -1,13 +1,15 @@
 /* File: src/components/LoginComponent.jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { firebaseSignIn } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
 import LoginS from './Style';
+import ReactNodeContext from '../../context/ReactNodeContext';
 
 function LoginComponent() {
+  const { setUser } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [formLogin, setFormLogin] = useState({
     email: '',
@@ -106,9 +108,13 @@ function LoginComponent() {
 
       const { id, nome, assinaturaAtiva } = response;
 
-      saveUserInfo({
+      const userInfo = {
         id, email, nome, assinaturaAtiva,
-      });
+      };
+
+      saveUserInfo(userInfo);
+
+      setUser(userInfo);
 
       if (!assinaturaAtiva.status) {
         toast.warning(assinaturaAtiva.message, {

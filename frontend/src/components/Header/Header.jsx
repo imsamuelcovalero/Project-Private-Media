@@ -1,45 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import { toast } from 'react-toastify';
 import ThemeComponent from './ThemeComponent';
 import { HeaderS, BtnMain } from './Style';
-import api from '../../services';
-import { getUserInfo, removeUserInfo } from '../../helpers/localStorage.helper';
-// import useThrottledToast from '../../hooks/useThrottledToast';
+// import api from '../../services';
+import ReactNodeContext from '../../context/ReactNodeContext';
+// import { removeUserInfo } from '../../helpers/localStorage.helper';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
-  const [isSignatureActive, setIsSignatureActive] = useState(false);
-  // const throttledToast = useThrottledToast();
-
-  // const lastToastTimeRef = useRef(Date.now());
-  // const lastToastContentRef = useRef('');
+  const { user, logout } = useContext(ReactNodeContext);
+  console.log('user', user);
 
   const handleLogout = async () => {
-    try {
-      await api.logout();
-      removeUserInfo();
-      navigate('/visitors');
-      setIsUserLoggedIn(false);
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
+    await logout();
   };
 
-  useEffect(() => {
-    const userInfo = getUserInfo();
-    // console.log('userInfo', userInfo);
-    if (userInfo && userInfo.assinaturaAtiva) {
-      // console.log('userInfo.assinaturaAtiva', userInfo.assinaturaAtiva);
-      setIsUserLoggedIn(true);
-      if (userInfo.assinaturaAtiva.status) {
-        // console.log('userInfo.assinaturaAtiva.status', userInfo.assinaturaAtiva.status);
-        setIsSignatureActive(true);
-      }
-    }
-  }, []);
+  const isSignatureActive = user?.assinaturaAtiva?.status;
+  console.log('isSignatureActive', isSignatureActive);
 
   return (
     <HeaderS>
@@ -53,15 +31,15 @@ function Header() {
       </BtnMain>
       <div id="centerHeaderSpace">
         <span id="name">
-          {isUserLoggedIn
-            ? `Olá, ${getUserInfo().nome}!`
+          {user
+            ? `Olá, ${user.nome}!`
             : 'Olá, Visitante!'}
         </span>
         <span id="greetings">
           Seja bem-vindo(a)!
         </span>
       </div>
-      {isUserLoggedIn ? (
+      {user ? (
         <>
           {location.pathname !== '/profile' && (
             <button type="button" onClick={() => navigate('/profile')}>Perfil</button>

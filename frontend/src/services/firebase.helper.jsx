@@ -1,6 +1,9 @@
 /* File: src/services/firebase.helper.jsx */
-import { signInWithEmailAndPassword, getIdToken, createUserWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import {
+  signInWithEmailAndPassword, getIdToken, createUserWithEmailAndPassword, getAuth,
+  updateProfile, updatePassword,
+} from 'firebase/auth';
+import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
 /* Função que faz o login no firebase e retorna o idToken */
@@ -40,11 +43,36 @@ const firebaseSignUp = async ({ name: nome, email, password }) => {
   } catch (error) {
     console.error(error);
     throw error;
-    // if (error.message.includes('auth/email-already-in-use')) {
-    //   throw new Error('O e-mail já está em uso. Por favor, tente outro.');
-    // }
-    // return null;
   }
 };
 
-export { firebaseSignIn, firebaseSignUp };
+/* Função que atualiza o perfil no firebase e retorna o idToken */
+const firebaseUpdateProfile = async ({ uid, name, password }) => {
+  console.log('firebaseUpdateProfile', uid, name, password);
+  try {
+    const user = auth.currentUser;
+
+    // Verifica se o nome foi fornecido e o atualiza se necessário
+    if (name) {
+      await updateProfile(user, { displayName: name });
+
+      // Atualiza o nome na coleção 'usuários' do Firestore
+      const usuarioDoc = doc(db, 'usuários', user.uid);
+      await updateDoc(usuarioDoc, { nome: name });
+    }
+
+    // Verifica se a senha foi fornecida e a atualiza se necessário
+    if (password) {
+      await updatePassword(user, password);
+    }
+
+    // Retorna o idToken atualizado
+    const idToken = await getIdToken(user);
+    return idToken;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export { firebaseSignIn, firebaseSignUp, firebaseUpdateProfile };

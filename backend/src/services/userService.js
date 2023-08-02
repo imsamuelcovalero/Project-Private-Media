@@ -81,7 +81,7 @@ const login = async (userData) => {
 };
 
 // função responsável por criar um novo usuário no banco de dados
-const createNewUser = async (userData) => {
+const createAndUpdateUser = async (userData) => {
   const { idToken } = userData;
   // console.log('idToken', idToken);
 
@@ -91,10 +91,32 @@ const createNewUser = async (userData) => {
   const user = await getUserFromFirestore(decodedIdToken.uid);
   console.log('user', user);
 
-  const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: user.assinaturaAtiva };
+  const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
+    status: user.assinaturaAtiva,
+    message: check,
+  } };
   // console.log('result', result);
   return result;
 };
+
+// função responsável por atualizar um usuário no banco de dados
+// const updateUser = async (userData) => {
+//   const { idToken } = userData;
+//   // console.log('idToken', idToken);
+
+//   const decodedIdToken = await getUserByToken(idToken);
+//   // console.log('decodedIdToken', decodedIdToken.uid);
+
+//   const user = await getUserFromFirestore(decodedIdToken.uid);
+//   // console.log('user', user);
+
+//   const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
+//     status: user.assinaturaAtiva,
+//     message: check,
+//   } };
+//   // console.log('result', result);
+//   return result;
+// };
 
 const verifyUser = async (userId) => {
   const user = await getUserFromFirestore(userId);
@@ -104,7 +126,7 @@ const verifyUser = async (userId) => {
 
   const check = await checkSubscription(user.assinaturaAtiva, user.dataExpiracaoAssinatura, user.uid);
 
-  return { assinaturaAtiva: {
+  return { id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
     status: user.assinaturaAtiva,
     message: check,
   } };
@@ -112,6 +134,6 @@ const verifyUser = async (userId) => {
 
 module.exports = {
   login,
-  createNewUser,
+  createAndUpdateUser,
   verifyUser,
 };

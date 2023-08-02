@@ -1,28 +1,40 @@
 /* File: src/components/ProfileComponent/Profile.component.jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';
-import { removeUserInfo, getUserInfo } from '../../helpers/localStorage.helper';
+// import { removeUserInfo } from '../../helpers/localStorage.helper';
 import { ProfileS, InputS } from './Style';
+import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileComponent() {
+  const { user, logout } = useContext(ReactNodeContext);
   const [formProfile, setFormProfile] = useState({
-    name: '',
+    name: user.nome,
     password: '',
   });
 
+  const [touchedName, setTouchedName] = useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [nameErrorMessage, setNameErrorMessage] = useState('');
 
   const navigate = useNavigate();
   /* useEffect que verifica se o usuário está logado  */
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        await api.checkToken();
+        const data = await api.checkToken();
+        console.log('data', data);
+        if (data) {
+          setFormProfile({
+            name: data.nome,
+            email: data.email,
+            password: '',
+          });
+        }
       } catch (error) {
         console.error(error);
-        removeUserInfo();
+        logout();
         navigate('/visitors');
       }
     };
@@ -73,15 +85,16 @@ function ProfileComponent() {
   };
 
   /* useEffect que recupera os dados do usuário do localStorage e preenche o estado */
-  useEffect(() => {
-    const userInfo = getUserInfo();
-    if (userInfo) {
-      setFormProfile({
-        name: userInfo.nome,
-        password: '',
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   const userInfo = getUserInfo();
+  //   if (userInfo) {
+  //     setFormProfile({
+  //       name: userInfo.nome,
+  //       email: userInfo.email,
+  //       password: '',
+  //     });
+  //   }
+  // }, []);
 
   return (
     <ProfileS>
