@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-const ProfileS = styled.div`  
-  border: 2px solid red;
-  // deixa um espaço na parte de baixo entre o conteúdo e o final da página
+export const ProfileS = styled.div`  
+  /* border: 2px solid red; */
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -12,4 +11,12 @@ const ProfileS = styled.div`
   text-align: center;
 `;
 
-export default ProfileS;
+export const InputS = styled.input`
+  border: ${(props) => (props.hasError ? '1px solid red' : '1px solid var(--headline)')};
+  height: 40px;
+  width: 200px;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%)!important;
+  color: ${(props) => (props.hasError ? 'red' : 'inherit')}!important;
+`;
