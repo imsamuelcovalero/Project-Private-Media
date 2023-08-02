@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { firebaseSignUp } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
 import { RegisterS, InputS } from './Style';
+import ReactNodeContext from '../../context/ReactNodeContext';
 
 function RegisterComponent() {
+  const { setUser } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [formRegister, setFormRegister] = useState({
     name: '',
@@ -132,9 +134,13 @@ function RegisterComponent() {
 
       const { id, nome, assinaturaAtiva } = response;
 
-      saveUserInfo({
+      const userInfo = {
         id, email, nome, assinaturaAtiva,
-      });
+      };
+
+      saveUserInfo(userInfo);
+
+      setUser(userInfo);
 
       toast.warning('Conta criada! Para acessar todo o conteúdo, faça uma assinatura.', {
         position: 'bottom-right',

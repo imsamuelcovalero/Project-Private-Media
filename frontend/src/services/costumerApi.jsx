@@ -18,7 +18,7 @@ async function checkToken() {
   }
 }
 
-/* função axios que envia o idToken para o backend e recebe as informações do usuário
+/* função axios de login que envia o idToken para o backend e recebe as informações do usuário
 em caso de sucesso */
 async function signIn(idToken) {
   try {
@@ -52,13 +52,13 @@ async function logout() {
   }
 }
 
-/* Função axios que envia o idToken para o backend e recebe as informações do usuário
+/* Função axios de registro que envia o idToken para o backend e recebe as informações do usuário
 em caso de sucesso */
 async function signUp(idToken) {
   try {
     const result = await api.post('/register', { idToken });
 
-    if (result.status !== 200) {
+    if (result.status !== 201) {
       throw new Error(`HTTP error! Status: ${result.status}`);
     }
 
@@ -69,9 +69,28 @@ async function signUp(idToken) {
   }
 }
 
+/* Função axios de update que envia o idToken para o backend e recebe as informações do usuário
+em caso de sucesso */
+async function updateProfile(idToken) {
+  try {
+    const result = await api.post('/update', { idToken });
+
+    if (result.status !== 200) {
+      console.log('result.status', result.status);
+      throw new Error(`HTTP error! Status: ${result.status}`);
+    }
+
+    return result.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Authentication error');
+  }
+}
+
 export {
   checkToken,
   signIn,
   logout,
   signUp,
+  updateProfile,
 };

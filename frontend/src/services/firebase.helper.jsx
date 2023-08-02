@@ -1,6 +1,6 @@
 /* File: src/services/firebase.helper.jsx */
 import {
-  signInWithEmailAndPassword, getIdToken, createUserWithEmailAndPassword, getAuth,
+  signInWithEmailAndPassword, getIdToken, createUserWithEmailAndPassword,
   updateProfile, updatePassword,
 } from 'firebase/auth';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
