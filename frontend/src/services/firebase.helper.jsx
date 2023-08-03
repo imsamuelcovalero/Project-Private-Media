@@ -8,8 +8,34 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential,
 } from 'firebase/auth';
-import { doc, setDoc, updateDoc } from 'firebase/firestore';
+import {
+  collection, getDocs, doc, setDoc, updateDoc,
+} from 'firebase/firestore';
 import { auth, db } from './firebase';
+
+/* Função que busca as fotos e vídeos da categoria 'sample' */
+const firebaseGetSampleCategory = async () => {
+  try {
+    const sampleCategoryDoc = collection(db, 'categorias');
+    // console.log('sampleCategoryDoc', sampleCategoryDoc);
+    const snapshot = await getDocs(sampleCategoryDoc);
+    // console.log('snapshot', snapshot);
+    let sampleData = null;
+
+    snapshot.forEach((document) => {
+      const data = document.data();
+      if (data.categoriaId === 'sample') {
+        sampleData = data;
+      }
+    });
+
+    console.log('sampleData', sampleData);
+    return sampleData;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
 
 /* Função que faz o login no firebase e retorna o idToken */
 const firebaseSignIn = async (email, password) => {
@@ -26,7 +52,6 @@ const firebaseSignIn = async (email, password) => {
 
 /* Função que faz o cadastro no firebase e retorna o idToken */
 const firebaseSignUp = async ({ name: nome, email, password }) => {
-  console.log('firebaseSignUp', nome, email, password);
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     console.log('userCredential', userCredential);
@@ -39,7 +64,6 @@ const firebaseSignUp = async ({ name: nome, email, password }) => {
       email,
       nome,
       dataCriacao: new Date().toISOString(),
-      // aqui você pode adicionar mais campos, como 'assinaturaAtiva' e 'dataExpiracaoAssinatura'
       assinaturaAtiva: false,
       dataExpiracaoAssinatura: null,
     });
@@ -53,7 +77,6 @@ const firebaseSignUp = async ({ name: nome, email, password }) => {
 
 /* Função que atualiza o perfil no firebase e retorna o idToken */
 const firebaseUpdateProfile = async ({ name, password }) => {
-  console.log('firebaseUpdateProfile', name, password);
   try {
     const user = auth.currentUser;
 
@@ -95,4 +118,5 @@ const firebaseReauthenticate = async (email, password) => {
 
 export {
   firebaseSignIn, firebaseSignUp, firebaseUpdateProfile, firebaseReauthenticate,
+  firebaseGetSampleCategory,
 };

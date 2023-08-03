@@ -10,14 +10,14 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useContext(ReactNodeContext);
-  console.log('user', user);
+  // console.log('user', user);
 
   const handleLogout = async () => {
     await logout();
   };
 
   const isSignatureActive = user?.assinaturaAtiva?.status;
-  console.log('isSignatureActive', isSignatureActive);
+  // console.log('isSignatureActive', isSignatureActive);
 
   return (
     <HeaderS>
