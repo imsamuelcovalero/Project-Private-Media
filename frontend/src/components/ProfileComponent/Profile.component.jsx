@@ -23,12 +23,15 @@ function ProfileComponent() {
   const [originalProfile, setOriginalProfile] = useState({
     name: user.nome,
     email: user.email,
+    password: '',
   });
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isEditFormActivated, setIsEditFormActivated] = useState(false);
+
   const [canChangePassword, setCanChangePassword] = useState(false);
+  const [hasEditFieldTouched, setHasEditFieldTouched] = useState(false);
 
   const [touchedName, setTouchedName] = useState(false);
   const [touchedPassword, setTouchedPassword] = useState(false);
@@ -57,16 +60,43 @@ function ProfileComponent() {
     verifyToken();
   }, []);
 
-  /* função responsável por cancelar a edição do formulário */
-  const cancelEdit = () => {
-    setIsEditFormActivated(!isEditFormActivated);
-    setTouchedPassword(false);
-    setCanChangePassword(false);
+  /* função responsável por redefinir o perfil do formulário */
+  const resetFormProfile = () => {
     if (isEditFormActivated) {
       setFormProfile(originalProfile);
     } else {
       setOriginalProfile(formProfile);
     }
+  };
+
+  /* função responsável por alternar a ativação do formulário de edição */
+  const toggleEditForm = () => {
+    setIsEditFormActivated(!isEditFormActivated);
+    setCanChangePassword(false);
+    resetFormProfile();
+  };
+
+  /* função responsável por cancelar a edição do formulário */
+  const cancelEdit = (isFromApi) => {
+    if (!hasEditFieldTouched) {
+      toggleEditForm();
+      return;
+    }
+
+    if (!isFromApi) {
+      const confirmation = window.confirm('Tem certeza que deseja cancelar a edição?');
+      if (!confirmation) return;
+    }
+
+    setHasEditFieldTouched(false);
+    setTouchedName(false);
+    setTouchedPassword(false);
+
+    if (canChangePassword) {
+      setCanChangePassword(false);
+    }
+
+    resetFormProfile();
   };
 
   /* useEffect que verifica se a tecla ESC foi pressionada */
@@ -213,7 +243,9 @@ function ProfileComponent() {
         toast.error(error.message || 'Erro ao tentar editar o perfil');
       }
     }
-    return null;
+    // Limpa o estado de poder alterar a senha
+    setCanChangePassword(false);
+    cancelEdit(true);
   };
 
   /* Função para lidar com a verificação de senha antiga */
@@ -292,6 +324,10 @@ function ProfileComponent() {
                 placeholder="Seu nome"
                 value={formProfile.name}
                 onChange={handleChange}
+                onClick={() => {
+                  setTouchedName(true);
+                  setHasEditFieldTouched(true);
+                }}
                 required
               />
               {touchedName && formProfile.name && nameErrorMessage && (
@@ -299,6 +335,7 @@ function ProfileComponent() {
               )}
             </label>
           )}
+          {!touchedName && (
           <div>
             {!canChangePassword ? (
               <div id="oldPasswordDiv">
@@ -313,6 +350,7 @@ function ProfileComponent() {
                     onChange={handleChange}
                     onClick={() => {
                       setTouchedPassword(true);
+                      setHasEditFieldTouched(true);
                     }}
                     required
                     hasError={serverError === 'oldPassword'}
@@ -377,6 +415,7 @@ function ProfileComponent() {
               </>
             )}
           </div>
+          )}
           <button
             id="updateButton"
             type="submit"
@@ -392,7 +431,7 @@ function ProfileComponent() {
           <button
             id="editProfileButton"
             type="button"
-            onClick={cancelEdit}
+            onClick={() => cancelEdit(false)}
           >
             Cancelar edição
           </button>

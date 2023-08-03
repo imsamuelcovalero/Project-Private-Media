@@ -93,7 +93,6 @@ const createAndUpdateUser = async (userData) => {
 
   const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
     status: user.assinaturaAtiva,
-    message: check,
   } };
   // console.log('result', result);
   return result;
