@@ -2,6 +2,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 // import { /* getFirestore,  */collection, getDocs } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from './ReactNodeContext';
 import { getUserInfo, removeUserInfo } from '../helpers/localStorage.helper';
 // import db from '../services/firebase';
@@ -12,6 +13,8 @@ function ReactNodeProvider({ children }) {
   // const [products, setProducts] = useState([]);
   const [user, setUser] = useState(getUserInfo());
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     setUser(getUserInfo()); // Atualiza o estado do usuário sempre que o componente é montado
   }, []);
@@ -21,6 +24,7 @@ function ReactNodeProvider({ children }) {
       await api.logout();
       removeUserInfo();
       setUser(null); // Defina o estado do usuário como null depois de fazer logout
+      navigate('/visitors');
     } catch (error) {
       console.error('Error during logout:', error);
     }

@@ -109,7 +109,7 @@ function LoginComponent() {
       const { id, nome, assinaturaAtiva } = response;
 
       const userInfo = {
-        id, nome, assinaturaAtiva,
+        id, email, nome, assinaturaAtiva,
       };
 
       saveUserInfo(userInfo);

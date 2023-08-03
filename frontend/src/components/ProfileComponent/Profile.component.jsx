@@ -1,8 +1,10 @@
 /* File: src/components/ProfileComponent/Profile.component.jsx */
-import React, { useState, useEffect, useContext } from 'react';
+import React, {
+  useState, useEffect, useContext, useRef,
+} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { firebaseUpdateProfile } from '../../services/firebase.helper';
+import { firebaseReauthenticate, firebaseUpdateProfile } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
 import { ProfileS, InputS } from './Style';
@@ -11,14 +13,22 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 function ProfileComponent() {
   const { user, logout, setUser } = useContext(ReactNodeContext);
   const [formProfile, setFormProfile] = useState({
-    name: user.nome,
-    email: user.email,
+    name: user?.nome,
+    email: user?.email,
     password: '',
     passwordConfirm: '',
   });
 
+  // state to keep track of the original user data
+  const [originalProfile, setOriginalProfile] = useState({
+    name: user.nome,
+    email: user.email,
+  });
+
   const [isDisabled, setIsDisabled] = useState(true);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isEditFormActivated, setIsEditFormActivated] = useState(false);
+  const [canChangePassword, setCanChangePassword] = useState(false);
 
   const [touchedName, setTouchedName] = useState(false);
   const [touchedPassword, setTouchedPassword] = useState(false);
@@ -26,13 +36,17 @@ function ProfileComponent() {
   const [nameErrorMessage, setNameErrorMessage] = useState('');
   const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState('');
+  const [serverError, setServerError] = useState('');
 
   const navigate = useNavigate();
+  const formRef = useRef();
+
   /* useEffect que verifica se o usuário está logado  */
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        await api.checkToken();
+        const data = await api.checkToken();
+        console.log('data', data);
       } catch (error) {
         console.error(error);
         logout();
@@ -42,6 +56,35 @@ function ProfileComponent() {
 
     verifyToken();
   }, []);
+
+  /* função responsável por cancelar a edição do formulário */
+  const cancelEdit = () => {
+    setIsEditFormActivated(!isEditFormActivated);
+    setTouchedPassword(false);
+    setCanChangePassword(false);
+    if (isEditFormActivated) {
+      setFormProfile(originalProfile);
+    } else {
+      setOriginalProfile(formProfile);
+    }
+  };
+
+  /* useEffect que verifica se a tecla ESC foi pressionada */
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape' && isEditFormActivated) {
+        event.preventDefault();
+        event.stopPropagation();
+        cancelEdit();
+      }
+    };
+
+    document.addEventListener('keydown', handleEsc, true);
+
+    return () => {
+      document.removeEventListener('keydown', handleEsc, true);
+    };
+  }, [cancelEdit, isEditFormActivated]);
 
   /* Função que valida os dados digitados e habilita ou desabilita o botão de Enviar Edição */
   const validateField = (field) => {
@@ -74,6 +117,9 @@ function ProfileComponent() {
     if (!hasUpperCaseLetter) error += 'Senha deve ter ao menos uma letra maiúscula. ';
     if (!hasNumber) error += 'Senha deve ter ao menos um número.';
 
+    if (error === '') setIsSubmitDisabled(false); // Se não há erros, habilita o botão
+    else setIsSubmitDisabled(true); // Se há erros, desabilita o botão
+
     return error;
   };
 
@@ -102,10 +148,26 @@ function ProfileComponent() {
       const passwordError = validatePassword(value);
       setPasswordErrorMessage(passwordError);
       setIsDisabled(!!passwordError || !formProfile.name);
+      if (serverError === 'oldPassword') {
+        setServerError('');
+      }
+      // adicionando a atualização do originalProfile aqui também
+      if (!isEditFormActivated) {
+        setOriginalProfile((prevState) => ({
+          ...prevState,
+          password: value,
+        }));
+      }
     }
 
     if (name === 'name') {
       setTouchedName(true);
+      if (!isEditFormActivated) {
+        setOriginalProfile((prevState) => ({
+          ...prevState,
+          name: value,
+        }));
+      }
     } else if (name === 'passwordConfirm') {
       setTouchedPasswordConfirm(true);
     }
@@ -154,6 +216,39 @@ function ProfileComponent() {
     return null;
   };
 
+  /* Função para lidar com a verificação de senha antiga */
+  const verifyOldPassword = async (event, email, oldPassword) => {
+    event.preventDefault();
+
+    try {
+    // Tenta reautenticar o usuário com o email e a senha antiga
+      await firebaseReauthenticate(email, oldPassword);
+
+      // Se a reautenticação for bem-sucedida, altera o estado para mostrar os campos de nova senha
+      setCanChangePassword(true);
+
+      // Limpa o campo de senha antiga
+      setFormProfile((prevState) => ({
+        ...prevState,
+        password: '',
+      }));
+
+      // Limpa qualquer erro de servidor anterior
+      setServerError(null);
+    } catch (error) {
+    // Se ocorrer um erro, mostra uma mensagem de erro ao usuário e destaca o campo de senha antiga
+      if (error.code === 'auth/wrong-password') {
+        toast.error('A senha fornecida está incorreta. Por favor, tente novamente.');
+        setServerError('oldPassword');
+      } else {
+        toast.error(error.message || 'Ocorreu um erro ao tentar verificar a senha antiga. Por favor, tente novamente.');
+      }
+
+      // Limpa o estado de poder alterar a senha
+      setCanChangePassword(false);
+    }
+  };
+
   /* aqui vai ficar o campo estendido da senha */
 
   return (
@@ -162,81 +257,125 @@ function ProfileComponent() {
       <p>
         Status da assinatura:
         {' '}
-        {user.assinaturaAtiva.status ? 'Ativa' : 'Inativa'}
+        {user?.assinaturaAtiva.status ? 'Ativa' : 'Inativa'}
       </p>
-      {!user.assinaturaAtiva.status && <button type="button" onClick={() => console.log('Implementar assinatura')}>Assinar agora!</button>}
-      <button
-        id="editProfileButton"
-        type="button"
-        onClick={() => setIsEditFormActivated(!isEditFormActivated)}
-      >
-        {isEditFormActivated ? 'Cancelar edição' : 'Editar perfil'}
-      </button>
+      {!user?.assinaturaAtiva.status && <button type="button" id="paymentButton" onClick={() => console.log('Implementar assinatura')}>Assinar agora!</button>}
       {!isEditFormActivated ? (
         <div id="itensPerfil">
+          <button
+            id="editProfileButton"
+            type="button"
+            onClick={() => setIsEditFormActivated(!isEditFormActivated)}
+          >
+            Editar perfil
+          </button>
           <div>
-            <span id="title">Nome</span>
-            <p>{formProfile.name}</p>
-          </div>
-          <div>
-            <span id="title">Email</span>
-            <p>{formProfile.email}</p>
+            <div>
+              <span id="title">Nome</span>
+              <p>{formProfile.name}</p>
+            </div>
+            <div>
+              <span id="title">Email</span>
+              <p>{formProfile.email}</p>
+            </div>
           </div>
         </div>
       ) : (
-        <form id="profileForm">
-          <label htmlFor="name">
-            <p id="inputTitle">Nome</p>
-            <InputS
-              id="name"
-              type="text"
-              name="name"
-              placeholder="Seu nome"
-              value={formProfile.name}
-              onChange={handleChange}
-              required
-            />
-            {touchedName && formProfile.name && nameErrorMessage && (
-            <p id="ErrorMsg">{nameErrorMessage}</p>
-            )}
-          </label>
-          <div>
-            <label htmlFor="password">
-              <p id="inputTitle">Nova senha</p>
+        <form id="profileForm" ref={formRef}>
+          {!touchedPassword && (
+            <label htmlFor="name">
+              <p id="inputTitle">Nome</p>
               <InputS
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Digite sua nova senha"
-                value={formProfile.password}
-                onChange={handleChange}
-                onInvalid={(e) => {
-                  e.target.setCustomValidity('');
-                  if (!e.target.validity.valid) {
-                    e.target.setCustomValidity('A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caracter especial');
-                  }
-                }}
-                onInput={(e) => e.target.setCustomValidity('')}
-              />
-              {formProfile.password && passwordErrorMessage && (
-              <p id="ErrorMsg">{passwordErrorMessage}</p>
-              )}
-            </label>
-            <label htmlFor="passwordConfirm">
-              <p id="inputTitle">Confirme a senha</p>
-              <InputS
-                id="passwordConfirm"
-                type="password"
-                name="passwordConfirm"
-                placeholder="Digite novamente a nova senha"
-                value={formProfile.passwordConfirm}
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Seu nome"
+                value={formProfile.name}
                 onChange={handleChange}
                 required
               />
-              {formProfile.passwordConfirm && passwordConfirmErrorMessage && (
-              <p id="ErrorMsg">{passwordConfirmErrorMessage}</p>
+              {touchedName && formProfile.name && nameErrorMessage && (
+              <p id="ErrorMsg">{nameErrorMessage}</p>
               )}
             </label>
+          )}
+          <div>
+            {!canChangePassword ? (
+              <div id="oldPasswordDiv">
+                <label htmlFor="password">
+                  <p id="inputTitle">Password</p>
+                  <InputS
+                    id="password"
+                    type="password"
+                    placeholder="Digite seu password"
+                    name="password"
+                    value={formProfile.password}
+                    onChange={handleChange}
+                    onClick={() => {
+                      setTouchedPassword(true);
+                    }}
+                    required
+                    hasError={serverError === 'oldPassword'}
+                  />
+                  {touchedPassword && formProfile.password && passwordErrorMessage && (
+                  <p id="ErrorMsg">{passwordErrorMessage}</p>
+                  )}
+                </label>
+                {touchedPassword && (
+                <button
+                  type="button"
+                  id="sendPasswordButton"
+                  disabled={isSubmitDisabled || serverError === 'oldPassword'}
+                  onClick={(event) => verifyOldPassword(
+                    event,
+                    formProfile.email,
+                    formProfile.password,
+                  )}
+                >
+                  Enviar
+                </button>
+                ) }
+              </div>
+            ) : (
+              <>
+                <label htmlFor="password">
+                  <p id="inputTitle">Nova senha</p>
+                  <InputS
+                    id="password"
+                    type="password"
+                    name="password"
+                    placeholder="Digite sua nova senha"
+                    value={formProfile.password}
+                    onChange={handleChange}
+                    onInvalid={(e) => {
+                      e.target.setCustomValidity('');
+                      if (!e.target.validity.valid) {
+                        e.target.setCustomValidity('A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caracter especial');
+                      }
+                    }}
+                    onInput={(e) => e.target.setCustomValidity('')}
+                  />
+                  {formProfile.password && passwordErrorMessage && (
+                  <p id="ErrorMsg">{passwordErrorMessage}</p>
+                  )}
+                </label>
+                <label htmlFor="passwordConfirm">
+                  <p id="inputTitle">Confirme a senha</p>
+                  <InputS
+                    id="passwordConfirm"
+                    type="password"
+                    name="passwordConfirm"
+                    placeholder="Digite novamente a nova senha"
+                    value={formProfile.passwordConfirm}
+                    onChange={handleChange}
+                    required
+                  />
+                  {formProfile.passwordConfirm && passwordConfirmErrorMessage && (
+                  <p id="ErrorMsg">{passwordConfirmErrorMessage}</p>
+                  )}
+                </label>
+              </>
+            )}
           </div>
           <button
             id="updateButton"
@@ -249,6 +388,13 @@ function ProfileComponent() {
             )}
           >
             Atualizar perfil
+          </button>
+          <button
+            id="editProfileButton"
+            type="button"
+            onClick={cancelEdit}
+          >
+            Cancelar edição
           </button>
         </form>
       )}

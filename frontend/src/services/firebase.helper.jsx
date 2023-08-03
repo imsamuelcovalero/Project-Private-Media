@@ -1,7 +1,12 @@
 /* File: src/services/firebase.helper.jsx */
 import {
-  signInWithEmailAndPassword, getIdToken, createUserWithEmailAndPassword,
-  updateProfile, updatePassword,
+  signInWithEmailAndPassword,
+  getIdToken,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  updatePassword,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from 'firebase/auth';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
@@ -75,4 +80,19 @@ const firebaseUpdateProfile = async ({ uid, name, password }) => {
   }
 };
 
-export { firebaseSignIn, firebaseSignUp, firebaseUpdateProfile };
+/* Função que faz a reautenticação do usuário */
+const firebaseReauthenticate = async (email, password) => {
+  try {
+    const user = auth.currentUser;
+    const credential = EmailAuthProvider.credential(email, password);
+
+    await reauthenticateWithCredential(user, credential);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export {
+  firebaseSignIn, firebaseSignUp, firebaseUpdateProfile, firebaseReauthenticate,
+};
