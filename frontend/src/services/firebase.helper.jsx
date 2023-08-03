@@ -9,7 +9,7 @@ import {
   reauthenticateWithCredential,
 } from 'firebase/auth';
 import {
-  collection, getDocs, doc, setDoc, updateDoc,
+  collection, getDocs, doc, setDoc, updateDoc, getDoc,
 } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
@@ -17,9 +17,7 @@ import { auth, db } from './firebase';
 const firebaseGetSampleCategory = async () => {
   try {
     const sampleCategoryDoc = collection(db, 'categorias');
-    // console.log('sampleCategoryDoc', sampleCategoryDoc);
     const snapshot = await getDocs(sampleCategoryDoc);
-    // console.log('snapshot', snapshot);
     let sampleData = null;
 
     snapshot.forEach((document) => {
@@ -29,7 +27,22 @@ const firebaseGetSampleCategory = async () => {
       }
     });
 
-    console.log('sampleData', sampleData);
+    // Agora, para cada foto e vídeo, obtenha os dados correspondentes
+    const fotosPromises = sampleData.fotos.map((idFoto) => getDoc(doc(db, 'fotos', idFoto)));
+    const fotosDocs = await Promise.all(fotosPromises);
+    const fotosData = fotosDocs.map((fotoDoc) => ({ id: fotoDoc.id, ...fotoDoc.data() }));
+
+    const videosPromises = sampleData.videos.map((idVideo) => getDoc(doc(db, 'videos', idVideo)));
+    const videosDocs = await Promise.all(videosPromises);
+    const videosData = videosDocs.map((videoDoc) => ({ id: videoDoc.id, ...videoDoc.data() }));
+
+    // Atualize sampleData para incluir os dados reais de fotos e vídeos, não apenas os IDs
+    sampleData = {
+      ...sampleData,
+      fotos: fotosData,
+      videos: videosData,
+    };
+
     return sampleData;
   } catch (error) {
     console.error(error);
