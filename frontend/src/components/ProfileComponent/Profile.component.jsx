@@ -26,10 +26,11 @@ function ProfileComponent() {
     password: '',
   });
 
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [isNameBtnDisabled, setNameBtnDisabled] = useState(true);
+  const [isPasswordBtnDisabled, setIsPasswordBtnDisabled] = useState(true);
+
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
   const [isEditFormActivated, setIsEditFormActivated] = useState(false);
-
   const [canChangePassword, setCanChangePassword] = useState(false);
   const [hasEditFieldTouched, setHasEditFieldTouched] = useState(false);
 
@@ -59,6 +60,22 @@ function ProfileComponent() {
 
     verifyToken();
   }, []);
+
+  /* useEffect que verifica se o formulário foi alterado */
+  useEffect(() => {
+    setFormProfile({
+      name: user?.nome,
+      email: user?.email,
+      password: '',
+      passwordConfirm: '',
+    });
+
+    setOriginalProfile({
+      name: user?.nome,
+      email: user?.email,
+      password: '',
+    });
+  }, [user]);
 
   /* função responsável por redefinir o perfil do formulário */
   const resetFormProfile = () => {
@@ -116,26 +133,27 @@ function ProfileComponent() {
     };
   }, [cancelEdit, isEditFormActivated]);
 
-  /* Função que valida os dados digitados e habilita ou desabilita o botão de Enviar Edição */
-  const validateField = (field) => {
-    if (field === 'name') {
-      if (!formProfile.name) return 'Campo de nome é obrigatório';
-      if (formProfile.name.length < 3) {
-        return 'Nome deve ter ao menos 3 caracteres';
-      }
-    }
-
-    if (field === 'passwordConfirm') {
-      if (!formProfile.passwordConfirm) return 'Campo de confirmação de senha é obrigatório';
-      if (formProfile.password !== formProfile.passwordConfirm) {
-        return 'As senhas não correspondem';
-      }
+  /* Função que valida o campo de nome */
+  const validateName = (name) => {
+    if (!name) return 'Campo de nome é obrigatório';
+    if (name.length < 3) {
+      return 'Nome deve ter ao menos 3 caracteres';
     }
 
     return '';
   };
 
-  /* Função que valida os dados digitados */
+  /* Função que valida o campo de confirmação de senha */
+  const validatePasswordConfirmation = (password, passwordConfirm) => {
+    if (!passwordConfirm) return 'Campo de confirmação de senha é obrigatório';
+    if (password !== passwordConfirm) {
+      return 'As senhas não correspondem';
+    }
+
+    return '';
+  };
+
+  /* Função que valida a senha */
   const validatePassword = (password) => {
     const hasEightCharacters = /.{8,}/.test(password);
     const hasUpperCaseLetter = /[A-Z]/.test(password);
@@ -147,24 +165,27 @@ function ProfileComponent() {
     if (!hasUpperCaseLetter) error += 'Senha deve ter ao menos uma letra maiúscula. ';
     if (!hasNumber) error += 'Senha deve ter ao menos um número.';
 
-    if (error === '') setIsSubmitDisabled(false); // Se não há erros, habilita o botão
-    else setIsSubmitDisabled(true); // Se há erros, desabilita o botão
+    if (error === '') setIsSubmitDisabled(false);
+    else setIsSubmitDisabled(true);
 
     return error;
   };
 
-  /* useEffect que chama a função validateField e atualiza o estado de acordo com o retorno */
+  /* useEffect que chama as funções de validação e atualiza o estado de acordo com o retorno */
   useEffect(() => {
-    const nameError = (touchedName || formProfile.name) ? validateField('name') : '';
-    const passwordConfirmError = (touchedPasswordConfirm || formProfile.passwordConfirm) ? validateField('passwordConfirm') : '';
+    const nameError = (touchedName || formProfile.name) ? validateName(formProfile.name) : '';
+    const passwordConfirmError = (touchedPasswordConfirm || formProfile.passwordConfirm) ? validatePasswordConfirmation(formProfile.password, formProfile.passwordConfirm) : '';
 
     setNameErrorMessage(nameError);
     setPasswordConfirmErrorMessage(passwordConfirmError);
 
-    setIsDisabled(
+    setNameBtnDisabled(
       !formProfile.name
-    || !formProfile.passwordConfirm
-    || nameError
+    || nameError,
+    );
+
+    setIsPasswordBtnDisabled(
+      !formProfile.passwordConfirm
     || passwordConfirmError,
     );
   }, [formProfile, touchedPassword, touchedName, touchedPasswordConfirm]);
@@ -177,29 +198,31 @@ function ProfileComponent() {
       setTouchedPassword(true);
       const passwordError = validatePassword(value);
       setPasswordErrorMessage(passwordError);
-      setIsDisabled(!!passwordError || !formProfile.name);
+      setIsPasswordBtnDisabled(passwordError);
       if (serverError === 'oldPassword') {
         setServerError('');
       }
-      // adicionando a atualização do originalProfile aqui também
       if (!isEditFormActivated) {
         setOriginalProfile((prevState) => ({
           ...prevState,
           password: value,
         }));
       }
+    } else if (name === 'passwordConfirm') {
+      setTouchedPasswordConfirm(true);
     }
 
     if (name === 'name') {
       setTouchedName(true);
+      const nameError = validateName(value);
+      setNameErrorMessage(nameError);
+      setNameBtnDisabled(nameError);
       if (!isEditFormActivated) {
         setOriginalProfile((prevState) => ({
           ...prevState,
           name: value,
         }));
       }
-    } else if (name === 'passwordConfirm') {
-      setTouchedPasswordConfirm(true);
     }
 
     setFormProfile((prevState) => ({
@@ -209,17 +232,20 @@ function ProfileComponent() {
   };
 
   /* Função que envia os dados atualizados para a API (api.updateProfile) */
-  const updateProfile = async (event, name, password) => {
+  const updateProfile = async (event, data, type) => {
     event.preventDefault();
 
-    console.log('isDisabled1', isDisabled);
-    try {
-      const idToken = await firebaseUpdateProfile({ name, password });
-      if (!idToken) toast.error('Erro ao tentar fazer o registro');
-      console.log('idToken', idToken);
-      const response = await api.signUp(idToken);
-      // console.log('response', response);
+    const confirmation = window.confirm('Tem certeza que deseja atualizar seu perfil?');
+    if (!confirmation) return;
 
+    const updateData = {};
+    updateData[type] = data;
+
+    try {
+      const idToken = await firebaseUpdateProfile(updateData);
+      if (!idToken) toast.error('Erro ao tentar fazer a edição');
+
+      const response = await api.signUp(idToken);
       const {
         id, nome, email, assinaturaAtiva,
       } = response;
@@ -227,6 +253,7 @@ function ProfileComponent() {
       const userInfo = {
         id, email, nome, assinaturaAtiva,
       };
+      console.log('userInfo', userInfo);
 
       saveUserInfo(userInfo);
 
@@ -235,7 +262,8 @@ function ProfileComponent() {
       toast.success('Conta editada com sucesso!', {
         position: 'bottom-right',
       });
-      navigate('/visitors');
+      setIsEditFormActivated(false);
+      navigate('/profile');
     } catch (error) {
       if (error.message === 'Authentication error') {
         toast.error('Erro na autenticação. Por favor, tente novamente.');
@@ -243,7 +271,6 @@ function ProfileComponent() {
         toast.error(error.message || 'Erro ao tentar editar o perfil');
       }
     }
-    // Limpa o estado de poder alterar a senha
     setCanChangePassword(false);
     cancelEdit(true);
   };
@@ -259,13 +286,11 @@ function ProfileComponent() {
       // Se a reautenticação for bem-sucedida, altera o estado para mostrar os campos de nova senha
       setCanChangePassword(true);
 
-      // Limpa o campo de senha antiga
       setFormProfile((prevState) => ({
         ...prevState,
         password: '',
       }));
 
-      // Limpa qualquer erro de servidor anterior
       setServerError(null);
     } catch (error) {
     // Se ocorrer um erro, mostra uma mensagem de erro ao usuário e destaca o campo de senha antiga
@@ -276,7 +301,6 @@ function ProfileComponent() {
         toast.error(error.message || 'Ocorreu um erro ao tentar verificar a senha antiga. Por favor, tente novamente.');
       }
 
-      // Limpa o estado de poder alterar a senha
       setCanChangePassword(false);
     }
   };
@@ -419,12 +443,22 @@ function ProfileComponent() {
           <button
             id="updateButton"
             type="submit"
-            disabled={isDisabled}
-            onClick={(event) => updateProfile(
-              event,
-              formProfile.name,
-              formProfile.password,
-            )}
+            disabled={touchedName ? isNameBtnDisabled : isPasswordBtnDisabled}
+            onClick={(event) => {
+              if (touchedName) {
+                updateProfile(
+                  event,
+                  formProfile.name,
+                  'name',
+                );
+              } else {
+                updateProfile(
+                  event,
+                  formProfile.password,
+                  'password',
+                );
+              }
+            }}
           >
             Atualizar perfil
           </button>

@@ -52,8 +52,8 @@ const firebaseSignUp = async ({ name: nome, email, password }) => {
 };
 
 /* Função que atualiza o perfil no firebase e retorna o idToken */
-const firebaseUpdateProfile = async ({ uid, name, password }) => {
-  console.log('firebaseUpdateProfile', uid, name, password);
+const firebaseUpdateProfile = async ({ name, password }) => {
+  console.log('firebaseUpdateProfile', name, password);
   try {
     const user = auth.currentUser;
 
