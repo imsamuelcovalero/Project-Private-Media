@@ -19,7 +19,6 @@ function ProfileComponent() {
     passwordConfirm: '',
   });
 
-  // state to keep track of the original user data
   const [originalProfile, setOriginalProfile] = useState({
     name: user.nome,
     email: user.email,
@@ -253,7 +252,6 @@ function ProfileComponent() {
       const userInfo = {
         id, email, nome, assinaturaAtiva,
       };
-      console.log('userInfo', userInfo);
 
       saveUserInfo(userInfo);
 
