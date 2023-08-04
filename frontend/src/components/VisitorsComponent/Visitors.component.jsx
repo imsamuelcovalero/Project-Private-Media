@@ -10,16 +10,20 @@ import { VisitorsS } from './Style';
 
 function VisitorsComponent() {
   const { logout } = useContext(ReactNodeContext);
-  const navigate = useNavigate();
-  const [mediaToRender, setMediaToRender] = useState(null);
 
-  console.log('mediaToRender', mediaToRender);
+  const [mediaToRender, setMediaToRender] = useState(null);
+  const [isSignatureActive, setIsSignatureActive] = useState(false);
+
+  const navigate = useNavigate();
 
   /* useEffect que verifica se existe um token válido */
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        await api.checkToken();
+        const data = await api.checkToken();
+        if (data) {
+          setIsSignatureActive(data.assinaturaAtiva.status);
+        }
       } catch (error) {
         console.error(error);
         logout();
@@ -78,7 +82,11 @@ function VisitorsComponent() {
   return (
     <VisitorsS>
       <h1>Página de Visitantes</h1>
-
+      {!isSignatureActive && (
+        <button type="button" onClick={() => navigate('/profile/subscription')}>
+          Assine para ser membro
+        </button>
+      )}
       {mediaToRender && (
         isPhotoUrl(mediaToRender.url) ? (
           <img src={mediaToRender.url} alt={mediaToRender.descricao || 'Foto'} />
