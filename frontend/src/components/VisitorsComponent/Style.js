@@ -10,6 +10,10 @@ export const VisitorsS = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  img {
+    height: 300px;
+    width: 450px;
+  }
 `;
 
 export const ProductsDivS = styled.div`

@@ -74,10 +74,7 @@ function VisitorsComponent() {
   }, []);
 
   /* Função auxiliar para verificar se a URL é de uma foto ou vídeo */
-  const isPhotoUrl = (url) => url.startsWith('https://firebasestorage.googleapis.com');
-
-  /* Função auxiliar para obter o ID do vídeo do YouTube a partir da URL */
-  const getYouTubeId = (url) => url.split('?v=')[1];
+  const isPhotoUrl = (url) => url.includes('.jpeg') || url.includes('.jpg');
 
   return (
     <VisitorsS>
@@ -91,14 +88,11 @@ function VisitorsComponent() {
         isPhotoUrl(mediaToRender.url) ? (
           <img src={mediaToRender.url} alt={mediaToRender.descricao || 'Foto'} />
         ) : (
-          <iframe
-            width="560"
-            height="315"
-            src={`https://www.youtube.com/embed/${getYouTubeId(mediaToRender.url)}`}
-            title="Vídeo do YouTube"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+          // eslint-disable-next-line jsx-a11y/media-has-caption
+          <video style={{ width: '560px', height: '315px' }} controls>
+            <source src={mediaToRender.url} type="video/mp4" />
+            Desculpe, mas não foi possível carregar o vídeo.
+          </video>
         )
       )}
     </VisitorsS>
