@@ -1,7 +1,7 @@
 import React from 'react';
 import MainComponent from '../../components/MainComponent/Main.component';
 import Header from '../../components/Header/Header';
-import { DivExterna, MainS } from './Style';
+import DivExterna from './Style';
 
 function Main() {
   return (
@@ -9,9 +9,7 @@ function Main() {
       <div id="header">
         <Header />
       </div>
-      <MainS>
-        <MainComponent />
-      </MainS>
+      <MainComponent />
     </DivExterna>
   );
 }

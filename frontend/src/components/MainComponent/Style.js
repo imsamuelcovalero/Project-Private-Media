@@ -1,5 +1,16 @@
 import styled from 'styled-components';
 
+export const MainS = styled.div`  
+  border: 2px solid blue;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`;
+
 export const ProductsDivS = styled.div`
   height: 100%;
   width: 100vw;

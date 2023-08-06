@@ -3,13 +3,13 @@ import React from 'react';
 // import ReactNodeContext from '../../context/ReactNodeContext';
 // import formatCurrency from '../FormatCurrency';
 // import ProductsCard from './ProductsCard';
-// import { ProductsDivS } from './Style';
+import { MainS } from './Style';
 
 function MainComponent() {
   // const { products, balance } = useContext(ReactNodeContext);
 
   return (
-    <div id="mainDiv">
+    <MainS>
       {/* <ProductsDivS>
         {productsToRender?.map((product) => (
           <div key={product.id}>
@@ -18,7 +18,7 @@ function MainComponent() {
         ))}
       </ProductsDivS> */}
       <h1>Página Main</h1>
-    </div>
+    </MainS>
   );
 }
 
