@@ -11,39 +11,44 @@ import {
 import {
   collection, getDocs, doc, setDoc, updateDoc, getDoc,
 } from 'firebase/firestore';
-import { auth, db } from './firebase';
+import { auth, db } from './firebase.config';
 
-/* Função que busca as fotos e vídeos da categoria 'sample' */
-const firebaseGetSampleCategory = async () => {
+/* Função que busca as fotos e vídeos de uma categoria específica */
+const firebaseGetCategory = async (categoryId) => {
   try {
-    const sampleCategoryDoc = collection(db, 'categorias');
-    const snapshot = await getDocs(sampleCategoryDoc);
-    let sampleData = null;
+    const categoriesCollection = collection(db, 'categorias');
+    const snapshot = await getDocs(categoriesCollection);
+    let categoryData = null;
 
     snapshot.forEach((document) => {
       const data = document.data();
-      if (data.categoriaId === 'sample') {
-        sampleData = data;
+      if (data.categoriaId === categoryId) {
+        categoryData = data;
       }
     });
 
+    // Se a categoria não foi encontrada, retorne null
+    if (!categoryData) {
+      return null;
+    }
+
     // Agora, para cada foto e vídeo, obtenha os dados correspondentes
-    const fotosPromises = sampleData.fotos.map((idFoto) => getDoc(doc(db, 'fotos', idFoto)));
+    const fotosPromises = categoryData.fotos.map((idFoto) => getDoc(doc(db, 'fotos', idFoto)));
     const fotosDocs = await Promise.all(fotosPromises);
     const fotosData = fotosDocs.map((fotoDoc) => ({ id: fotoDoc.id, ...fotoDoc.data() }));
 
-    const videosPromises = sampleData.videos.map((idVideo) => getDoc(doc(db, 'videos', idVideo)));
+    const videosPromises = categoryData.videos.map((idVideo) => getDoc(doc(db, 'videos', idVideo)));
     const videosDocs = await Promise.all(videosPromises);
     const videosData = videosDocs.map((videoDoc) => ({ id: videoDoc.id, ...videoDoc.data() }));
 
-    // Atualize sampleData para incluir os dados reais de fotos e vídeos, não apenas os IDs
-    sampleData = {
-      ...sampleData,
+    // Atualize categoryData para incluir os dados reais de fotos e vídeos, não apenas os IDs
+    categoryData = {
+      ...categoryData,
       fotos: fotosData,
       videos: videosData,
     };
 
-    return sampleData;
+    return categoryData;
   } catch (error) {
     console.error(error);
     throw error;
@@ -131,5 +136,5 @@ const firebaseReauthenticate = async (email, password) => {
 
 export {
   firebaseSignIn, firebaseSignUp, firebaseUpdateProfile, firebaseReauthenticate,
-  firebaseGetSampleCategory,
+  firebaseGetCategory,
 };

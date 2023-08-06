@@ -1,9 +1,9 @@
 /* File: src/components/VisitorsComponent/Visitors.component.jsx */
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import ProductsCard from './ProductsCard';
+import { toast } from 'react-toastify';
 import api from '../../services';
-import { firebaseGetSampleCategory } from '../../services/firebase.helper';
+import { firebaseGetCategory } from '../../services/firebase.helper';
 import { getMediaTime, addMediaTimeToLocalStorage } from '../../helpers/localStorage.helper';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import { VisitorsS } from './Style';
@@ -22,7 +22,6 @@ function VisitorsComponent() {
     const verifyToken = async () => {
       try {
         const data = await api.checkToken();
-        console.log('data', data);
         if (data) {
           if (data.assinaturaAtiva.status) {
             navigate('/main');
@@ -32,6 +31,7 @@ function VisitorsComponent() {
         }
       } catch (error) {
         console.error(error);
+        toast.error('Sessão expirada, faça login novamente');
         logout();
         navigate('/visitors');
       }
@@ -44,7 +44,7 @@ function VisitorsComponent() {
   useEffect(() => {
     const getSampleCategory = async () => {
       try {
-        const sampleData = await firebaseGetSampleCategory();
+        const sampleData = await firebaseGetCategory('sample');
         const allMedia = [...sampleData.fotos, ...sampleData.videos];
         let selectedMedia = allMedia[Math.floor(Math.random() * allMedia.length)];
 

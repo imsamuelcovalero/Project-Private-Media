@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import { MainS } from './Style';
+import CategoryS from './Style';
 
-function MainComponent() {
+function CategoryComponent() {
   const { logout } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
@@ -30,10 +30,10 @@ function MainComponent() {
   }, []);
 
   return (
-    <MainS>
-      <h1>Página Main</h1>
-    </MainS>
+    <CategoryS>
+      <h1>Página de Categoria</h1>
+    </CategoryS>
   );
 }
 
-export default MainComponent;
+export default CategoryComponent;
