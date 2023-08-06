@@ -13,18 +13,31 @@ export const removeUserInfo = () => {
 };
 
 export const addMediaTimeToLocalStorage = (media) => {
-  const userInfo = getUserInfo();
-  const newUserInfo = {
-    ...userInfo,
-    mediaTime: {
-      data: media.data,
-      time: media.time,
-    },
+  const mediaTime = {
+    data: media.data,
+    time: media.time,
   };
-  saveUserInfo(newUserInfo);
+  localStorage.setItem('reactNodeMediaTime', JSON.stringify(mediaTime));
 };
 
 export const getMediaTime = () => {
-  const userInfo = getUserInfo();
-  return userInfo.mediaTime ? userInfo.mediaTime : null;
+  const mediaTime = localStorage.getItem('reactNodeMediaTime');
+  return mediaTime ? JSON.parse(mediaTime) : null;
 };
+
+// export const addMediaTimeToLocalStorage = (media) => {
+//   const userInfo = getUserInfo();
+//   const newUserInfo = {
+//     ...userInfo,
+//     mediaTime: {
+//       data: media.data,
+//       time: media.time,
+//     },
+//   };
+//   saveUserInfo(newUserInfo);
+// };
+
+// export const getMediaTime = () => {
+//   const userInfo = getUserInfo();
+//   return userInfo.mediaTime ? userInfo.mediaTime : null;
+// };

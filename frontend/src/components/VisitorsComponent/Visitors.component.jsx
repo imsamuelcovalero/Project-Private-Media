@@ -13,6 +13,7 @@ function VisitorsComponent() {
 
   const [mediaToRender, setMediaToRender] = useState(null);
   const [isSignatureActive, setIsSignatureActive] = useState(false);
+  const [isUserLogged, setIsUserLogged] = useState(false);
 
   const navigate = useNavigate();
 
@@ -21,7 +22,12 @@ function VisitorsComponent() {
     const verifyToken = async () => {
       try {
         const data = await api.checkToken();
+        console.log('data', data);
         if (data) {
+          if (data.assinaturaAtiva.status) {
+            navigate('/main');
+          }
+          setIsUserLogged(true);
           setIsSignatureActive(data.assinaturaAtiva.status);
         }
       } catch (error) {
@@ -78,8 +84,15 @@ function VisitorsComponent() {
 
   return (
     <VisitorsS>
-      <h1>Página de Visitantes</h1>
-      {!isSignatureActive && (
+      {!isUserLogged && (
+        <div>
+          <h1>Página de Visitantes</h1>
+          <button type="button" onClick={() => navigate('/login')}>
+            Faça login ou cadastre-se
+          </button>
+        </div>
+      )}
+      {isUserLogged && !isSignatureActive && (
         <button type="button" onClick={() => navigate('/profile/subscription')}>
           Assine para ser membro
         </button>
