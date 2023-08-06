@@ -1,9 +1,9 @@
 import React, { useContext, useEffect/* , useState */ } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import { MainS } from './Style';
+import MainS from './Style';
 
 function MainComponent() {
   const { logout } = useContext(ReactNodeContext);
@@ -29,9 +29,24 @@ function MainComponent() {
     verifyToken();
   }, []);
 
+  const categoryIds = [
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
+  ];
+
   return (
     <MainS>
       <h1>Página Main</h1>
+      <ul>
+        {categoryIds.map((categoryId) => (
+          <li key={categoryId}>
+            <Link to={`/main/${categoryId}`}>{categoryId}</Link>
+          </li>
+        ))}
+      </ul>
     </MainS>
   );
 }

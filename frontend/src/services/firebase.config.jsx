@@ -1,4 +1,4 @@
-/* File: src/services/firebase.jsx */
+/* File: src/services/firebase.config.jsx */
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';

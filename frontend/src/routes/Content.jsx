@@ -5,7 +5,7 @@ import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
 import Visitors from '../pages/Visitors/Visitors';
 import Main from '../pages/Main/Main';
-import CategoryPage from '../pages/Category/Category';
+import Category from '../pages/Category/Category';
 
 function Content() {
   return (
@@ -16,7 +16,7 @@ function Content() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/visitors" element={<Visitors />} />
       <Route path="/main" element={<Main />} />
-      <Route path="/main/:categoryId" component={CategoryPage} />
+      <Route path="/main/:categoryId" element={<Category />} />
     </Routes>
   );
 }

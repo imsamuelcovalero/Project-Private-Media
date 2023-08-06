@@ -1,17 +1,17 @@
 /* File: src/context/ReactNodeProvider.jsx */
 import React, { useState, useMemo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-// import { /* getFirestore,  */collection, getDocs } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from './ReactNodeContext';
+import { firebaseGetCategory } from '../services/firebase.helper';
 import { getUserInfo, removeUserInfo } from '../helpers/localStorage.helper';
-// import db from '../services/firebase';
 import api from '../services';
 
 function ReactNodeProvider({ children }) {
   const [theme, setTheme] = useState('light');
-  // const [products, setProducts] = useState([]);
   const [user, setUser] = useState(getUserInfo());
+  const [categoryPhotos, setCategoryPhotos] = useState([]);
+  const [categoryVideos, setCategoryVideos] = useState([]);
 
   const navigate = useNavigate();
 
@@ -30,34 +30,29 @@ function ReactNodeProvider({ children }) {
     }
   };
 
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     const produtosRef = collection(db, 'produtos');
-  //     const produtosSnapshot = await getDocs(produtosRef);
-  //     const produtosData = produtosSnapshot.docs.map((doc) => {
-  //       const data = doc.data();
-  //       const { id } = doc;
-  //       return {
-  //         id,
-  //         name: data['Descrição'],
-  //         urlImage: data['Imagem Url'],
-  //         price: data['Preço'],
-  //       };
-  //     });
-  //     setProducts(produtosData);
-  //   };
+  const getCategoryData = async (categoryId) => {
+    try {
+      const data = await firebaseGetCategory(categoryId);
+      // console.log('data', data);
+      setCategoryPhotos(data.fotos);
+      setCategoryVideos(data.videos);
+    } catch (error) {
+      console.error('Error fetching category data:', error);
+    }
+  };
 
-  //   fetchProducts();
-  // }, []);
+  console.log('categoryPhotos', categoryPhotos, 'categoryVideos', categoryVideos);
 
   const contextValue = useMemo(() => ({
     theme,
     setTheme,
-    // products,
     user,
     setUser,
     logout: handleLogout,
-  }), [theme, user]);
+    getCategoryData,
+    categoryPhotos,
+    categoryVideos,
+  }), [theme, user, categoryPhotos, categoryVideos]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,
