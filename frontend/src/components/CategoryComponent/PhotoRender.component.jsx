@@ -2,13 +2,18 @@
 import React, { useContext, useState } from 'react';
 // import { toast } from 'react-toastify';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import { PhotosDivS, PhotoCardS, BackButtonS } from './Style';
+import {
+  PhotosDivS, PhotoCardS, BackButtonS, PaginationButtonS, PaginationContainerS, GalleryContainerS,
+} from './Style';
 
 function PhotoRenderComponent() {
   const { categoryPhotos } = useContext(ReactNodeContext);
 
-  // Estado para armazenar a foto selecionada
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  // Paginação
+  const [currentPage, setCurrentPage] = useState(1);
+  const photosPerPage = 10; // ajuste conforme necessário
 
   const handlePhotoClick = (photo) => {
     setSelectedPhoto(photo);
@@ -18,6 +23,20 @@ function PhotoRenderComponent() {
     setSelectedPhoto(null);
   };
 
+  // Funções para manipular a paginação
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  // Obter as fotos para a página atual
+  const indexOfLastPhoto = currentPage * photosPerPage;
+  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
+  const currentPhotos = categoryPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+
   return (
     <div role="main" aria-label="Photo viewer">
       {selectedPhoto ? (
@@ -26,13 +45,19 @@ function PhotoRenderComponent() {
           <BackButtonS type="button" onClick={handleBackClick}>Voltar</BackButtonS>
         </PhotoCardS>
       ) : (
-        <PhotosDivS>
-          {categoryPhotos.map((photo) => (
-            <PhotoCardS key={photo.id} role="button" tabIndex="0" onClick={() => handlePhotoClick(photo)} onKeyDown={(e) => { if (e.key === 'Enter') handlePhotoClick(photo); }}>
-              <img id={`photo-${photo.id}`} src={photo.url} alt="Thumbnail" />
-            </PhotoCardS>
-          ))}
-        </PhotosDivS>
+        <GalleryContainerS>
+          <PhotosDivS>
+            {currentPhotos.map((photo) => (
+              <PhotoCardS key={photo.id} role="button" tabIndex="0" onClick={() => handlePhotoClick(photo)} onKeyDown={(e) => { if (e.key === 'Enter') handlePhotoClick(photo); }}>
+                <img id={`photo-${photo.id}`} src={photo.url} alt="Thumbnail" />
+              </PhotoCardS>
+            ))}
+          </PhotosDivS>
+          <PaginationContainerS>
+            <PaginationButtonS type="button" disabled={currentPage === 1} onClick={handlePreviousPage}>Página anterior</PaginationButtonS>
+            <PaginationButtonS type="button" disabled={currentPhotos.length < photosPerPage} onClick={handleNextPage}>Próxima página</PaginationButtonS>
+          </PaginationContainerS>
+        </GalleryContainerS>
       )}
     </div>
   );
