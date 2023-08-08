@@ -19,7 +19,7 @@ export const CategoryHeaderS = styled.div`
 export const BtnCategory = styled.button`
   margin-right: 10px;
   height: 100%;
-  width: auto;
+  width: 300px;
   background: var(--buttonBackground);
   border: 1px solid var(--secondary);
   border-radius: 4px;
@@ -44,5 +44,6 @@ export const BtnCategory = styled.button`
   &:disabled {
     cursor: not-allowed;
     filter: saturate(0);
+    background: var(--buttonBackgroundDisabled);
   }
 `;

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
+import CategoryHeaderComponent from './CategoryHeader.component';
 import PhotoRenderComponent from './PhotoRender.component';
 import VideoRenderComponent from './VideoRender.component';
 import { CategoryS } from './Style';
@@ -56,6 +57,7 @@ function CategoryComponent() {
 
   return (
     <CategoryS>
+      <CategoryHeaderComponent />
       <h1>{categoryId}</h1>
       {(viewMode === null) ? (
         <div>
@@ -68,6 +70,7 @@ function CategoryComponent() {
           <button type="button" onClick={() => setViewMode(null)}>Voltar</button>
         </div>
       )}
+      <button type="button" onClick={() => navigate('/main')}>Voltar</button>
     </CategoryS>
   );
 }
