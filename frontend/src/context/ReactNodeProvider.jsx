@@ -13,6 +13,8 @@ function ReactNodeProvider({ children }) {
   const [categoryPhotos, setCategoryPhotos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
 
+  const [mediaSelected, setMediaSelected] = useState(false);
+
   const navigate = useNavigate();
 
   const categoryIds = [
@@ -61,7 +63,9 @@ function ReactNodeProvider({ children }) {
     categoryPhotos,
     categoryVideos,
     categoryIds,
-  }), [theme, user, categoryPhotos, categoryVideos, categoryIds]);
+    mediaSelected,
+    setMediaSelected,
+  }), [theme, user, categoryPhotos, categoryVideos, categoryIds, mediaSelected]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,

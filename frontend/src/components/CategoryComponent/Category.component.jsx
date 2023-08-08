@@ -7,11 +7,14 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 import CategoryHeaderComponent from './CategoryHeader.component';
 import PhotoRenderComponent from './PhotoRender.component';
 import VideoRenderComponent from './VideoRender.component';
-import { CategoryS } from './Style';
+import {
+  CategoryS, HeadingS, ViewModeButtonS, BackHomeButtonS,
+} from './Style';
 
 function CategoryComponent() {
-  const { logout, getCategoryData } = useContext(ReactNodeContext);
+  const { logout, getCategoryData, mediaSelected } = useContext(ReactNodeContext);
 
+  // const [mediaSelected, setMediaSelected] = useState(false);
   const [viewMode, setViewMode] = useState(null);
 
   const navigate = useNavigate();
@@ -59,19 +62,23 @@ function CategoryComponent() {
     <CategoryS>
       <CategoryHeaderComponent />
       <div id="content">
-        <h1>{categoryId}</h1>
-        {(viewMode === null) ? (
-          <div>
-            <button type="button" onClick={() => setViewMode('photos')}>Visualizar fotos</button>
-            <button type="button" onClick={() => setViewMode('videos')}>Visualizar vídeos</button>
-          </div>
-        ) : (
-          <div>
-            {renderContent()}
-            <button type="button" onClick={() => setViewMode(null)}>Voltar</button>
-          </div>
-        )}
-        <button type="button" onClick={() => navigate('/main')}>Home</button>
+        <HeadingS>{categoryId}</HeadingS>
+        <div className="content-inner">
+          {(viewMode === null) ? (
+            <div>
+              <ViewModeButtonS type="button" onClick={() => setViewMode('photos')}>Visualizar fotos</ViewModeButtonS>
+              <ViewModeButtonS type="button" onClick={() => setViewMode('videos')}>Visualizar vídeos</ViewModeButtonS>
+            </div>
+          ) : (
+            <div>
+              {renderContent()}
+              {(!mediaSelected && viewMode !== null) && (
+              <BackHomeButtonS type="button" onClick={() => setViewMode(null)}>Voltar</BackHomeButtonS>
+              )}
+            </div>
+          )}
+        </div>
+        <BackHomeButtonS type="button" onClick={() => navigate('/main')}>Home</BackHomeButtonS>
       </div>
     </CategoryS>
   );

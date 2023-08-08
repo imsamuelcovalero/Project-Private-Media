@@ -8,6 +8,10 @@ export const lightTheme = {
   buttonText: '#FFFFFF',
   buttonBackground: '#4D4D4D',
   buttonBackgroundDisabled: '#B1B1B1',
+  buttonPrimary: '#3949AB',
+  buttonPrimaryHover: '#1A237E',
+  buttonSecondary: '#E53935',
+  buttonSecondaryHover: '#C62828',
   // outras
   secundary: '#E53935',
   secundaryHover: '#C62828',
@@ -26,6 +30,10 @@ export const darkTheme = {
   buttonText: '#FFFFFF',
   buttonBackground: '#4D4D4D',
   buttonBackgroundDisabled: '#424242',
+  buttonPrimary: '#3949AB',
+  buttonPrimaryHover: '#1A237E',
+  buttonSecondary: '#E53935',
+  buttonSecondaryHover: '#C62828',
   // outras
   secundary: '#E53935',
   secundaryHover: '#C62828',

@@ -7,7 +7,7 @@ import {
 } from './Style';
 
 function VideoRenderComponent() {
-  const { categoryVideos } = useContext(ReactNodeContext);
+  const { categoryVideos, setMediaSelected } = useContext(ReactNodeContext);
 
   const [selectedVideo, setSelectedVideo] = useState(null);
 
@@ -17,10 +17,12 @@ function VideoRenderComponent() {
 
   const handleVideoClick = (video) => {
     setSelectedVideo(video);
+    setMediaSelected(true);
   };
 
   const handleBackClick = () => {
     setSelectedVideo(null);
+    setMediaSelected(false);
   };
 
   // Funções para manipular a paginação

@@ -7,7 +7,7 @@ import {
 } from './Style';
 
 function PhotoRenderComponent() {
-  const { categoryPhotos } = useContext(ReactNodeContext);
+  const { categoryPhotos, setMediaSelected } = useContext(ReactNodeContext);
 
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -17,10 +17,12 @@ function PhotoRenderComponent() {
 
   const handlePhotoClick = (photo) => {
     setSelectedPhoto(photo);
+    setMediaSelected(true);
   };
 
   const handleBackClick = () => {
     setSelectedPhoto(null);
+    setMediaSelected(false);
   };
 
   // Funções para manipular a paginação

@@ -21,18 +21,24 @@ export const CategoryS = styled.div`
     align-items: center;
     overflow-x: hidden; 
     overflow-y: auto;
+    .content-inner { 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-grow: 1; 
+    }
   }
 `;
 
 export const GalleryContainerS = styled.div`
-  border: 1px solid red;
+  /* border: 1px solid red; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 76vh;
-  /* margin-top: 60px; */
+  height: 64vh;
 `;
 
 export const PaginationContainerS = styled.div`
@@ -106,9 +112,10 @@ export const VideoCardS = styled.div`
   }
 `;
 
-export const PaginationButtonS = styled.button`
-  background-color: #3f51b5;
-  color: white;
+// BaseButtonS
+export const BaseButtonS = styled.button`
+  background-color: var(--buttonPrimary);
+  color: var(--buttonText);
   border: none;
   padding: 10px 20px;
   text-transform: uppercase;
@@ -117,43 +124,53 @@ export const PaginationButtonS = styled.button`
   cursor: pointer;
   box-shadow: 0px 2px 2px lightgray;
   transition: background-color 0.3s, transform 0.3s;
+  
   &:hover {
-    background-color: #283593;
+    background-color: var(--buttonPrimaryHover);
     transform: translateY(-1px);
   }
+  
   &:active {
     box-shadow: none;
     transform: translateY(1px);
   }
+  
   &:focus {
     outline: none;
   }
+  
   &:disabled {
     cursor: not-allowed;
-    background-color: gray;
+    background-color: var(--buttonBackgroundDisabled);
   }
 `;
 
-export const BackButtonS = styled.button`
-  background-color: #3f51b5;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  margin-top: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
-  transition: background-color 0.3s, transform 0.3s;
+// ViewModeButtonS - Estilo para botões de "Visualizar fotos" e "Visualizar vídeos"
+export const ViewModeButtonS = styled(BaseButtonS)`
+  margin: 5px 10px;
+`;
+
+// BackHomeButtonS - Estilo para botão "Voltar" e "Home"
+export const BackHomeButtonS = styled(BaseButtonS)`
+  background-color: var(--buttonSecondary);
   &:hover {
-    background-color: #283593;
-    transform: translateY(-1px);
+    background-color: var(--buttonSecondaryHover);
   }
-  &:active {
-    box-shadow: none;
-    transform: translateY(1px);
-  }
-  &:focus {
-    outline: none;
-  }
+`;
+
+// Estilo para o <h1>
+export const HeadingS = styled.h1`
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--headline);
+  text-transform: capitalize;
+`;
+
+// PaginationButtonS
+export const PaginationButtonS = styled(BaseButtonS)`
+`;
+
+// BackButtonS
+export const BackButtonS = styled(BaseButtonS)`
+  margin-top: 10px;
 `;

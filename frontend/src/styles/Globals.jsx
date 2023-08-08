@@ -52,6 +52,10 @@ export default createGlobalStyle`
     --buttonText: ${({ theme }) => theme.buttonText};
     --buttonBackground: ${({ theme }) => theme.buttonBackground};
     --buttonBackgroundDisabled: ${({ theme }) => theme.buttonBackgroundDisabled};
+    --buttonPrimary: ${({ theme }) => theme.buttonPrimary};
+    --buttonPrimaryHover: ${({ theme }) => theme.buttonPrimaryHover};
+    --buttonSecondary: ${({ theme }) => theme.buttonSecondary};
+    --buttonSecondaryHover: ${({ theme }) => theme.buttonSecondaryHover};
     --secundary: ${({ theme }) => theme.secundary};
     --secundaryHover: ${({ theme }) => theme.secundaryHover};
     --tertiary: ${({ theme }) => theme.tertiary};
