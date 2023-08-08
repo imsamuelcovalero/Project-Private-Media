@@ -101,7 +101,8 @@ function LoginComponent() {
 
   /* Função que envia os dados do login para a API (api.singIn) e em caso de sucesso
      salva os dados do usuário logado no localStorage e redireciona para a rota /main */
-  const signIn = async (email, password) => {
+  const signIn = async (e, email, password) => {
+    e.preventDefault();
     try {
       const idToken = await firebaseSignIn(email, password);
       const response = await api.signIn(idToken);
@@ -184,9 +185,9 @@ function LoginComponent() {
         <div>
           <button
             id="loginButton"
-            type="button"
+            type="submit"
             disabled={isDisabled}
-            onClick={() => signIn(formLogin.email, formLogin.password)}
+            onClick={(e) => signIn(e, formLogin.email, formLogin.password)}
           >
             LOGIN
           </button>
@@ -194,7 +195,7 @@ function LoginComponent() {
         <div>
           <button
             id="registerButton"
-            type="submit"
+            type="button"
             onClick={() => navigate('/register')}
           >
             Ainda não tenho conta

@@ -7,9 +7,7 @@ import DivExterna from './Style';
 function Category() {
   return (
     <DivExterna>
-      <div id="header">
-        <Header />
-      </div>
+      <Header />
       <CategoryComponent />
     </DivExterna>
   );

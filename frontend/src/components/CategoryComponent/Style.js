@@ -1,15 +1,27 @@
 import styled from 'styled-components';
 
 export const CategoryS = styled.div`  
-  border: 2px solid blue;
-  height: 100vh;
+  /* border: 2px solid blue; */
+  min-height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-top: 80px;
+  /* margin-top: 140px; */
+  #content {
+    border: 2px solid blue;
+    margin-top: 140px;
+    height: calc(100vh - 140px); 
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden; 
+    overflow-y: auto;
+  }
 `;
 
 export const GalleryContainerS = styled.div`
@@ -19,11 +31,12 @@ export const GalleryContainerS = styled.div`
   justify-content: center;
   align-items: center;
   width: 100vw;
-  height: 80vh;
+  height: 76vh;
+  /* margin-top: 60px; */
 `;
 
 export const PaginationContainerS = styled.div`
-  border: 1px solid green;
+  /* border: 1px solid green; */
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -42,7 +55,7 @@ export const PhotosDivS = styled.div`
   align-items: center;
   height: 100%;
   gap: 16px;
-  margin-top: 20px; // You can adjust this value
+  margin-top: 20px;
 `;
 
 export const PhotoCardS = styled.div`
@@ -67,9 +80,12 @@ export const VideosDivS = styled.div`
   /* border: 1px solid blue; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
   gap: 16px;
-  margin-top: 20px; // You can adjust this value
+  margin-top: 20px;
 `;
 
 export const VideoCardS = styled.div`

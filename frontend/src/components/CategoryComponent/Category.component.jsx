@@ -58,19 +58,21 @@ function CategoryComponent() {
   return (
     <CategoryS>
       <CategoryHeaderComponent />
-      <h1>{categoryId}</h1>
-      {(viewMode === null) ? (
-        <div>
-          <button type="button" onClick={() => setViewMode('photos')}>Visualizar fotos</button>
-          <button type="button" onClick={() => setViewMode('videos')}>Visualizar vídeos</button>
-        </div>
-      ) : (
-        <div>
-          {renderContent()}
-          <button type="button" onClick={() => setViewMode(null)}>Voltar</button>
-        </div>
-      )}
-      <button type="button" onClick={() => navigate('/main')}>Voltar</button>
+      <div id="content">
+        <h1>{categoryId}</h1>
+        {(viewMode === null) ? (
+          <div>
+            <button type="button" onClick={() => setViewMode('photos')}>Visualizar fotos</button>
+            <button type="button" onClick={() => setViewMode('videos')}>Visualizar vídeos</button>
+          </div>
+        ) : (
+          <div>
+            {renderContent()}
+            <button type="button" onClick={() => setViewMode(null)}>Voltar</button>
+          </div>
+        )}
+        <button type="button" onClick={() => navigate('/main')}>Home</button>
+      </div>
     </CategoryS>
   );
 }

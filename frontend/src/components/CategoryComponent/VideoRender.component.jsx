@@ -42,7 +42,7 @@ function VideoRenderComponent() {
       {selectedVideo ? (
         <VideoCardS className="selected">
           <video id="selectedVideo" src={selectedVideo.url} controls />
-          <BackButtonS type="button" onClick={handleBackClick}>Voltar</BackButtonS>
+          <BackButtonS type="button" onClick={handleBackClick}>Vídeos</BackButtonS>
         </VideoCardS>
       ) : (
         <GalleryContainerS>
