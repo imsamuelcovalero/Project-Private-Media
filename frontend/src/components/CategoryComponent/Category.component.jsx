@@ -1,5 +1,5 @@
 /* File: src/components/CategoryComponent/Category.component.jsx */
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';
@@ -12,10 +12,14 @@ import {
 } from './Style';
 
 function CategoryComponent() {
-  const { logout, getCategoryData, mediaSelected } = useContext(ReactNodeContext);
+  const {
+    logout, getCategoryData, mediaSelected, viewMode, setViewMode,
+  } = useContext(ReactNodeContext);
+
+  console.log('viewMode', viewMode);
 
   // const [mediaSelected, setMediaSelected] = useState(false);
-  const [viewMode, setViewMode] = useState(null);
+  // const [viewMode, setViewMode] = useState(null);
 
   const navigate = useNavigate();
   const { categoryId } = useParams();
@@ -78,7 +82,16 @@ function CategoryComponent() {
             </div>
           )}
         </div>
-        <BackHomeButtonS type="button" onClick={() => navigate('/main')}>Home</BackHomeButtonS>
+        <BackHomeButtonS
+          type="button"
+          onClick={() => {
+            setViewMode(null);
+            navigate('/main');
+          }}
+        >
+          Main
+
+        </BackHomeButtonS>
       </div>
     </CategoryS>
   );

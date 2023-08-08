@@ -6,9 +6,16 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 
 function CategoryHeaderComponent() {
   const { categoryId } = useParams();
-  const { categoryIds } = useContext(ReactNodeContext);
+  const { categoryIds, setViewMode, setMediaSelected } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
+
+  const handleCategoryChange = (id) => {
+    // Redefinindo o estado ao mudar de categoria
+    setViewMode(null);
+    setMediaSelected(false);
+    navigate(`/main/${id}`);
+  };
 
   return (
     <CategoryHeaderS>
@@ -16,7 +23,7 @@ function CategoryHeaderComponent() {
         <BtnCategory
           key={id}
           disabled={id === categoryId}
-          onClick={() => navigate(`/main/${id}`)}
+          onClick={() => handleCategoryChange(id)}
         >
           {id}
         </BtnCategory>

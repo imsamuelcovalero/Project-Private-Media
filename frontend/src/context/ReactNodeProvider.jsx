@@ -14,6 +14,7 @@ function ReactNodeProvider({ children }) {
   const [categoryVideos, setCategoryVideos] = useState([]);
 
   const [mediaSelected, setMediaSelected] = useState(false);
+  const [viewMode, setViewMode] = useState(null);
 
   const navigate = useNavigate();
 
@@ -43,7 +44,7 @@ function ReactNodeProvider({ children }) {
   const getCategoryData = async (categoryId) => {
     try {
       const data = await firebaseGetCategory(categoryId);
-      console.log('data', data);
+      // console.log('data', data);
       setCategoryPhotos(data.fotos);
       setCategoryVideos(data.videos);
     } catch (error) {
@@ -65,7 +66,9 @@ function ReactNodeProvider({ children }) {
     categoryIds,
     mediaSelected,
     setMediaSelected,
-  }), [theme, user, categoryPhotos, categoryVideos, categoryIds, mediaSelected]);
+    viewMode,
+    setViewMode,
+  }), [theme, user, categoryPhotos, categoryVideos, categoryIds, mediaSelected, viewMode]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,
