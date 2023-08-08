@@ -6,7 +6,7 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 import MainS from './Style';
 
 function MainComponent() {
-  const { logout } = useContext(ReactNodeContext);
+  const { logout, categoryIds } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
 
@@ -29,13 +29,13 @@ function MainComponent() {
     verifyToken();
   }, []);
 
-  const categoryIds = [
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
-  ];
+  // const categoryIds = [
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
+  // ];
 
   return (
     <MainS>

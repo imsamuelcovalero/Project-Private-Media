@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CategoryS = styled.div`  
-  border: 2px solid green;
+  border: 2px solid blue;
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -13,30 +13,34 @@ export const CategoryS = styled.div`
 `;
 
 export const GalleryContainerS = styled.div`
-  /* border: 1px solid red; */
+  border: 1px solid red;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100vw;
   height: 80vh;
 `;
 
 export const PaginationContainerS = styled.div`
-  /* border: 1px solid green; */
+  border: 1px solid green;
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 500px; // or the width you want
-  margin-top: auto; // push pagination to the bottom
-  margin-bottom: 30px; // space from the bottom edge
+  height: 60px;
+  max-width: 500px;
+  margin-top: auto;
+  margin-bottom: 30px;
 `;
 
 export const PhotosDivS = styled.div`
   /* border: 1px solid blue; */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  height: 100%;
   gap: 16px;
   margin-top: 20px; // You can adjust this value
 `;

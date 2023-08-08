@@ -15,6 +15,14 @@ function ReactNodeProvider({ children }) {
 
   const navigate = useNavigate();
 
+  const categoryIds = [
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
+    process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
+  ];
+
   useEffect(() => {
     setUser(getUserInfo()); // Atualiza o estado do usuário sempre que o componente é montado
   }, []);
@@ -33,7 +41,7 @@ function ReactNodeProvider({ children }) {
   const getCategoryData = async (categoryId) => {
     try {
       const data = await firebaseGetCategory(categoryId);
-      // console.log('data', data);
+      console.log('data', data);
       setCategoryPhotos(data.fotos);
       setCategoryVideos(data.videos);
     } catch (error) {
@@ -41,7 +49,7 @@ function ReactNodeProvider({ children }) {
     }
   };
 
-  console.log('categoryPhotos', categoryPhotos, 'categoryVideos', categoryVideos);
+  // console.log('categoryPhotos', categoryPhotos, 'categoryVideos', categoryVideos);
 
   const contextValue = useMemo(() => ({
     theme,
@@ -52,7 +60,8 @@ function ReactNodeProvider({ children }) {
     getCategoryData,
     categoryPhotos,
     categoryVideos,
-  }), [theme, user, categoryPhotos, categoryVideos]);
+    categoryIds,
+  }), [theme, user, categoryPhotos, categoryVideos, categoryIds]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,
