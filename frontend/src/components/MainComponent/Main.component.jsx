@@ -1,4 +1,4 @@
-import React, { useContext, useEffect/* , useState */ } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';

@@ -6,6 +6,7 @@ import Profile from '../pages/Profile/Profile';
 import Visitors from '../pages/Visitors/Visitors';
 import Main from '../pages/Main/Main';
 import Category from '../pages/Category/Category';
+import Subscription from '../pages/Subscription/Subscription';
 
 function Content() {
   return (
@@ -17,6 +18,7 @@ function Content() {
       <Route path="/visitors" element={<Visitors />} />
       <Route path="/main" element={<Main />} />
       <Route path="/main/:categoryId" element={<Category />} />
+      <Route path="/subscription" element={<Subscription />} />
     </Routes>
   );
 }
