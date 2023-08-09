@@ -20,7 +20,7 @@ export const BtnCategory = styled.button`
   margin-right: 10px;
   height: 100%;
   width: 300px;
-  background: var(--buttonBackground);
+  background: var(--buttonPrimary);
   border: 1px solid var(--buttonBorder);
   border-radius: 4px;
   color: var(--buttonText);
