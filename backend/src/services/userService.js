@@ -98,25 +98,6 @@ const createAndUpdateUser = async (userData) => {
   return result;
 };
 
-// função responsável por atualizar um usuário no banco de dados
-// const updateUser = async (userData) => {
-//   const { idToken } = userData;
-//   // console.log('idToken', idToken);
-
-//   const decodedIdToken = await getUserByToken(idToken);
-//   // console.log('decodedIdToken', decodedIdToken.uid);
-
-//   const user = await getUserFromFirestore(decodedIdToken.uid);
-//   // console.log('user', user);
-
-//   const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
-//     status: user.assinaturaAtiva,
-//     message: check,
-//   } };
-//   // console.log('result', result);
-//   return result;
-// };
-
 const verifyUser = async (userId) => {
   const user = await getUserFromFirestore(userId);
   // console.log('user', user);

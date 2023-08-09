@@ -1,6 +1,6 @@
 // File: userController.js em backend/src/controllers
 const boom = require('@hapi/boom');
-const userService = require('../services/userService');
+const { userService } = require('../services');
 
 // const tokenFunctions = require('../middlewares/tokenFunctions');
 

@@ -1,11 +1,7 @@
 const userService = require('./userService');
-const productService = require('./productService');
-const saleService = require('./orderService');
-const withdrawalPointService = require('./withdrawalPointService');
+const paymentService = require('./paymentService');
 
 module.exports = {
   userService,
-  productService,
-  saleService,
-  withdrawalPointService,
+  paymentService,
 };
