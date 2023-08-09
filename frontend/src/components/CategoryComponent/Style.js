@@ -11,7 +11,7 @@ export const CategoryS = styled.div`
   text-align: center;
   /* margin-top: 140px; */
   #content {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
     margin-top: 140px;
     height: calc(100vh - 140px); 
     width: 100vw;

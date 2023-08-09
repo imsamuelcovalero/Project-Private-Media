@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const DivExterna = styled.div`
-  border: 3px solid green;
+  /* border: 3px solid green; */
   height: 100vh;
   width: 100vw;
   display: flex;

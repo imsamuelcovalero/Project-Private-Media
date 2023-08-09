@@ -40,7 +40,7 @@ export const BtnMain = styled.button`
   height: 100%;
   width: 200px;
   background: var(--buttonBackground);
-  border: 1px solid var(--secondary);
+  border: 1px solid var(--buttonBorder);
   border-radius: 4px;
   color: var(--buttonText);
   cursor: pointer;

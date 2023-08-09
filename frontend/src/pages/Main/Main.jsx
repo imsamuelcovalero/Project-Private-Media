@@ -6,9 +6,7 @@ import DivExterna from './Style';
 function Main() {
   return (
     <DivExterna>
-      <div id="header">
-        <Header />
-      </div>
+      <Header />
       <MainComponent />
     </DivExterna>
   );

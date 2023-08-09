@@ -29,24 +29,18 @@ function MainComponent() {
     verifyToken();
   }, []);
 
-  // const categoryIds = [
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
-  // ];
-
   return (
     <MainS>
-      <h1>Página Main</h1>
-      <ul>
-        {categoryIds.map((categoryId) => (
-          <li key={categoryId}>
-            <Link to={`/main/${categoryId}`}>{categoryId}</Link>
-          </li>
-        ))}
-      </ul>
+      <h1>Categorias</h1>
+      <div>
+        <ul>
+          {categoryIds.map((categoryId) => (
+            <li key={categoryId}>
+              <Link to={`/main/${categoryId}`}>{categoryId}</Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </MainS>
   );
 }

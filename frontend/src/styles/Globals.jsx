@@ -56,10 +56,19 @@ export default createGlobalStyle`
     --buttonPrimaryHover: ${({ theme }) => theme.buttonPrimaryHover};
     --buttonSecondary: ${({ theme }) => theme.buttonSecondary};
     --buttonSecondaryHover: ${({ theme }) => theme.buttonSecondaryHover};
-    --secundary: ${({ theme }) => theme.secundary};
-    --secundaryHover: ${({ theme }) => theme.secundaryHover};
+    --secondary: ${({ theme }) => theme.secondary};
+    --secondaryHover: ${({ theme }) => theme.secondaryHover};
     --tertiary: ${({ theme }) => theme.tertiary};
     --extra: ${({ theme }) => theme.extra};
     --extraHover: ${({ theme }) => theme.extraHover};
+    // Additional
+    --transitionSpeed: ${({ theme }) => theme.transitionSpeed};
+    --boxShadow: ${({ theme }) => theme.boxShadow};
+    --borderColor: ${({ theme }) => theme.borderColor};
+    --backgroundAccent: ${({ theme }) => theme.backgroundAccent};
+    --success: ${({ theme }) => theme.success};
+    --error: ${({ theme }) => theme.error};
+    --warning: ${({ theme }) => theme.warning};
+    --info: ${({ theme }) => theme.info};
   }
 `;

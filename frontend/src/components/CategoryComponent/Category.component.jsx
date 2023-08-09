@@ -16,8 +16,6 @@ function CategoryComponent() {
     logout, getCategoryData, mediaSelected, viewMode, setViewMode,
   } = useContext(ReactNodeContext);
 
-  console.log('viewMode', viewMode);
-
   // const [mediaSelected, setMediaSelected] = useState(false);
   // const [viewMode, setViewMode] = useState(null);
 
