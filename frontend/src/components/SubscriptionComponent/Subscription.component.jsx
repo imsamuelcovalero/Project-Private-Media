@@ -1,31 +1,29 @@
-import React, { useContext, useEffect, useState } from 'react';
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import {
+  Formik, Form, Field,
+} from 'formik';
+import * as Yup from 'yup';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import { getCardToken } from '../../services/mecadopago.helper';
-import MainS from './Style';
+import formatCurrency from '../../helpers/formatCurrency.helper';
+import SubscriptionS from './Style';
 
 function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
 
-  console.log('user', user);
-
-  const [cardInfo, setCardInfo] = useState({
-    cardNumber: '',
-    cardholderName: '',
-    cardExpirationDate: '', // formato MMYY
-    cardSecurityCode: '',
-  });
-
   const navigate = useNavigate();
+
+  const subscriptionValue = parseFloat(process.env.REACT_APP_SUBSCRIPTION_VALUE);
 
   /* useEffect que verifica se existe um token válido */
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const data = await api.checkToken();
-        console.log('data', data);
+        await api.checkToken();
       } catch (error) {
         console.error(error);
         logout();
@@ -36,36 +34,33 @@ function SubscriptionComponent() {
     verifyToken();
   }, []);
 
-  const isValidCardInfo = () => {
-    if (cardInfo.cardNumber.length !== 16) {
-      toast.error('O número do cartão deve ter 16 dígitos.');
-      return false;
-    }
+  const validationSchema = Yup.object({
+    cardNumber: Yup.string().required('O número do cartão é obrigatório.').length(16, 'O número do cartão deve ter 16 dígitos.'),
+    cardholderName: Yup.string().required('O nome no cartão é obrigatório.').min(3, 'O nome no cartão deve ter pelo menos 3 caracteres.'),
+    cardExpirationDate: Yup.string().required('A data de validade é obrigatória.').matches(/^\d{2}\/\d{2}$/, 'A data de validade deve estar no formato MM/AA.'),
+    cardSecurityCode: Yup.string().required('O código de segurança é obrigatório.').length(3, 'O código de segurança deve ter 3 dígitos.'),
+  });
 
-    if (!/^\d{2}\/\d{2}$/.test(cardInfo.cardExpirationDate)) {
-      toast.error('A data de validade deve estar no formato MM/AA.');
-      return false;
-    }
-
-    if (cardInfo.cardSecurityCode.length !== 3) {
-      toast.error('O código de segurança deve ter 3 dígitos.');
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!isValidCardInfo()) {
-      return;
-    }
+  const handleSubmit = async (values) => {
+    const confirmation = window.confirm('Tem certeza que deseja efetuar o pagamento?');
+    if (!confirmation) return;
 
     try {
-      const token = await getCardToken(cardInfo);
+      const token = await getCardToken(values);
       console.log(token);
-      toast.success('Token gerado com sucesso!');
+
+      const paymentDetails = {
+        userId: user.id,
+        paymentDetails: {
+          token,
+          amount: subscriptionValue,
+          currency: 'BRL',
+          description: 'Pagamento da assinatura mensal',
+        },
+      };
+
+      await api.processPayment(paymentDetails);
+      toast.success('Pagamento processado com sucesso!');
     } catch (error) {
       console.error('Erro ao obter o token:', error);
       toast.error('Erro ao processar o pagamento. Por favor, tente novamente.');
@@ -73,63 +68,62 @@ function SubscriptionComponent() {
   };
 
   return (
-    <MainS>
+    <SubscriptionS>
       <h1>Subscription</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="cardNumber">
-            Número do Cartão:
-            <input
-              id="cardNumber"
-              type="text"
-              maxLength="16"
-              value={cardInfo.cardNumber}
-              onChange={(e) => setCardInfo({ ...cardInfo, cardNumber: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="cardholderName">
-            Nome no Cartão:
-            <input
-              id="cardholderName"
-              type="text"
-              value={cardInfo.cardholderName}
-              onChange={(e) => setCardInfo({ ...cardInfo, cardholderName: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="cardExpirationDate">
-            Validade (MM/AA):
-            <input
-              id="cardExpirationDate"
-              type="text"
-              maxLength="5"
-              value={cardInfo.cardExpirationDate}
-              onChange={(e) => setCardInfo({ ...cardInfo, cardExpirationDate: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label htmlFor="cardSecurityCode">
-            Código de Segurança:
-            <input
-              id="cardSecurityCode"
-              type="text"
-              maxLength="3"
-              value={cardInfo.cardSecurityCode}
-              onChange={(e) => setCardInfo({ ...cardInfo, cardSecurityCode: e.target.value })}
-              required
-            />
-          </label>
-        </div>
-        <button type="submit">Pagar</button>
-      </form>
-    </MainS>
+      <p>
+        Valor da Mensalidade:
+        {' '}
+        {formatCurrency(subscriptionValue)}
+      </p>
+      <Formik
+        initialValues={{
+          cardNumber: '',
+          cardholderName: '',
+          cardExpirationDate: '',
+          cardSecurityCode: '',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+        // validateOnMount
+        // validateOnBlur
+      >
+        {({
+          isSubmitting, isValid, errors, touched, values,
+        }) => (
+          <Form>
+            <div className="field">
+              <label htmlFor="cardNumber">
+                Número do Cartão:
+                <Field id="cardNumber" type="text" name="cardNumber" maxLength="16" />
+              </label>
+              {(touched.cardNumber || values.cardNumber) && errors.cardNumber && <span className="errorMessage">{errors.cardNumber}</span>}
+            </div>
+            <div className="field">
+              <label htmlFor="cardholderName">
+                Nome no Cartão:
+                <Field id="cardholderName" type="text" name="cardholderName" />
+              </label>
+              {(touched.cardholderName || values.cardholderName) && errors.cardholderName && <span className="errorMessage">{errors.cardholderName}</span>}
+            </div>
+            <div className="field">
+              <label htmlFor="cardExpirationDate">
+                Validade (MM/AA):
+                <Field id="cardExpirationDate" type="text" name="cardExpirationDate" maxLength="5" />
+              </label>
+              {(touched.cardExpirationDate || values.cardExpirationDate) && errors.cardExpirationDate && <span className="errorMessage">{errors.cardExpirationDate}</span>}
+            </div>
+            <div className="field">
+              <label htmlFor="cardSecurityCode">
+                Código de Segurança:
+                <Field id="cardSecurityCode" type="text" name="cardSecurityCode" maxLength="3" />
+              </label>
+              {(touched.cardSecurityCode || values.cardSecurityCode) && errors.cardSecurityCode && <span className="errorMessage">{errors.cardSecurityCode}</span>}
+            </div>
+            <button type="submit" disabled={isSubmitting || !isValid}>Pagar</button>
+          </Form>
+        )}
+      </Formik>
+    </SubscriptionS>
   );
 }
 

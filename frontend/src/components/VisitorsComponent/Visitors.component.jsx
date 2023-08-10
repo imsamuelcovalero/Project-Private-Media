@@ -93,7 +93,7 @@ function VisitorsComponent() {
         </div>
       )}
       {isUserLogged && !isSignatureActive && (
-        <button type="button" onClick={() => navigate('/profile/subscription')}>
+        <button type="button" onClick={() => navigate('/subscription')}>
           Assine para ser membro
         </button>
       )}

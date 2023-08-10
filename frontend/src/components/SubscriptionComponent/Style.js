@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const MainS = styled.div`  
-  /* border: 2px solid blue; */
+const SubscriptionS = styled.div`
+  border: 2px solid blue;
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -25,44 +25,57 @@ const MainS = styled.div`
     border-radius: 5px;
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
+  .field {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
+    margin-bottom: 1rem;
   }
 
-  li {
-    background-color: var(--buttonPrimary);
-    padding: 15px; // Manter o padding vertical.
-    width: 200px;  // Definindo um width para os botões.
-    border-radius: 5px;
-    box-shadow: var(--boxShadow);
-    transition: transform var(--transitionSpeed), box-shadow var(--transitionSpeed);
-    display: flex;
-    justify-content: center; // Centralizar o conteúdo horizontalmente dentro do botão.
+  label {
+    position: relative;
+  }
 
-    a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      width: 100%;  // Garantindo que o link ocupe todo o espaço do botão.
-      text-align: center; // Centralizando o texto do link.
+  input {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+    padding: 5px 5px 5px 0;
+    margin-left: 8px; /* Adicione esta linha */
+  }
+
+  input:focus + span, input:not(:placeholder-shown) + span {
+    top: -20px;
+    font-size: 12px;
+    color: #666;
+  }
+
+  span.errorMessage {
+    color: var(--error);
+    font-size: 12px;
+  }
+
+  button {
+    margin-top: 1rem;
+    background: var(--buttonPrimary);
+    border: 1px solid var(--buttonBorder);
+    border-radius: 4px;
+    color: var(--buttonText);
+    cursor: pointer;
+    padding: 0.7rem 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: background-color var(--transitionSpeed);
+
+    &:hover, &:focus {
+      background-color: var(--extraHover);
     }
 
-    a:hover, a:focus {
-      color: var(--backgroundAccent);
-    }
-
-    &:hover, &:focus-within {
-      transform: translateY(-3px);
-      box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+    &:disabled {
+      cursor: not-allowed;
+      filter: saturate(0);
+      background: var(--buttonBackgroundDisabled);
     }
   }
 `;
 
-export default MainS;
+export default SubscriptionS;

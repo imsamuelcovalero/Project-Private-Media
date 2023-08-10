@@ -313,7 +313,7 @@ function ProfileComponent() {
         {' '}
         {user?.assinaturaAtiva.status ? 'Ativa' : 'Inativa'}
       </p>
-      {!user?.assinaturaAtiva.status && <button type="button" id="paymentButton" onClick={() => console.log('Implementar assinatura')}>Assinar agora!</button>}
+      {!user?.assinaturaAtiva.status && <button type="button" id="paymentButton" onClick={() => navigate('/subscription')}>Assinar agora!</button>}
       {!isEditFormActivated ? (
         <div id="itensPerfil">
           <button
