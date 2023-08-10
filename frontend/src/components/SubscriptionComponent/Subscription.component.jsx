@@ -69,7 +69,7 @@ function SubscriptionComponent() {
 
   return (
     <SubscriptionS>
-      <h1>Subscription</h1>
+      <h1>Assinatura</h1>
       <p>
         Valor da Mensalidade:
         {' '}
@@ -84,8 +84,6 @@ function SubscriptionComponent() {
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
-        // validateOnMount
-        // validateOnBlur
       >
         {({
           isSubmitting, isValid, errors, touched, values,
@@ -93,33 +91,39 @@ function SubscriptionComponent() {
           <Form>
             <div className="field">
               <label htmlFor="cardNumber">
-                Número do Cartão:
                 <Field id="cardNumber" type="text" name="cardNumber" maxLength="16" />
+                <span>Número do Cartão*</span>
               </label>
               {(touched.cardNumber || values.cardNumber) && errors.cardNumber && <span className="errorMessage">{errors.cardNumber}</span>}
             </div>
+
             <div className="field">
               <label htmlFor="cardholderName">
-                Nome no Cartão:
                 <Field id="cardholderName" type="text" name="cardholderName" />
+                <span>Nome no Cartão*</span>
               </label>
               {(touched.cardholderName || values.cardholderName) && errors.cardholderName && <span className="errorMessage">{errors.cardholderName}</span>}
             </div>
-            <div className="field">
+
+            <div className="field short-field">
               <label htmlFor="cardExpirationDate">
-                Validade (MM/AA):
                 <Field id="cardExpirationDate" type="text" name="cardExpirationDate" maxLength="5" />
+                <span>Validade (MM/AA)*</span>
               </label>
               {(touched.cardExpirationDate || values.cardExpirationDate) && errors.cardExpirationDate && <span className="errorMessage">{errors.cardExpirationDate}</span>}
             </div>
-            <div className="field">
+
+            <div className="field short-field">
               <label htmlFor="cardSecurityCode">
-                Código de Segurança:
                 <Field id="cardSecurityCode" type="text" name="cardSecurityCode" maxLength="3" />
+                <span>Código de Segurança*</span>
               </label>
               {(touched.cardSecurityCode || values.cardSecurityCode) && errors.cardSecurityCode && <span className="errorMessage">{errors.cardSecurityCode}</span>}
             </div>
-            <button type="submit" disabled={isSubmitting || !isValid}>Pagar</button>
+
+            <br />
+
+            <button type="submit" disabled={isSubmitting || !isValid || !Object.values(touched).some(Boolean)}>Pagar</button>
           </Form>
         )}
       </Formik>
