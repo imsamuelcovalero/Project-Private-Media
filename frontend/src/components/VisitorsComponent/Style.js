@@ -9,9 +9,19 @@ export const VisitorsS = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
+  
   img {
     height: 300px;
     width: 450px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    color: var(--buttonPrimary);
+    margin-bottom: 1rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center; // forçando centralização
   }
 `;
 
@@ -24,10 +34,7 @@ export const StyledButton = styled.button`
   padding: 10px 20px;
   margin: 10px;
   font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  text-align: center;  // Manter o alinhamento centralizado do texto
   box-shadow: var(--boxShadow);
   transition: var(--transitionSpeed);
 
@@ -37,8 +44,15 @@ export const StyledButton = styled.button`
   }
 
   svg {
-    margin-right: 5px;
+    margin: 0 5px; // Espaçamento uniforme para ícones
   }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 `;
 
 export const StyledImage = styled.img`

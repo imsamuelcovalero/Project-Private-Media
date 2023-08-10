@@ -8,7 +8,7 @@ import { firebaseGetCategory } from '../../services/firebase.helper';
 import { getMediaTime, addMediaTimeToLocalStorage } from '../../helpers/localStorage.helper';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import {
-  VisitorsS, StyledButton, StyledImage, StyledVideo,
+  VisitorsS, StyledButton, StyledImage, StyledVideo, ButtonContainer,
 } from './Style';
 
 function VisitorsComponent() {
@@ -90,21 +90,25 @@ function VisitorsComponent() {
       {!isUserLogged && (
         <div>
           <h1>Página de Visitantes</h1>
-          <StyledButton type="button" onClick={() => navigate('/login')}>
-            <FaSignInAlt />
-            {' '}
-            Faça login ou
-            {' '}
-            <FaUserPlus />
-            {' '}
-            cadastre-se
-          </StyledButton>
+          <ButtonContainer>
+            <StyledButton type="button" onClick={() => navigate('/login')}>
+              <FaSignInAlt />
+              {' '}
+              Faça login ou
+              {' '}
+              <FaUserPlus />
+              {' '}
+              cadastre-se
+            </StyledButton>
+          </ButtonContainer>
         </div>
       )}
       {isUserLogged && !isSignatureActive && (
-        <StyledButton type="button" onClick={() => navigate('/subscription')}>
-          Assine para ser membro
-        </StyledButton>
+        <ButtonContainer>
+          <StyledButton type="button" onClick={() => navigate('/subscription')}>
+            Assine para ser membro
+          </StyledButton>
+        </ButtonContainer>
       )}
       {mediaToRender && (
         isPhotoUrl(mediaToRender.url) ? (
