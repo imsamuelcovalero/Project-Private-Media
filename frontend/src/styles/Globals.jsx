@@ -61,6 +61,8 @@ export default createGlobalStyle`
     --tertiary: ${({ theme }) => theme.tertiary};
     --extra: ${({ theme }) => theme.extra};
     --extraHover: ${({ theme }) => theme.extraHover};
+    --extraSecondary: ${({ theme }) => theme.extraSecondary};
+    --extraHoverSecondary: ${({ theme }) => theme.extraHoverSecondary};
     // Additional
     --transitionSpeed: ${({ theme }) => theme.transitionSpeed};
     --boxShadow: ${({ theme }) => theme.boxShadow};

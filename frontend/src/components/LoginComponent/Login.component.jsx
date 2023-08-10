@@ -184,7 +184,7 @@ function LoginComponent() {
         </div>
         <div>
           <button
-            id="loginButton"
+            className="primary"
             type="submit"
             disabled={isDisabled}
             onClick={(e) => signIn(e, formLogin.email, formLogin.password)}
@@ -194,7 +194,7 @@ function LoginComponent() {
         </div>
         <div>
           <button
-            id="registerButton"
+            className="secondary"
             type="button"
             onClick={() => navigate('/register')}
           >
@@ -203,7 +203,7 @@ function LoginComponent() {
         </div>
         <div>
           <button
-            id="visitorsButton"
+            className="secondary"
             type="button"
             onClick={() => navigate('/visitors')}
           >

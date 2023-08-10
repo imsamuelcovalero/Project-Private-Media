@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import ThemeComponent from './ThemeComponent';
-import { HeaderS, BtnMain } from './Style';
-// import api from '../../services';
+import { HeaderS, BtnMain, StyledButton } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 // import { removeUserInfo } from '../../helpers/localStorage.helper';
 
@@ -26,7 +26,6 @@ function Header() {
         id="mainBtn"
         onClick={() => (isSignatureActive ? navigate('/main') : navigate('/visitors'))}
       >
-        {' '}
         Main
       </BtnMain>
       <div id="centerHeaderSpace">
@@ -42,12 +41,20 @@ function Header() {
       {user ? (
         <>
           {location.pathname !== '/profile' && (
-            <button type="button" onClick={() => navigate('/profile')}>Perfil</button>
+            <StyledButton type="button" onClick={() => navigate('/profile')}>
+              <FaUserCircle />
+              {' '}
+              Perfil
+            </StyledButton>
           )}
-          <button type="button" onClick={handleLogout}>Sair</button>
+          <StyledButton type="button" onClick={handleLogout}>
+            <FaSignOutAlt />
+            {' '}
+            Sair
+          </StyledButton>
         </>
       ) : (
-        <button type="button" onClick={() => navigate('/login')}>Entrar</button>
+        <StyledButton type="button" onClick={() => navigate('/login')}>Entrar</StyledButton>
       )}
       <div id="themeDiv">
         <ThemeComponent />

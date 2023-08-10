@@ -92,4 +92,34 @@ export const ThemeS = styled.button`
     }
 `;
 
-export default HeaderS;
+export const StyledButton = styled.button`
+  background: var(--buttonBackground);
+  border: 1px solid var(--buttonBorder);
+  border-radius: 4px;
+  color: var(--buttonText);
+  cursor: pointer;
+  padding: 8px 16px; // Adicionado padding para um melhor espaçamento
+  margin: 0 8px; // Espaçamento entre botões
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
+  &.active {
+    background-color: var(--extraHover);
+    border: 1px solid var(--extraHover);
+  }
+  &:hover:not(:disabled) {
+    background-color: var(--extraHover);
+    filter: brightness(0.9);
+  }
+  &:disabled {
+    cursor: not-allowed;
+    filter: saturate(0);
+  }
+  svg { // Estilização para os ícones
+    margin-right: 8px;
+  }
+`;

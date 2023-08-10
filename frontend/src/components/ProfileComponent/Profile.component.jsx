@@ -48,8 +48,8 @@ function ProfileComponent() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const data = await api.checkToken();
-        console.log('data', data);
+        await api.checkToken();
+        // console.log('data', data);
       } catch (error) {
         console.error(error);
         logout();
@@ -469,6 +469,7 @@ function ProfileComponent() {
           </button>
         </form>
       )}
+      <button type="button" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
     </ProfileS>
   );
 }

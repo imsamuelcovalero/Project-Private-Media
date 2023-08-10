@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-const LoginS = styled.div`  
-  /* border: 1px solid red; */
+const LoginS = styled.div`
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -9,76 +8,91 @@ const LoginS = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  #logo {
-    height: 300px;
-  }
+  background-color: var(--background);
+  
   #loginForm {
     border: 1px solid var(--buttonBorder);
-    height: 300px;
-    width: 250px;
+    padding: 2rem;
+    width: 300px;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    border-radius: 4px;
-    box-shadow: 0 5px 3px rgb(145 103 172 / 12%), 0 3px 2px rgb(145 103 172 / 24%);
+    gap: 1rem;
+    border-radius: 5px;
+    box-shadow: var(--boxShadow);
+    transition: 0.3s;
+    
     #inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+
       label {
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
-        align-items: flex-start;
-        gap: 5px; 
+        gap: 0.5rem;
+        
         #inputTitle {
-          font-size: 18px;
-          margin-left: 10px;
-        }   
+          font-size: 16px;
+          color: var(--textPrimary);
+        }
+
         input {
-          border: 1px solid var(--headline);
-          height: 40px;
-          width: 200px;
-          padding: 5px;
+          width: 100%;
+          padding: 0.5rem;
+          border: none;
           border-radius: 4px;
-          box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
+          border-bottom: 2px solid var(--borderColor);
+          transition: border-bottom-color 0.3s;
+          font-size: 14px;
+          color: var(--textSecondary);
+          background-color: rgba(0, 0, 0, 0.02);
+          
+          &:focus {
+            border-bottom-color: var(--buttonPrimary);
+            outline: none;
+          }
         }
       }
     }
-
+    
     #ErrorMsg {
-      color: red;
+      color: var(--error);
+      font-size: 12px;
+      align-self: flex-start;
+      margin-left: 0.5rem;
     }
 
-    #loginButton {
-      background-color: var(--buttonBackground);
-      :disabled { background-color: var(--buttonBackgroundDisabled); }
-      color: var(--buttonText);
-      border: 1px solid var(--buttonBorder);
-      width: 200px;
-      height: 30px;
-      line-height: 2.5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
+    button {
+      width: 100%;
+      padding: 0.7rem 0;
+      border: none;
       border-radius: 4px;
+      color: white;
+      font-weight: 500;
       cursor: pointer;
-    }
+      transition: 0.3s;
+      
+      &.primary {
+        background-color: var(--buttonPrimary);
+        
+        &:hover, &:focus {
+          background-color: var(--extraHover);
+        }
 
-    #registerButton {
-      background-color: var(--buttonBackground);
-      color: var(--buttonText);
-      border: 1px solid var(--buttonBorder);
-      width: 200px;
-      height: 30px;
-      line-height: 2.5em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
-      border-radius: 4px;
-      cursor: pointer;
+        &:disabled {
+          cursor: not-allowed;
+          filter: saturate(0);
+          background-color: var(--buttonBackgroundDisabled);
+        }
+      }
+
+      &.secondary {
+        background-color: var(--buttonSecondary);
+        
+        &:hover, &:focus {
+          background-color: var(--extraHoverSecondary);
+        }
+      }
     }
   }
 `;

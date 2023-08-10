@@ -18,6 +18,8 @@ export const lightTheme = {
   tertiary: '#689F38',
   extra: '#3949AB',
   extraHover: '#1A237E',
+  extraSecondary: '#F44336',
+  extraHoverSecondary: '#B71C1C',
   // Additional
   transitionSpeed: '0.3s',
   boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
@@ -49,6 +51,8 @@ export const darkTheme = {
   tertiary: '#689F38',
   extra: '#3949AB',
   extraHover: '#1A237E',
+  extraSecondary: '#EF5350',
+  extraHoverSecondary: '#B71C1C',
   // Additional
   transitionSpeed: '0.3s',
   boxShadow: '0px 4px 6px rgba(255, 255, 255, 0.1)',
