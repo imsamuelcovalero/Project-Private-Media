@@ -2,11 +2,14 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import api from '../../services';
 import { firebaseGetCategory } from '../../services/firebase.helper';
 import { getMediaTime, addMediaTimeToLocalStorage } from '../../helpers/localStorage.helper';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import { VisitorsS } from './Style';
+import {
+  VisitorsS, StyledButton, StyledImage, StyledVideo,
+} from './Style';
 
 function VisitorsComponent() {
   const { logout } = useContext(ReactNodeContext);
@@ -87,25 +90,30 @@ function VisitorsComponent() {
       {!isUserLogged && (
         <div>
           <h1>Página de Visitantes</h1>
-          <button type="button" onClick={() => navigate('/login')}>
-            Faça login ou cadastre-se
-          </button>
+          <StyledButton type="button" onClick={() => navigate('/login')}>
+            <FaSignInAlt />
+            {' '}
+            Faça login ou
+            {' '}
+            <FaUserPlus />
+            {' '}
+            cadastre-se
+          </StyledButton>
         </div>
       )}
       {isUserLogged && !isSignatureActive && (
-        <button type="button" onClick={() => navigate('/subscription')}>
+        <StyledButton type="button" onClick={() => navigate('/subscription')}>
           Assine para ser membro
-        </button>
+        </StyledButton>
       )}
       {mediaToRender && (
         isPhotoUrl(mediaToRender.url) ? (
-          <img src={mediaToRender.url} alt={mediaToRender.descricao || 'Foto'} />
+          <StyledImage src={mediaToRender.url} alt={mediaToRender.descricao || 'Foto'} />
         ) : (
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video style={{ width: '560px', height: '315px' }} controls>
+          <StyledVideo controls>
             <source src={mediaToRender.url} type="video/mp4" />
             Desculpe, mas não foi possível carregar o vídeo.
-          </video>
+          </StyledVideo>
         )
       )}
     </VisitorsS>

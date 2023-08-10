@@ -154,6 +154,7 @@ function SubscriptionComponent() {
           </Form>
         )}
       </Formik>
+      <button type="button" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
     </SubscriptionS>
   );
 }
