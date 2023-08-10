@@ -87,10 +87,28 @@ async function updateProfile(idToken) {
   }
 }
 
+/* função axios que processa o pagamento */
+async function processPayment(paymentDetails) {
+  try {
+    const result = await api.post('/payment', paymentDetails);
+
+    if (result.status !== 200) {
+      console.log('result.status', result.status);
+      throw new Error(`HTTP error! Status: ${result.status}`);
+    }
+
+    return result.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error('Error processing payment');
+  }
+}
+
 export {
   checkToken,
   signIn,
   logout,
   signUp,
   updateProfile,
+  processPayment,
 };

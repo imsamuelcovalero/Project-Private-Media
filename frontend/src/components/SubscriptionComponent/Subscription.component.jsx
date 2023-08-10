@@ -15,6 +15,8 @@ import SubscriptionS from './Style';
 function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
 
+  console.log('key', process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY);
+
   const navigate = useNavigate();
 
   const subscriptionValue = parseFloat(process.env.REACT_APP_SUBSCRIPTION_VALUE);
@@ -46,8 +48,24 @@ function SubscriptionComponent() {
     if (!confirmation) return;
 
     try {
-      const token = await getCardToken(values);
+      const [cardExpirationMonth, cardExpirationYear] = values.cardExpirationDate.split('/');
+      const formattedExpirationYear = `20${cardExpirationYear}`; // formatando o ano corretamente
+
+      const modifiedValues = {
+        ...values,
+        docNumber: values.cardNumber,
+        securityCode: values.cardSecurityCode,
+        cardExpirationMonth,
+        cardExpirationYear: formattedExpirationYear,
+      };
+      console.log('modifiedValues:', modifiedValues);
+
+      const token = await getCardToken(modifiedValues);
       console.log(token);
+
+      if (!token || token === 'undefined') {
+        throw new Error('Token inválido.');
+      }
 
       const paymentDetails = {
         userId: user.id,
@@ -58,12 +76,21 @@ function SubscriptionComponent() {
           description: 'Pagamento da assinatura mensal',
         },
       };
+      console.log('paymentDetails:', paymentDetails);
 
-      await api.processPayment(paymentDetails);
-      toast.success('Pagamento processado com sucesso!');
+      const response = await api.processPayment(paymentDetails);
+      if (response && response.success) {
+        toast.success('Pagamento processado com sucesso!');
+      } else {
+        throw new Error(response.message || 'Erro desconhecido ao processar o pagamento.');
+      }
     } catch (error) {
-      console.error('Erro ao obter o token:', error);
-      toast.error('Erro ao processar o pagamento. Por favor, tente novamente.');
+      console.error('Error:', error);
+      if (error && error.response && error.response.data && error.response.data.message) {
+        toast.error(`Erro ao processar o pagamento: ${error.response.data.message}`);
+      } else {
+        toast.error('Erro ao processar o pagamento. Por favor, tente novamente.');
+      }
     }
   };
 

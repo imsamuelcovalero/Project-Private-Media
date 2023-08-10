@@ -4,7 +4,6 @@ import Header from '../../components/Header/Header';
 import DivExterna from './Style';
 
 function Subscription() {
-  console.log('Subscription');
   return (
     <DivExterna>
       <Header />
