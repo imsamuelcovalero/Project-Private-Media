@@ -1,4 +1,4 @@
-/* File: src/components/ProfileComponent/Profile.component.jsx */
+/* File: src/components/ProfileComponent/ProfileEdit.component.jsx */
 import React, {
   useState, useEffect, useContext, useRef,
 } from 'react';
@@ -10,8 +10,10 @@ import api from '../../services';
 import { ProfileS, InputS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
-function ProfileComponent() {
-  const { user, logout, setUser } = useContext(ReactNodeContext);
+function ProfileEditComponent() {
+  const {
+    user, logout, setUser, isEditFormActivated, setIsEditFormActivated,
+  } = useContext(ReactNodeContext);
   const [formProfile, setFormProfile] = useState({
     name: user?.nome,
     email: user?.email,
@@ -29,7 +31,6 @@ function ProfileComponent() {
   const [isPasswordBtnDisabled, setIsPasswordBtnDisabled] = useState(true);
 
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-  const [isEditFormActivated, setIsEditFormActivated] = useState(false);
   const [canChangePassword, setCanChangePassword] = useState(false);
   const [hasEditFieldTouched, setHasEditFieldTouched] = useState(false);
 
@@ -94,7 +95,9 @@ function ProfileComponent() {
 
   /* função responsável por cancelar a edição do formulário */
   const cancelEdit = (isFromApi) => {
+    console.log('cancelEdit');
     if (!hasEditFieldTouched) {
+      console.log('aqui1');
       toggleEditForm();
       return;
     }
@@ -109,6 +112,7 @@ function ProfileComponent() {
     setTouchedPassword(false);
 
     if (canChangePassword) {
+      console.log('aqui2');
       setCanChangePassword(false);
     }
 
@@ -303,61 +307,32 @@ function ProfileComponent() {
     }
   };
 
-  /* aqui vai ficar o campo estendido da senha */
-
   return (
     <ProfileS>
-      <h1>Perfil</h1>
-      <p>
-        Status da assinatura:
-        {' '}
-        {user?.assinaturaAtiva.status ? 'Ativa' : 'Inativa'}
-      </p>
-      {!user?.assinaturaAtiva.status && <button type="button" id="paymentButton" onClick={() => navigate('/subscription')}>Assinar agora!</button>}
-      {!isEditFormActivated ? (
-        <div id="itensPerfil">
-          <button
-            id="editProfileButton"
-            type="button"
-            onClick={() => setIsEditFormActivated(!isEditFormActivated)}
-          >
-            Editar perfil
-          </button>
-          <div>
-            <div>
-              <span id="title">Nome</span>
-              <p>{formProfile.name}</p>
-            </div>
-            <div>
-              <span id="title">Email</span>
-              <p>{formProfile.email}</p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <form id="profileForm" ref={formRef}>
-          {!touchedPassword && (
-            <label htmlFor="name">
-              <p id="inputTitle">Nome</p>
-              <InputS
-                id="name"
-                type="text"
-                name="name"
-                placeholder="Seu nome"
-                value={formProfile.name}
-                onChange={handleChange}
-                onClick={() => {
-                  setTouchedName(true);
-                  setHasEditFieldTouched(true);
-                }}
-                required
-              />
-              {touchedName && formProfile.name && nameErrorMessage && (
-              <p id="ErrorMsg">{nameErrorMessage}</p>
-              )}
-            </label>
+      <h1>Edição do Perfil</h1>
+      <form id="profileForm" ref={formRef}>
+        {!touchedPassword && (
+        <label htmlFor="name">
+          <p id="inputTitle">Nome</p>
+          <InputS
+            id="name"
+            type="text"
+            name="name"
+            placeholder="Seu nome"
+            value={formProfile.name}
+            onChange={handleChange}
+            onClick={() => {
+              setTouchedName(true);
+              setHasEditFieldTouched(true);
+            }}
+            required
+          />
+          {touchedName && formProfile.name && nameErrorMessage && (
+          <p id="ErrorMsg">{nameErrorMessage}</p>
           )}
-          {!touchedName && (
+        </label>
+        )}
+        {!touchedName && (
           <div>
             {!canChangePassword ? (
               <div id="oldPasswordDiv">
@@ -437,41 +412,51 @@ function ProfileComponent() {
               </>
             )}
           </div>
-          )}
-          <button
-            id="updateButton"
-            type="submit"
-            disabled={touchedName ? isNameBtnDisabled : isPasswordBtnDisabled}
-            onClick={(event) => {
-              if (touchedName) {
-                updateProfile(
-                  event,
-                  formProfile.name,
-                  'name',
-                );
-              } else {
-                updateProfile(
-                  event,
-                  formProfile.password,
-                  'password',
-                );
-              }
-            }}
-          >
-            Atualizar perfil
-          </button>
+        )}
+        <button
+          id="updateButton"
+          type="submit"
+          disabled={touchedName ? isNameBtnDisabled : isPasswordBtnDisabled}
+          onClick={(event) => {
+            if (touchedName) {
+              updateProfile(
+                event,
+                formProfile.name,
+                'name',
+              );
+            } else {
+              updateProfile(
+                event,
+                formProfile.password,
+                'password',
+              );
+            }
+          }}
+        >
+          Atualizar perfil
+        </button>
+        {/* caso touchedName ou touchedPassword seja true, mostra o botão de cancelar edição.
+        Caso contrário, renderiza o botão de voltar */}
+        {touchedName || touchedPassword ? (
           <button
             id="editProfileButton"
             type="button"
-            onClick={() => cancelEdit(false)}
+            onClick={() => cancelEdit()}
           >
             Cancelar edição
           </button>
-        </form>
-      )}
-      <button type="button" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
+        ) : (
+          <button
+            id="editProfileButton"
+            type="button"
+            onClick={() => navigate('/profile')}
+          >
+            Voltar
+          </button>
+        )}
+      </form>
     </ProfileS>
   );
 }
 
-export default ProfileComponent;
+export default ProfileEditComponent;

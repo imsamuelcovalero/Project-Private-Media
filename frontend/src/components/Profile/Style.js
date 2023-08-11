@@ -123,7 +123,7 @@ export const ProfileS = styled.div`
       color: red;
     }
 
-    #updateButton, #editProfileButton {
+    #updateButton, #editProfileButton, #backButton {
       background-color: var(--buttonBackground);
       :disabled { background-color: var(--buttonBackgroundDisabled); }
       color: var(--buttonText);

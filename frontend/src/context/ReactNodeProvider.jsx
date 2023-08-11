@@ -16,6 +16,8 @@ function ReactNodeProvider({ children }) {
   const [mediaSelected, setMediaSelected] = useState(false);
   const [viewMode, setViewMode] = useState(null);
 
+  const [isEditFormActivated, setIsEditFormActivated] = useState(false);
+
   const navigate = useNavigate();
 
   const categoryIds = [
@@ -68,7 +70,10 @@ function ReactNodeProvider({ children }) {
     setMediaSelected,
     viewMode,
     setViewMode,
-  }), [theme, user, categoryPhotos, categoryVideos, categoryIds, mediaSelected, viewMode]);
+    isEditFormActivated,
+    setIsEditFormActivated,
+  }), [theme, user, categoryPhotos, categoryVideos, categoryIds,
+    mediaSelected, viewMode, isEditFormActivated]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,
