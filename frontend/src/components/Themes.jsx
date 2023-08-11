@@ -6,12 +6,12 @@ export const lightTheme = {
   // Buttons
   buttonBorder: '#2C2C2C',
   buttonText: '#FFFFFF',
-  buttonBackground: '#4D4D4D',
-  buttonBackgroundDisabled: '#B1B1B1',
   buttonPrimary: '#3949AB',
   buttonPrimaryHover: '#1A237E',
   buttonSecondary: '#E53935',
   buttonSecondaryHover: '#C62828',
+  buttonBackground: '#4D4D4D',
+  buttonBackgroundDisabled: '#B1B1B1',
   // Others
   secondary: '#E53935',
   secondaryHover: '#C62828',
@@ -39,12 +39,12 @@ export const darkTheme = {
   // Buttons
   buttonBorder: '#FFFFFF',
   buttonText: '#FFFFFF',
-  buttonBackground: '#4D4D4D',
-  buttonBackgroundDisabled: '#424242',
   buttonPrimary: '#3949AB',
   buttonPrimaryHover: '#1A237E',
   buttonSecondary: '#E53935',
   buttonSecondaryHover: '#C62828',
+  buttonBackground: '#4D4D4D',
+  buttonBackgroundDisabled: '#424242',
   // Others
   secondary: '#E53935',
   secondaryHover: '#C62828',

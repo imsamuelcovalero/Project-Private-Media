@@ -75,13 +75,14 @@ function CategoryComponent() {
             <div>
               {renderContent()}
               {(!mediaSelected && viewMode !== null) && (
-              <BackHomeButtonS type="button" onClick={() => setViewMode(null)}>Voltar</BackHomeButtonS>
+              <BackHomeButtonS type="button" variant="back" onClick={() => setViewMode(null)}>Voltar</BackHomeButtonS>
               )}
             </div>
           )}
         </div>
         <BackHomeButtonS
           type="button"
+          variant="home"
           onClick={() => {
             setViewMode(null);
             navigate('/main');

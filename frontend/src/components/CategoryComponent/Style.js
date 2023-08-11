@@ -152,9 +152,9 @@ export const ViewModeButtonS = styled(BaseButtonS)`
 
 // BackHomeButtonS - Estilo para botão "Voltar" e "Home"
 export const BackHomeButtonS = styled(BaseButtonS)`
-  background-color: var(--buttonSecondary);
+  background-color: ${(props) => (props.variant === 'home' ? 'var(--buttonBackground)' : 'var(--buttonSecondary)')};
   &:hover {
-    background-color: var(--buttonSecondaryHover);
+    background-color: ${(props) => (props.variant === 'home' ? 'var(--extraHover)' : 'var(--buttonSecondaryHover)')};
   }
 `;
 

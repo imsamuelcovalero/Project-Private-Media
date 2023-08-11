@@ -29,9 +29,13 @@ function ReactNodeProvider({ children }) {
   ];
 
   useEffect(() => {
-    setUser(getUserInfo()); // Atualiza o estado do usuário sempre que o componente é montado
+    const userInfo = getUserInfo();
+    if (userInfo !== user) {
+      setUser(userInfo);
+    }
   }, []);
 
+  /* função que faz logout */
   const handleLogout = async () => {
     try {
       await api.logout();

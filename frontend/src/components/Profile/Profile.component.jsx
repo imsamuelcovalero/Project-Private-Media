@@ -2,7 +2,7 @@
 import React, { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../services';
-import { ProfileS } from './Style';
+import { ProfileS, ButtonS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileComponent() {
@@ -29,35 +29,36 @@ function ProfileComponent() {
   return (
     <ProfileS>
       <h1>Perfil</h1>
-      <p>
+      <p className="subscription-status">
         Status da assinatura:
         {' '}
         {user?.assinaturaAtiva.status ? 'Ativa' : 'Inativa'}
       </p>
-      {!user?.assinaturaAtiva.status && <button type="button" id="paymentButton" onClick={() => navigate('/subscription')}>Assinar agora!</button>}
-      <div id="itensPerfil">
-        <button
-          id="editProfileButton"
+      {!user?.assinaturaAtiva.status && <ButtonS className="primary" type="button" id="paymentButton" onClick={() => navigate('/subscription')}>Assinar agora!</ButtonS>}
+      <div className="profile-items">
+        <ButtonS
+          className="primary"
           type="button"
+          id="editProfileButton"
           onClick={() => {
             setIsEditFormActivated(true);
             navigate('/profile/edit');
           }}
         >
           Editar perfil
-        </button>
-        <div>
+        </ButtonS>
+        <div className="details">
           <div>
-            <span id="title">Nome</span>
+            <span className="label-title">Nome</span>
             <p>{user.name}</p>
           </div>
           <div>
-            <span id="title">Email</span>
+            <span className="label-title">Email</span>
             <p>{user.email}</p>
           </div>
         </div>
+        <ButtonS className="secondary" type="button" id="backButton" onClick={() => navigate('/visitors')}>Voltar</ButtonS>
       </div>
-      <button type="button" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
     </ProfileS>
   );
 }

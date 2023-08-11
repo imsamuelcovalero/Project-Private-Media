@@ -31,7 +31,14 @@ function Header() {
       <div id="centerHeaderSpace">
         <span id="name">
           {user
-            ? `Olá, ${user.nome}!`
+            ? (
+              <>
+                Olá,
+                {' '}
+                <strong>{user.nome}</strong>
+                !
+              </>
+            )
             : 'Olá, Visitante!'}
         </span>
         <span id="greetings">

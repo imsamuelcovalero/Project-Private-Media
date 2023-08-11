@@ -12,7 +12,7 @@ import {
 } from './Style';
 
 function VisitorsComponent() {
-  const { logout } = useContext(ReactNodeContext);
+  const { logout, user } = useContext(ReactNodeContext);
 
   const [mediaToRender, setMediaToRender] = useState(null);
   const [isSignatureActive, setIsSignatureActive] = useState(false);
@@ -42,6 +42,16 @@ function VisitorsComponent() {
 
     verifyToken();
   }, []);
+
+  /* useEffect que verifica se o usuárioe stá logado */
+  useEffect(() => {
+    if (!user) {
+      setIsUserLogged(false);
+      setIsSignatureActive(false);
+    } else {
+      setIsUserLogged(true);
+    }
+  }, [user]);
 
   /* useEffect que busca as fotos e vídeos da categoria 'sample' */
   useEffect(() => {

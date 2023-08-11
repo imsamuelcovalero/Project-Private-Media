@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { firebaseReauthenticate, firebaseUpdateProfile } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
-import { ProfileS, InputS } from './Style';
+import { ProfileEditS, InputS, ButtonS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileEditComponent() {
@@ -95,9 +95,7 @@ function ProfileEditComponent() {
 
   /* função responsável por cancelar a edição do formulário */
   const cancelEdit = (isFromApi) => {
-    console.log('cancelEdit');
     if (!hasEditFieldTouched) {
-      console.log('aqui1');
       toggleEditForm();
       return;
     }
@@ -112,7 +110,6 @@ function ProfileEditComponent() {
     setTouchedPassword(false);
 
     if (canChangePassword) {
-      console.log('aqui2');
       setCanChangePassword(false);
     }
 
@@ -308,7 +305,7 @@ function ProfileEditComponent() {
   };
 
   return (
-    <ProfileS>
+    <ProfileEditS>
       <h1>Edição do Perfil</h1>
       <form id="profileForm" ref={formRef}>
         {!touchedPassword && (
@@ -357,9 +354,10 @@ function ProfileEditComponent() {
                   )}
                 </label>
                 {touchedPassword && (
-                <button
+                <ButtonS
                   type="button"
                   id="sendPasswordButton"
+                  className="primary"
                   disabled={isSubmitDisabled || serverError === 'oldPassword'}
                   onClick={(event) => verifyOldPassword(
                     event,
@@ -368,7 +366,7 @@ function ProfileEditComponent() {
                   )}
                 >
                   Enviar
-                </button>
+                </ButtonS>
                 ) }
               </div>
             ) : (
@@ -413,9 +411,10 @@ function ProfileEditComponent() {
             )}
           </div>
         )}
-        <button
+        <ButtonS
           id="updateButton"
           type="submit"
+          className="primary"
           disabled={touchedName ? isNameBtnDisabled : isPasswordBtnDisabled}
           onClick={(event) => {
             if (touchedName) {
@@ -434,28 +433,17 @@ function ProfileEditComponent() {
           }}
         >
           Atualizar perfil
-        </button>
-        {/* caso touchedName ou touchedPassword seja true, mostra o botão de cancelar edição.
-        Caso contrário, renderiza o botão de voltar */}
-        {touchedName || touchedPassword ? (
-          <button
-            id="editProfileButton"
-            type="button"
-            onClick={() => cancelEdit()}
-          >
-            Cancelar edição
-          </button>
-        ) : (
-          <button
-            id="editProfileButton"
-            type="button"
-            onClick={() => navigate('/profile')}
-          >
-            Voltar
-          </button>
-        )}
+        </ButtonS>
+        <ButtonS
+          id="editProfileButton"
+          type="button"
+          className="secondary" // Adicionando a classe secondary
+          onClick={() => (touchedName || touchedPassword ? cancelEdit() : navigate('/profile'))}
+        >
+          {touchedName || touchedPassword ? 'Cancelar edição' : 'Voltar'}
+        </ButtonS>
       </form>
-    </ProfileS>
+    </ProfileEditS>
   );
 }
 
