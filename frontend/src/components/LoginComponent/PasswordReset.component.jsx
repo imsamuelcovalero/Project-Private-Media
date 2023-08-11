@@ -7,7 +7,10 @@ import api from '../../services';
 import { PasswordResetS } from './Style';
 
 function PasswordResetComponent() {
+  const [isDisabled, setIsDisabled] = useState(true);
   const [resetEmail, setResetEmail] = useState('');
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
+  const [touchedEmail, setTouchedEmail] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,6 +29,27 @@ function PasswordResetComponent() {
 
     verifyUserLoggedIn();
   }, []);
+
+  /* useEffect que verifica se o campo de e-mail está preenchido e faz as validações */
+  useEffect(() => {
+    const emailRegex = /\S+@\S+\.\S{2,}/;
+    let error = '';
+    if (touchedEmail) {
+      if (!resetEmail) {
+        error = 'Campo de e-mail é obrigatório';
+      } else if (!emailRegex.test(resetEmail)) {
+        error = 'Email inválido';
+      }
+    }
+    setEmailErrorMessage(error);
+    setIsDisabled(!!error || !resetEmail);
+  }, [resetEmail, touchedEmail]);
+
+  /* Função que recebe o valor do campo de e-mail e ativa o touched */
+  const handleEmailChange = (e) => {
+    setResetEmail(e.target.value);
+    setTouchedEmail(true);
+  };
 
   /* Função para resetar a senha */
   const handlePasswordReset = async () => {
@@ -53,11 +77,13 @@ function PasswordResetComponent() {
         <input
           type="email"
           value={resetEmail}
-          onChange={(e) => setResetEmail(e.target.value)}
+          onChange={(e) => handleEmailChange(e)}
           placeholder="Digite seu e-mail"
           aria-label="Digite seu e-mail para redefinição de senha"
+          required
         />
-        <button type="submit" className="primary" onClick={handlePasswordReset}>
+        {touchedEmail && emailErrorMessage && <p id="ErrorMsg">{emailErrorMessage}</p>}
+        <button type="submit" className="primary" onClick={handlePasswordReset} disabled={isDisabled}>
           Enviar solicitação
         </button>
         <button type="button" className="secondary" onClick={() => navigate('/login')}>

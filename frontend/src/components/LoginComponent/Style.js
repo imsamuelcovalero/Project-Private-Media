@@ -135,6 +135,14 @@ export const PasswordResetS = styled.div`
       text-align: center;
     }
 
+    #ErrorMsg {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 0.5rem;
+      text-align: left;
+      font-weight: 400;
+    }
+
     input {
       width: 100%;
       padding: 0.5rem;

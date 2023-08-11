@@ -45,7 +45,7 @@ function LoginComponent() {
   /* Função que valida os dados digitados e habilita ou desabilita o botão de Entrar */
   const validateField = (field) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-    const emailRegex = /\S+@\S+\.\S+/;
+    const emailRegex = /\S+@\S+\.\S{2,}/;
 
     if (field === 'email') {
       if (!formLogin.email) return 'Campo de e-mail é obrigatório';
