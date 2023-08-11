@@ -7,6 +7,7 @@ import {
   updatePassword,
   EmailAuthProvider,
   reauthenticateWithCredential,
+  sendPasswordResetEmail,
 } from 'firebase/auth';
 import {
   collection, getDocs, doc, setDoc, updateDoc, getDoc,
@@ -62,6 +63,16 @@ const firebaseSignIn = async (email, password) => {
     const idToken = await getIdToken(userCredential.user);
 
     return idToken;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+/* Função que enviará um email para redefinir a senha */
+const firebaseSendPasswordResetEmail = async (email) => {
+  try {
+    await sendPasswordResetEmail(auth, email);
   } catch (error) {
     console.error(error);
     throw error;
@@ -136,5 +147,5 @@ const firebaseReauthenticate = async (email, password) => {
 
 export {
   firebaseSignIn, firebaseSignUp, firebaseUpdateProfile, firebaseReauthenticate,
-  firebaseGetCategory,
+  firebaseGetCategory, firebaseSendPasswordResetEmail,
 };

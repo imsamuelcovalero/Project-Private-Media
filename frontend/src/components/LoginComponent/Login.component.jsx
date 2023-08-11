@@ -1,4 +1,4 @@
-/* File: src/components/LoginComponent.jsx */
+/* File: src/components/LoginComponent/Login.component.jsx */
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -182,6 +182,13 @@ function LoginComponent() {
             )}
           </label>
         </div>
+        <button
+          className="forgot-password"
+          type="button"
+          onClick={() => navigate('/password-reset')}
+        >
+          Esqueci minha senha
+        </button>
         <div>
           <button
             className="primary"

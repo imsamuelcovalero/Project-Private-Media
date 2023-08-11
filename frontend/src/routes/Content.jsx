@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from '../pages/Login/Login';
+import PasswordReset from '../pages/Login/PasswordReset';
 import Register from '../pages/Register/Register';
 import Profile from '../pages/Profile/Profile';
 import ProfileEdit from '../pages/Profile/ProfileEdit';
@@ -14,6 +15,7 @@ function Content() {
     <Routes>
       <Route path="/" element={<Navigate to="/visitors" />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/password-reset" element={<PasswordReset />} />
       <Route path="/register" element={<Register />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/edit" element={<ProfileEdit />} />

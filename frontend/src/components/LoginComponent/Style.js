@@ -94,6 +94,18 @@ const LoginS = styled.div`
         }
       }
     }
+
+    button.forgot-password {
+      background-color: transparent;
+      color: var(--buttonBackground);
+      text-decoration: underline;
+      font-size: 14px;
+      padding: 0;
+      &:hover, &:focus {
+        background-color: transparent;
+        color: var(--extraHover);
+      }
+    }
   }
 `;
 
