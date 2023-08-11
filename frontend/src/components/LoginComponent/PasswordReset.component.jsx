@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { firebaseSendPasswordResetEmail } from '../../services/firebase.helper';
 import api from '../../services';
-import LoginS from './Style';
+import { PasswordResetS } from './Style';
 
 function PasswordResetComponent() {
   const [resetEmail, setResetEmail] = useState('');
@@ -47,7 +47,7 @@ function PasswordResetComponent() {
   };
 
   return (
-    <LoginS>
+    <PasswordResetS>
       <div className="reset-modal">
         <h2>Redefinição de Senha</h2>
         <input
@@ -57,11 +57,14 @@ function PasswordResetComponent() {
           placeholder="Digite seu e-mail"
           aria-label="Digite seu e-mail para redefinição de senha"
         />
-        <button type="submit" onClick={handlePasswordReset}>
+        <button type="submit" className="primary" onClick={handlePasswordReset}>
           Enviar solicitação
         </button>
+        <button type="button" className="secondary" onClick={() => navigate('/login')}>
+          Cancelar
+        </button>
       </div>
-    </LoginS>
+    </PasswordResetS>
   );
 }
 

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { firebaseSignIn } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
-import LoginS from './Style';
+import { LoginS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function LoginComponent() {
