@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReactNodeContext from './context/ReactNodeContext';
 import { initializeMercadoPago } from './services/mecadopago.helper';
 import { lightTheme, darkTheme } from './components/Themes';
+import ErrorBoundary from './helpers/ErrorBoudary';
 
 initializeMercadoPago();
 
@@ -15,11 +16,13 @@ function App() {
 
   return (
     <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-      <div>
-        <StyledToastContainer />
-        <GlobalStyle />
-        <Content />
-      </div>
+      <ErrorBoundary>
+        <div>
+          <StyledToastContainer />
+          <GlobalStyle />
+          <Content />
+        </div>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 }

@@ -2,13 +2,10 @@
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import {
-  Formik, Form, Field,
-} from 'formik';
-import * as Yup from 'yup';
+import { Payment } from '@mercadopago/sdk-react';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import { getCardToken } from '../../services/mecadopago.helper';
+// import { getCardToken } from '../../services/mecadopago.helper';
 import formatCurrency from '../../helpers/formatCurrency.helper';
 import SubscriptionS from './Style';
 
@@ -36,49 +33,20 @@ function SubscriptionComponent() {
     verifyToken();
   }, []);
 
-  const validationSchema = Yup.object({
-    cardNumber: Yup.string().required('O número do cartão é obrigatório.').length(16, 'O número do cartão deve ter 16 dígitos.'),
-    cardholderName: Yup.string().required('O nome no cartão é obrigatório.').min(3, 'O nome no cartão deve ter pelo menos 3 caracteres.'),
-    cardExpirationDate: Yup.string().required('A data de validade é obrigatória.').matches(/^\d{2}\/\d{2}$/, 'A data de validade deve estar no formato MM/AA.'),
-    cardSecurityCode: Yup.string().required('O código de segurança é obrigatório.').length(3, 'O código de segurança deve ter 3 dígitos.'),
-  });
-
-  const handleSubmit = async (values) => {
+  const onSubmit = async ({ selectedPaymentMethod, formData }) => {
+    console.log('selectedPaymentMethod', selectedPaymentMethod, 'formData', formData);
     const confirmation = window.confirm('Tem certeza que deseja efetuar o pagamento?');
     if (!confirmation) return;
 
     try {
-      const [cardExpirationMonth, cardExpirationYear] = values.cardExpirationDate.split('/');
-      const formattedExpirationYear = `20${cardExpirationYear}`; // formatando o ano corretamente
-
-      const modifiedValues = {
-        ...values,
-        docNumber: values.cardNumber,
-        securityCode: values.cardSecurityCode,
-        cardExpirationMonth,
-        cardExpirationYear: formattedExpirationYear,
-      };
-      console.log('modifiedValues:', modifiedValues);
-
-      const token = await getCardToken(modifiedValues);
-      console.log(token);
-
-      if (!token || token === 'undefined') {
-        throw new Error('Token inválido.');
-      }
-
-      const paymentDetails = {
+      const response = await api.processPayment({
         userId: user.id,
-        paymentDetails: {
-          token,
-          amount: subscriptionValue,
-          currency: 'BRL',
-          description: 'Pagamento da assinatura mensal',
-        },
-      };
-      console.log('paymentDetails:', paymentDetails);
+        paymentDetails: formData,
+        selectedPaymentMethod,
+      });
 
-      const response = await api.processPayment(paymentDetails);
+      console.log('response', response);
+
       if (response && response.success) {
         toast.success('Pagamento processado com sucesso!');
       } else {
@@ -94,6 +62,15 @@ function SubscriptionComponent() {
     }
   };
 
+  const onError = async (error) => {
+    console.log(error);
+    // Você pode adicionar lógica adicional para lidar com erros aqui
+  };
+
+  const onReady = async () => {
+    // Se você estiver mostrando uma animação de carregamento, pode escondê-la aqui
+  };
+
   return (
     <SubscriptionS>
       <h1>Assinatura</h1>
@@ -102,58 +79,18 @@ function SubscriptionComponent() {
         {' '}
         {formatCurrency(subscriptionValue)}
       </p>
-      <Formik
-        initialValues={{
-          cardNumber: '',
-          cardholderName: '',
-          cardExpirationDate: '',
-          cardSecurityCode: '',
+      <Payment
+        initialization={{ amount: subscriptionValue }}
+        customization={{
+          paymentMethods: {
+            creditCard: 'all',
+            bankTransfer: 'all',
+          },
         }}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({
-          isSubmitting, isValid, errors, touched, values,
-        }) => (
-          <Form>
-            <div className="field">
-              <label htmlFor="cardNumber">
-                <Field id="cardNumber" type="text" name="cardNumber" maxLength="16" />
-                <span>Número do Cartão*</span>
-              </label>
-              {(touched.cardNumber || values.cardNumber) && errors.cardNumber && <span className="errorMessage">{errors.cardNumber}</span>}
-            </div>
-
-            <div className="field">
-              <label htmlFor="cardholderName">
-                <Field id="cardholderName" type="text" name="cardholderName" />
-                <span>Nome no Cartão*</span>
-              </label>
-              {(touched.cardholderName || values.cardholderName) && errors.cardholderName && <span className="errorMessage">{errors.cardholderName}</span>}
-            </div>
-
-            <div className="field short-field">
-              <label htmlFor="cardExpirationDate">
-                <Field id="cardExpirationDate" type="text" name="cardExpirationDate" maxLength="5" />
-                <span>Validade (MM/AA)*</span>
-              </label>
-              {(touched.cardExpirationDate || values.cardExpirationDate) && errors.cardExpirationDate && <span className="errorMessage">{errors.cardExpirationDate}</span>}
-            </div>
-
-            <div className="field short-field">
-              <label htmlFor="cardSecurityCode">
-                <Field id="cardSecurityCode" type="text" name="cardSecurityCode" maxLength="3" />
-                <span>Código de Segurança*</span>
-              </label>
-              {(touched.cardSecurityCode || values.cardSecurityCode) && errors.cardSecurityCode && <span className="errorMessage">{errors.cardSecurityCode}</span>}
-            </div>
-
-            <br />
-
-            <button type="submit" disabled={isSubmitting || !isValid || !Object.values(touched).some(Boolean)}>Pagar</button>
-          </Form>
-        )}
-      </Formik>
+        onSubmit={onSubmit}
+        onReady={onReady}
+        onError={onError}
+      />
       <button type="button" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
     </SubscriptionS>
   );

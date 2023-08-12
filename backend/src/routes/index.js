@@ -12,6 +12,6 @@ router.use('/login', loginRoute);
 router.use('/logout', logoutRoute);
 router.use('/register', registerRoute);
 router.use('/update', updateRoute);
-router.use('/payment', paymentRoute);
+router.use('/process_payment', paymentRoute);
 
 module.exports = router;

@@ -3,28 +3,11 @@
 */
 import api from './axios';
 
-/* função axios que envia o token para o backend para validar o usuário */
-async function checkToken() {
+async function handleRequest(requestFunc, errorMessage) {
   try {
-    const result = await api.get('/login/me');
-    if (result.status !== 200) {
-      throw new Error(`HTTP error! Status: ${result.status}`);
-    }
+    const result = await requestFunc();
 
-    return result.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Authentication error');
-  }
-}
-
-/* função axios de login que envia o idToken para o backend e recebe as informações do usuário
-em caso de sucesso */
-async function signIn(idToken) {
-  try {
-    const result = await api.post('/login', { idToken });
-
-    if (result.status !== 200) {
+    if (![200, 201].includes(result.status)) {
       console.log('result.status', result.status);
       throw new Error(`HTTP error! Status: ${result.status}`);
     }
@@ -32,76 +15,43 @@ async function signIn(idToken) {
     return result.data;
   } catch (error) {
     console.log(error);
-    throw new Error('Authentication error');
+    const outPutErrorMessage = error.response?.data?.message || error.response?.statusText
+    || errorMessage;
+    throw new Error(outPutErrorMessage);
   }
+}
+
+/* função axios que envia o token para o backend para validar o usuário */
+async function checkToken() {
+  return handleRequest(() => api.get('/login/me'), 'Authentication error');
+}
+
+/* função axios de login que envia o idToken para o backend e recebe as informações
+do usuário em caso de sucesso */
+async function signIn(idToken) {
+  return handleRequest(() => api.post('/login', { idToken }), 'Authentication error');
 }
 
 /* função axios para fazer logout */
 async function logout() {
-  try {
-    const result = await api.get('/logout');
-
-    if (result.status !== 200) {
-      throw new Error(`HTTP error! Status: ${result.status}`);
-    }
-
-    return result.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Error during logout');
-  }
+  return handleRequest(() => api.get('/logout'), 'Error during logout');
 }
 
-/* Função axios de registro que envia o idToken para o backend e recebe as informações do usuário
-em caso de sucesso */
+/* Função axios de registro que envia o idToken para o backend e recebe as informações
+do usuário em caso de sucesso */
 async function signUp(idToken) {
-  try {
-    const result = await api.post('/register', { idToken });
-
-    if (result.status !== 201) {
-      throw new Error(`HTTP error! Status: ${result.status}`);
-    }
-
-    return result.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Registration error');
-  }
+  return handleRequest(() => api.post('/register', { idToken }), 'Registration error');
 }
 
-/* Função axios de update que envia o idToken para o backend e recebe as informações do usuário
-em caso de sucesso */
+/* Função axios de atualização de perfil que envia o idToken para o backend e recebe
+as informações do usuário em caso de sucesso */
 async function updateProfile(idToken) {
-  try {
-    const result = await api.post('/update', { idToken });
-
-    if (result.status !== 200) {
-      console.log('result.status', result.status);
-      throw new Error(`HTTP error! Status: ${result.status}`);
-    }
-
-    return result.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Authentication error');
-  }
+  return handleRequest(() => api.post('/update', { idToken }), 'Update error');
 }
 
-/* função axios que processa o pagamento */
+/* função axios que envia para o backend as informações do pagamento para serem processadas */
 async function processPayment(paymentDetails) {
-  try {
-    const result = await api.post('/payment', paymentDetails);
-
-    if (result.status !== 200) {
-      console.log('result.status', result.status);
-      throw new Error(`HTTP error! Status: ${result.status}`);
-    }
-
-    return result.data;
-  } catch (error) {
-    console.log(error);
-    throw new Error('Error processing payment');
-  }
+  return handleRequest(() => api.post('/process_payment', paymentDetails), 'Payment error');
 }
 
 export {

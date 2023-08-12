@@ -1,9 +1,12 @@
 /* File: src/services/mecadopago.helper.jsx */
+import { initMercadoPago } from '@mercadopago/sdk-react';
+
 const MERCADOPAGO_PUBLIC_KEY = process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY;
 
 // Inicializa o MercadoPago
 const initializeMercadoPago = () => {
-  window.Mercadopago.setPublishableKey(MERCADOPAGO_PUBLIC_KEY);
+  initMercadoPago(MERCADOPAGO_PUBLIC_KEY);
+  console.log('window', window.paymentBrickController);
 };
 
 // Função para obter um token para um cartão

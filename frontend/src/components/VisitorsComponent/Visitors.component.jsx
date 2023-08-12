@@ -43,7 +43,7 @@ function VisitorsComponent() {
     verifyToken();
   }, []);
 
-  /* useEffect que verifica se o usuárioe stá logado */
+  /* useEffect que verifica se o usuário está logado */
   useEffect(() => {
     if (!user) {
       setIsUserLogged(false);

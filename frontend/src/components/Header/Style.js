@@ -12,7 +12,7 @@ export const HeaderS = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  z-index: 1000;
   #centerHeaderSpace{
     display: flex;
     align-items: center;
