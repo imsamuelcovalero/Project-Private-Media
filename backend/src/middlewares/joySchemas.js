@@ -33,21 +33,51 @@ const paymentSchema = joi.object({
     'string.empty': 'UserID is required',
     'any.required': 'UserID is required',
   }),
+  selectedPaymentMethod: joi.string().valid('credit_card', 'bank_transfer').required().messages({
+    'string.valid': 'Método de pagamento inválido. Os métodos aceitos são credit_card e bank_transfer',
+    'any.required': 'O método de pagamento é obrigatório',
+  }),
   paymentDetails: joi.object({
-    token: joi.string().required().messages({
-      'string.empty': 'O token do cartão é obrigatório',
-      'any.required': 'O token do cartão é obrigatório',
+    token: joi.string()
+      .when('selectedPaymentMethod', {
+        is: 'credit_card',
+        then: joi.required(),
+        otherwise: joi.forbidden(),
+      })
+      .messages({
+        'string.empty': 'O token do cartão é obrigatório',
+        'any.required': 'O token do cartão é obrigatório',
+      }),
+    issuer_id: joi.string()
+      .when('selectedPaymentMethod', {
+        is: 'credit_card',
+        then: joi.required(),
+        otherwise: joi.forbidden(),
+      }),
+    payment_method_id: joi.string().required().messages({
+      'string.empty': 'O ID do método de pagamento é obrigatório',
+      'any.required': 'O ID do método de pagamento é obrigatório',
     }),
-    amount: joi.number().positive().precision(2).required().messages({
+    transaction_amount: joi.number().positive().precision(2).required().messages({
       'number.positive': 'O valor deve ser positivo',
       'number.base': 'O valor do pagamento é obrigatório e deve ser um número',
       'any.required': 'O valor do pagamento é obrigatório',
     }),
-    currency: joi.string().valid('BRL').required().messages({
-      'string.valid': 'Moeda inválida. A única moeda aceita é BRL',
-      'any.required': 'A moeda é obrigatória',
-    }),
-    description: joi.string().allow('', null), // Descrição é opcional.
+    installments: joi.number()
+      .when('selectedPaymentMethod', {
+        is: 'credit_card',
+        then: joi.required(),
+        otherwise: joi.forbidden(),
+      }),
+    payer: joi.object({
+      email: joi.string().email().required(),
+      identification: joi.object()
+        .when('selectedPaymentMethod', {
+          is: 'credit_card',
+          then: joi.required(),
+          otherwise: joi.forbidden(),
+        }),
+    }).required(),
   }).required()
 });
 

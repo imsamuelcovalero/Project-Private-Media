@@ -4,17 +4,49 @@ const admin = require('firebase-admin');
 const boom = require('@hapi/boom');
 
 const processPayment = async (paymentData) => {
-  const payment = await mercadopago.payment.save(paymentData);
-
+  let payment;
+  
+  switch(paymentData.selectedPaymentMethod) {
+    case 'bank_transfer':  // No caso de Pix
+      payment = await processPixPayment(paymentData);
+      break;
+    case 'credit_card':  // No caso de cartão de crédito, a implementação pode ser feita depois
+      payment = await processCreditCardPayment(paymentData);
+      break;
+    default:
+      throw boom.badRequest('Método de pagamento inválido.');
+  }
+  
   if (!payment) {
-      throw boom.internal('Erro ao processar o pagamento.');
+    throw boom.internal('Erro ao processar o pagamento.');
   }
 
   if (payment.status === 'approved') {
-      await updateSubscription(paymentData.userId);
+    await updateSubscription(paymentData.userId);
   }
 
   return payment;
+};
+
+const processPixPayment = async (paymentData) => {
+  // Extraia os detalhes necessários de paymentData
+  const { transaction_amount, payment_method_id, payer } = paymentData.paymentDetails;
+
+  const pixPaymentData = {
+    transaction_amount,
+    payment_method_id,
+    payer
+  };
+
+  // Use a SDK do Mercado Pago para criar o pagamento
+  const pixPayment = await mercadopago.payment.create(pixPaymentData);
+
+  return pixPayment;
+};
+
+// Você pode implementar processCreditCardPayment depois
+const processCreditCardPayment = async (paymentData) => {
+  // Implementação do processamento de pagamento com cartão de crédito
 };
 
 const updateSubscription = async (uid) => {

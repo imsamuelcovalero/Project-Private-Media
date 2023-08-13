@@ -5,7 +5,9 @@ const MERCADOPAGO_PUBLIC_KEY = process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY;
 
 // Inicializa o MercadoPago
 const initializeMercadoPago = () => {
-  initMercadoPago(MERCADOPAGO_PUBLIC_KEY);
+  initMercadoPago(MERCADOPAGO_PUBLIC_KEY, {
+    locale: 'pt-BR',
+  });
   console.log('window', window.paymentBrickController);
 };
 

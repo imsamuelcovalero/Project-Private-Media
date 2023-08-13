@@ -43,6 +43,7 @@ function SubscriptionComponent() {
         userId: user.id,
         paymentDetails: formData,
         selectedPaymentMethod,
+        description: process.env.REACT_APP_SUBSCRIPTION_DESCRIPTION,
       });
 
       console.log('response', response);
