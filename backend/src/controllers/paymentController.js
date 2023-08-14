@@ -8,6 +8,14 @@ const processPayment = async (req, res, _next) => {
   return res.status(200).json(result);
 };
 
+const verifyPaymentStatus = async (req, res, _next) => {
+  console.log('paymentController.verifyPaymentStatus', req.body);
+  const result = await paymentService.processPayment(req.body);
+  
+  return res.status(200).json(result);
+};
+
 module.exports = {
   processPayment,
+  verifyPaymentStatus,
 };

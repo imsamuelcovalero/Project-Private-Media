@@ -10,7 +10,6 @@ console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
 // });
 
 mercadopago.configurations.setAccessToken(process.env.MERCADOPAGO_ACCESS_TOKEN);
-console.log('mercadopago', mercadopago);
 
 const processPayment = async (paymentData) => {
   console.log('paymentData', paymentData);
@@ -19,16 +18,12 @@ const processPayment = async (paymentData) => {
   switch(paymentData.selectedPaymentMethod) {
     case 'bank_transfer':  // No caso de Pix
       payment = await processPixPayment(paymentData);
-      // Aqui, de acordo com a documentação, o status vai retornar como 'pending' primeiro.
-      if (payment.status === 'pending') {
-        return payment; // Retornamos os detalhes do pagamento para o front-end para mostrar ao usuário.
-      }
       break;
     case 'credit_card':  // No caso de cartão de crédito
       payment = await processCreditCardPayment(paymentData);
-      if (payment.status === 'approved') {
-        await updateSubscription(paymentData.userId);
-      }
+      break;
+    case 'payment_verification':  // Para verificação de status do pagamento
+      payment = await verifyPaymentStatus(paymentData);
       break;
     default:
       throw boom.badRequest('Método de pagamento inválido.');
@@ -57,6 +52,27 @@ function validateError(error) {
 
   return { errorMessage, errorStatus };
 }
+
+const verifyPaymentStatus = async (paymentData) => {
+  const { transactionId } = paymentData;
+  
+  try {
+    const payment = await mercadopago.payment.get(transactionId);
+
+    const { status, status_detail } = payment.body;
+    
+    if (status === 'approved') {
+      await updateSubscription(paymentData.userId);
+    }
+
+    return { status, status_detail, id: transactionId };
+
+  } catch (error) {
+    console.error('Erro ao verificar o status do pagamento:', error);
+    const { errorMessage } = validateError(error);
+    throw boom.internal(errorMessage);
+  }
+};
 
 const processPixPayment = async (paymentData) => {
   console.log('processPixPayment', paymentData);
@@ -97,26 +113,20 @@ const processCreditCardPayment = async (paymentData) => {
     three_d_secure_mode: 'optional',
     external_reference,
     ...paymentDetails
-    // transaction_amount: Number(paymentDetails.transaction_amount),
-    // token: paymentDetails.token,
-    // installments: Number(paymentDetails.installments),
-    // payment_method_id: paymentDetails.payment_method_id,
-    // issuer_id: paymentDetails.issuer_id,
-    // payer: {
-    //   email: paymentDetails.payer.email,
-    //   identification: {
-    //     type: paymentDetails.payer.identification.type,
-    //     number: paymentDetails.payer.identification.number.toString()
-    //   }
-    // }
   };
 
-  console.log('creditCardPaymentData', creditCardPaymentData);
+  // console.log('creditCardPaymentData', creditCardPaymentData);
 
   try {
     const creditCardPayment = await mercadopago.payment.save(creditCardPaymentData);
+
     const { status, status_detail, id } = creditCardPayment.body;
-    console.log('status', status, 'status_detail', status_detail, 'id', id);
+    // console.log('status', status, 'status_detail', status_detail, 'id', id);
+
+    if (status === 'approved') {
+      await updateSubscription(paymentData.userId);
+    }
+
     return { status, status_detail, id };
   } catch (error) {
     console.error('Erro ao processar o pagamento com cartão de crédito:', error);
