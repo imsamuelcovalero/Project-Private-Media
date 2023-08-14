@@ -6,7 +6,7 @@ const getUserByToken = async (idToken) => {
   // console.log('idToken2', idToken);
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log('decodedIdToken', decodedIdToken);
+    // console.log('decodedIdToken', decodedIdToken);
     return decodedIdToken;
   } catch (error) {
     throw boom.internal('Erro ao validar o ID token', error);
@@ -76,7 +76,7 @@ const login = async (userData) => {
     message: check,
   } };
 
-  console.log('result', result);
+  // console.log('result', result);
   return result;
 };
 

@@ -37,10 +37,15 @@ const paymentSchema = joi.object({
     'string.valid': 'Método de pagamento inválido. Os métodos aceitos são credit_card e bank_transfer',
     'any.required': 'O método de pagamento é obrigatório',
   }),
-  description: joi.string().required().messages({
-    'string.empty': 'A descrição é obrigatória.',
-    'any.required': 'A descrição é obrigatória.',
-  }),
+  description: joi.string()
+    .when('selectedPaymentMethod', {
+      is: 'credit_card',
+      then: joi.string().required(),
+    })
+    .messages({
+      'string.empty': 'A descrição é obrigatória.',
+      'any.required': 'A descrição é obrigatória.',
+    }),
   paymentDetails: joi.object({
     token: joi.string()
       .when('selectedPaymentMethod', {
