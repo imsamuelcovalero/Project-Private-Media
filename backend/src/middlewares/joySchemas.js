@@ -37,12 +37,15 @@ const paymentSchema = joi.object({
     'string.valid': 'Método de pagamento inválido. Os métodos aceitos são credit_card e bank_transfer',
     'any.required': 'O método de pagamento é obrigatório',
   }),
+  description: joi.string().required().messages({
+    'string.empty': 'A descrição é obrigatória.',
+    'any.required': 'A descrição é obrigatória.',
+  }),
   paymentDetails: joi.object({
     token: joi.string()
       .when('selectedPaymentMethod', {
         is: 'credit_card',
-        then: joi.required(),
-        otherwise: joi.forbidden(),
+        then: joi.string().required(),
       })
       .messages({
         'string.empty': 'O token do cartão é obrigatório',
@@ -51,8 +54,7 @@ const paymentSchema = joi.object({
     issuer_id: joi.string()
       .when('selectedPaymentMethod', {
         is: 'credit_card',
-        then: joi.required(),
-        otherwise: joi.forbidden(),
+        then: joi.string().required(),
       }),
     payment_method_id: joi.string().required().messages({
       'string.empty': 'O ID do método de pagamento é obrigatório',
@@ -67,7 +69,6 @@ const paymentSchema = joi.object({
       .when('selectedPaymentMethod', {
         is: 'credit_card',
         then: joi.required(),
-        otherwise: joi.forbidden(),
       }),
     payer: joi.object({
       email: joi.string().email().required(),
@@ -75,7 +76,6 @@ const paymentSchema = joi.object({
         .when('selectedPaymentMethod', {
           is: 'credit_card',
           then: joi.required(),
-          otherwise: joi.forbidden(),
         }),
     }).required(),
   }).required()

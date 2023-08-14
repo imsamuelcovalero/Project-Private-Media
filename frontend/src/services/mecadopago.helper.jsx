@@ -8,7 +8,6 @@ const initializeMercadoPago = () => {
   initMercadoPago(MERCADOPAGO_PUBLIC_KEY, {
     locale: 'pt-BR',
   });
-  console.log('window', window.paymentBrickController);
 };
 
 // Função para obter um token para um cartão

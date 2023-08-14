@@ -36,7 +36,7 @@ const getUserFromFirestore = async (uid) => {
 };
 
 const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura, uid) => {
-  const usersCollection = admin.firestore().collection('usuarios');
+  const usersCollection = admin.firestore().collection('usuários');
   
   if (!assinaturaAtiva) {
     return 'Assinatura inativa. Por favor, assine para usar o serviço.';

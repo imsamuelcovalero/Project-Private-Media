@@ -1,6 +1,6 @@
 /* index.js */
 require('dotenv').config();
-// console.log('log de teste', process.env.PORT);
+// console.log('log de teste', process.env.MERCADOPAGO_ACCESS_TOKEN);
 require('./database/loadFirebaseConfig');
 
 const app = require('./app');

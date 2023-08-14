@@ -34,7 +34,7 @@ function SubscriptionComponent() {
   }, []);
 
   const onSubmit = async ({ selectedPaymentMethod, formData }) => {
-    console.log('selectedPaymentMethod', selectedPaymentMethod, 'formData', formData);
+    console.log('formData', formData);
     const confirmation = window.confirm('Tem certeza que deseja efetuar o pagamento?');
     if (!confirmation) return;
 

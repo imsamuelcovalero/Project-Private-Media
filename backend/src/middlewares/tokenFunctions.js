@@ -14,15 +14,15 @@ const tokenFunctions = {
   },
 
   decode: async (req, _res, next) => {
-    console.log('req.cookies', req.cookies);
+    // console.log('req.cookies', req.cookies);
     let token = req.cookies['token'];
-    console.log('tokenDecode', token);
+    // console.log('tokenDecode', token);
 
     if (!token) throw new boom.unauthorized('Token not provided');
 
     try {
       const decoded = await admin.auth().verifyIdToken(token);
-      console.log('decoded', decoded);
+      // console.log('decoded', decoded);
 
       req.user = decoded;
 
