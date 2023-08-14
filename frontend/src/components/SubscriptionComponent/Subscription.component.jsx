@@ -13,11 +13,12 @@ function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
   const [paymentId, setPaymentId] = useState(null);
 
-  console.log('key', process.env.REACT_APP_MERCADOPAGO_PUBLIC_KEY);
+  console.log('key', process.env.REACT_APP_MERCADOPAGO_ID);
 
   const navigate = useNavigate();
 
   const subscriptionValue = parseFloat(process.env.REACT_APP_SUBSCRIPTION_VALUE);
+  // const externalReference = process.env.REACT_APP_MERCADOPAGO_ID;
 
   /* useEffect que verifica se existe um token válido */
   useEffect(() => {
@@ -41,6 +42,7 @@ function SubscriptionComponent() {
         paymentDetails: formData,
         selectedPaymentMethod,
         description: process.env.REACT_APP_SUBSCRIPTION_DESCRIPTION,
+        external_reference: process.env.REACT_APP_MERCADOPAGO_ID,
       });
 
       console.log('response', response);
@@ -67,6 +69,7 @@ function SubscriptionComponent() {
         userId: user.id,
         paymentDetails: formData,
         selectedPaymentMethod,
+        external_reference: process.env.REACT_APP_MERCADOPAGO_ID,
       });
 
       console.log('response', response);
@@ -136,6 +139,11 @@ function SubscriptionComponent() {
         && (
         <StatusScreen
           initialization={{ paymentId }}
+          customization={{
+            visual: {
+              showExternalReference: true,
+            },
+          }}
           onReady={onReady}
           onError={onError}
         />

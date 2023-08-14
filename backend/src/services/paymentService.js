@@ -10,6 +10,7 @@ console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
 // });
 
 mercadopago.configurations.setAccessToken(process.env.MERCADOPAGO_ACCESS_TOKEN);
+console.log('mercadopago', mercadopago);
 
 const processPayment = async (paymentData) => {
   console.log('paymentData', paymentData);
@@ -60,11 +61,13 @@ function validateError(error) {
 const processPixPayment = async (paymentData) => {
   console.log('processPixPayment', paymentData);
   const { transaction_amount, payment_method_id, payer } = paymentData.paymentDetails;
+  const { external_reference } = paymentData;
 
   const pixPaymentData = {
     transaction_amount,
     payment_method_id,
-    payer
+    payer,
+    external_reference,
   };
   
   try {
@@ -86,12 +89,13 @@ const processPixPayment = async (paymentData) => {
 
 /* Função que processa o pagamento com cartão de crédito */
 const processCreditCardPayment = async (paymentData) => {
-  const { paymentDetails, description } = paymentData;
+  const { paymentDetails, description, external_reference } = paymentData;
   // console.log('description', description);
 
   const creditCardPaymentData = {
     description,
     three_d_secure_mode: 'optional',
+    external_reference,
     ...paymentDetails
     // transaction_amount: Number(paymentDetails.transaction_amount),
     // token: paymentDetails.token,
