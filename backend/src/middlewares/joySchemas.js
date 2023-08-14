@@ -90,4 +90,16 @@ const paymentSchema = joi.object({
   }).required()
 });
 
-module.exports = { loginSchema, registerSchema, updateSchema, paymentSchema };
+// esquema para verificação de status do pagamento
+const paymentStatusSchema = joi.object({
+  userId: joi.string().required().messages({
+    'string.empty': 'UserID is required',
+    'any.required': 'UserID is required',
+  }),
+  transactionId: joi.string().required().messages({
+    'string.empty': 'Transaction ID is required',
+    'any.required': 'Transaction ID is required',
+  }),
+});
+
+module.exports = { loginSchema, registerSchema, updateSchema, paymentSchema, paymentStatusSchema };

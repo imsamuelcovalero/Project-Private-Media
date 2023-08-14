@@ -2,6 +2,7 @@
 const mercadopago = require('mercadopago');
 const admin = require('firebase-admin');
 const boom = require('@hapi/boom');
+const { addDays } = require('date-fns');
 
 console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
 
@@ -11,6 +12,7 @@ console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
 
 mercadopago.configurations.setAccessToken(process.env.MERCADOPAGO_ACCESS_TOKEN);
 
+/* função para processar o pagamento */
 const processPayment = async (paymentData) => {
   console.log('paymentData', paymentData);
   let payment;
@@ -21,9 +23,6 @@ const processPayment = async (paymentData) => {
       break;
     case 'credit_card':  // No caso de cartão de crédito
       payment = await processCreditCardPayment(paymentData);
-      break;
-    case 'payment_verification':  // Para verificação de status do pagamento
-      payment = await verifyPaymentStatus(paymentData);
       break;
     default:
       throw boom.badRequest('Método de pagamento inválido.');
@@ -36,6 +35,7 @@ const processPayment = async (paymentData) => {
   return payment;
 };
 
+/* função para validar e visualizar melhor os errors do MercadoPago */
 function validateError(error) {
   let errorMessage = 'Unknown error cause';
   let errorStatus = 400;
@@ -53,27 +53,7 @@ function validateError(error) {
   return { errorMessage, errorStatus };
 }
 
-const verifyPaymentStatus = async (paymentData) => {
-  const { transactionId } = paymentData;
-  
-  try {
-    const payment = await mercadopago.payment.get(transactionId);
-
-    const { status, status_detail } = payment.body;
-    
-    if (status === 'approved') {
-      await updateSubscription(paymentData.userId);
-    }
-
-    return { status, status_detail, id: transactionId };
-
-  } catch (error) {
-    console.error('Erro ao verificar o status do pagamento:', error);
-    const { errorMessage } = validateError(error);
-    throw boom.internal(errorMessage);
-  }
-};
-
+/* função para processar oa primeira etapa do pagamento com pix */
 const processPixPayment = async (paymentData) => {
   console.log('processPixPayment', paymentData);
   const { transaction_amount, payment_method_id, payer } = paymentData.paymentDetails;
@@ -135,14 +115,35 @@ const processCreditCardPayment = async (paymentData) => {
   }
 };
 
+/* Função que verifica o status do pagamento */
+const verifyPaymentStatus = async (transactionData) => {
+  const { transactionId } = transactionData;
+  
+  try {
+    const payment = await mercadopago.payment.get(transactionId);
+
+    const { status, status_detail } = payment.body;
+    
+    if (status === 'approved') {
+      await updateSubscription(transactionData.userId);
+    }
+
+    return { status, status_detail, id: transactionId };
+
+  } catch (error) {
+    console.error('Erro ao verificar o status do pagamento:', error);
+    const { errorMessage } = validateError(error);
+    throw boom.internal(errorMessage);
+  }
+};
+
 /* Função que atualiza a assinatura do usuário no Firestore */
 const updateSubscription = async (uid) => {
   console.log('uid', uid);
   const usersCollection = admin.firestore().collection('usuários');
 
   const currentDate = new Date();
-  const newExpiryDate = new Date();
-  newExpiryDate.setMonth(currentDate.getMonth() + 1); // Adiciona 30 dias
+  const newExpiryDate = addDays(currentDate, 30); // Adiciona exatos 30 dias
 
   try {
     const snapshot = await usersCollection.where('uid', '==', uid).get();
@@ -169,6 +170,7 @@ const updateSubscription = async (uid) => {
 };
 
 module.exports = {
-  processPayment
+  processPayment,
+  verifyPaymentStatus
 };
 

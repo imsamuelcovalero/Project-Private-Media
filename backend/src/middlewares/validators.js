@@ -46,6 +46,7 @@ const validators = {
   validateRegister: validate(registerSchema, "registerSchema"),
   validateUpdate: validate(updateSchema, "updateSchema"),
   validatePayment: validate(paymentSchema, "paymentSchema"),
+  validatePaymentStatus: validate(paymentSchema, "paymentSchema"),
 };
 
 module.exports = validators;

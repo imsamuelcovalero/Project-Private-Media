@@ -1,6 +1,7 @@
 /* File: src/controllers/paymentController.js */
 const { paymentService } = require('../services');
 
+/* função para processar o pagamento */
 const processPayment = async (req, res, _next) => {
   // console.log('paymentController.processPayment', req.body);
   const result = await paymentService.processPayment(req.body);
@@ -8,9 +9,10 @@ const processPayment = async (req, res, _next) => {
   return res.status(200).json(result);
 };
 
+/* função para verificar o status do pagamento */
 const verifyPaymentStatus = async (req, res, _next) => {
   console.log('paymentController.verifyPaymentStatus', req.body);
-  const result = await paymentService.processPayment(req.body);
+  const result = await paymentService.verifyPaymentStatus(req.body);
   
   return res.status(200).json(result);
 };
