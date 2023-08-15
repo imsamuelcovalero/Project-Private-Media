@@ -54,10 +54,10 @@ async function processPayment(paymentDetails) {
   return handleRequest(() => api.post('/process_payment', paymentDetails), 'Payment error');
 }
 
-/* função axios que envia para o backend userId e PaymentId para serem processados */
-async function processPaymentStatus(userId, PaymentId) {
+/* função axios que envia para o backend userId e paymentId para serem processados */
+async function processPaymentStatus(userId, paymentId) {
   return handleRequest(
-    () => api.post('/process_payment_status', { userId, PaymentId }),
+    () => api.post('/process_payment/status', { userId, paymentId }),
     'Payment status error',
   );
 }

@@ -5,13 +5,16 @@ import { toast } from 'react-toastify';
 import { Payment, StatusScreen } from '@mercadopago/sdk-react';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import { addPaymentIdIdToLocalStorage, getPaymentIdIdFromLocalStorage, removePaymentIdIdFromLocalStorage } from '../../services/mecadopago.helper';
+import { addPaymentId, getPaymentId, removePaymentId } from '../../helpers/localStorage.helper';
 import formatCurrency from '../../helpers/formatCurrency.helper';
 import SubscriptionS from './Style';
 
 function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
-  const [paymentId, setPaymentId] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState('pending');
+  const [paymentId, setPaymentId] = useState(getPaymentId() || null);
+
+  // const paymentId = getPaymentId() || null;
 
   console.log('key', process.env.REACT_APP_MERCADOPAGO_ID);
 
@@ -35,6 +38,32 @@ function SubscriptionComponent() {
     verifyToken();
   }, []);
 
+  /* Função responsável por verificar o status do pagamento */
+  const getStatusPayment = async () => {
+    console.log('paymentId', paymentId);
+    try {
+      const response = await api.processPaymentStatus(user.id, paymentId);
+
+      if (response && response.status === 'pending') {
+        toast.info('Pagamento pendente.');
+      } else if (response && response.status === 'approved') {
+        toast.success('Pagamento processado com sucesso!');
+        setPaymentStatus('approved');
+        removePaymentId();
+      } else {
+        throw new Error(response.message || 'Erro desconhecido ao processar o pagamento.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      if (error && error.response && error.response.data && error.response.data.message) {
+        toast.error(`Erro ao processar o pagamento: ${error.response.data.message}`);
+      } else {
+        toast.error(`Erro ao processar o pagamento: ${error.message}`);
+      }
+    }
+  };
+
+  /* Função responsável por processar o pagamento via cartão de crédito */
   const handleCreditCardPayment = async (formData, selectedPaymentMethod) => {
     try {
       const response = await api.processPayment({
@@ -48,6 +77,7 @@ function SubscriptionComponent() {
       console.log('response', response);
 
       if (response && response.status === 'approved') {
+        addPaymentId(response.id);
         setPaymentId(response.id);
         toast.success('Pagamento processado com sucesso!');
       } else {
@@ -63,6 +93,7 @@ function SubscriptionComponent() {
     }
   };
 
+  /* Função responsável por processar o pagamento via Pix */
   const handlePixPayment = async (formData, selectedPaymentMethod) => {
     try {
       const response = await api.processPayment({
@@ -75,9 +106,8 @@ function SubscriptionComponent() {
       console.log('response', response);
 
       if (response && response.status === 'pending') {
+        addPaymentId(response.id);
         setPaymentId(response.id);
-        // Aqui você deve incluir a lógica para lidar com pagamentos pendentes do Pix.
-        // Por exemplo: exibir QR code, ou redirecionar o usuário para uma tela de espera, etc.
         toast.info('Pagamento pendente. Por favor, finalize o pagamento via Pix.');
       } else {
         throw new Error(response.message || 'Erro desconhecido ao processar o pagamento.');
@@ -92,6 +122,7 @@ function SubscriptionComponent() {
     }
   };
 
+  /* Função que é chamada quando o usuário clica em pagar */
   const onSubmit = async ({ selectedPaymentMethod, formData }) => {
     console.log('formData', formData);
     const confirmation = window.confirm('Tem certeza que deseja efetuar o pagamento?');
@@ -148,7 +179,10 @@ function SubscriptionComponent() {
           onError={onError}
         />
         )}
-      <button type="button" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
+      {paymentId && paymentStatus === 'pending' && (
+        <button type="button" className="primary" id="statusButton" onClick={() => getStatusPayment()}>Verificar Status do Pagamento</button>
+      )}
+      <button type="button" className="secondary" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
     </SubscriptionS>
   );
 }

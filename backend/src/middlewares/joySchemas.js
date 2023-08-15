@@ -96,8 +96,8 @@ const paymentStatusSchema = joi.object({
     'string.empty': 'UserID is required',
     'any.required': 'UserID is required',
   }),
-  PaymentId: joi.string().required().messages({
-    'string.empty': 'Payment ID is required',
+  paymentId: joi.number().integer().required().messages({
+    'number.base': 'Payment ID must be a number',
     'any.required': 'Payment ID is required',
   }),
 });

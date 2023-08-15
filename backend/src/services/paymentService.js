@@ -117,18 +117,20 @@ const processCreditCardPayment = async (paymentData) => {
 
 /* Função que verifica o status do pagamento */
 const verifyPaymentStatus = async (transactionData) => {
-  const { PaymentId } = transactionData;
+  // console.log('transactionData', transactionData);
+  const { paymentId } = transactionData;
   
   try {
-    const payment = await mercadopago.payment.get(PaymentId);
+    const payment = await mercadopago.payment.findById(paymentId);
 
     const { status, status_detail } = payment.body;
+    console.log('status', status, 'status_detail', status_detail);
     
     if (status === 'approved') {
       await updateSubscription(transactionData.userId);
     }
 
-    return { status, status_detail, id: PaymentId };
+    return { status, status_detail, id: paymentId };
 
   } catch (error) {
     console.error('Erro ao verificar o status do pagamento:', error);

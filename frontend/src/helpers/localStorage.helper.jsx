@@ -26,17 +26,17 @@ export const getMediaTime = () => {
 };
 
 /* função que armazena o PaymentId no localStorage */
-export const addPaymentIdToLocalStorage = (PaymentId) => {
+export const addPaymentId = (PaymentId) => {
   localStorage.setItem('reactNodePaymentId', JSON.stringify(PaymentId));
 };
 
 /* função que retorna o PaymentId armazenado no localStorage */
-export const getPaymentIdFromLocalStorage = () => {
+export const getPaymentId = () => {
   const PaymentId = localStorage.getItem('reactNodePaymentId');
   return PaymentId ? JSON.parse(PaymentId) : null;
 };
 
 /* função que remove o PaymentId do localStorage */
-export const removePaymentIdFromLocalStorage = () => {
+export const removePaymentId = () => {
   localStorage.removeItem('reactNodePaymentId');
 };
