@@ -62,6 +62,12 @@ async function processPaymentStatus(userId, paymentId) {
   );
 }
 
+/* função axios que envia para o backend paymentId para o pagamento ser cancelado */
+async function cancelPayment(paymentId) {
+  const url = `/process_payment/cancel/${paymentId}`;
+  return handleRequest(() => api.patch(url), 'Payment cancel error');
+}
+
 export {
   checkToken,
   signIn,
@@ -70,4 +76,5 @@ export {
   updateProfile,
   processPayment,
   processPaymentStatus,
+  cancelPayment,
 };

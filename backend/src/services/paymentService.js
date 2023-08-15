@@ -101,7 +101,7 @@ const processCreditCardPayment = async (paymentData) => {
     const creditCardPayment = await mercadopago.payment.save(creditCardPaymentData);
 
     const { status, status_detail, id } = creditCardPayment.body;
-    // console.log('status', status, 'status_detail', status_detail, 'id', id);
+    console.log('status', status, 'status_detail', status_detail, 'id', id);
 
     if (status === 'approved') {
       await updateSubscription(paymentData.userId);

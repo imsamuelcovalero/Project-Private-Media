@@ -11,7 +11,7 @@ import SubscriptionS from './Style';
 
 function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
-  const [paymentStatus, setPaymentStatus] = useState('pending');
+  const [paymentStatus, setPaymentStatus] = useState(null);
   const [paymentId, setPaymentId] = useState(getPaymentId() || null);
 
   // const paymentId = getPaymentId() || null;
@@ -84,7 +84,8 @@ function SubscriptionComponent() {
       console.log('response', response);
 
       if (response && response.status === 'approved') {
-        addPaymentId(response.id);
+        // addPaymentId(response.id);
+        setPaymentStatus('approved');
         setPaymentId(response.id);
         toast.success('Pagamento processado com sucesso!');
       } else {
@@ -153,6 +154,8 @@ function SubscriptionComponent() {
     // Se você estiver mostrando uma animação de carregamento, pode escondê-la aqui
   };
 
+  console.log('paymentStatus', paymentStatus);
+
   return (
     <SubscriptionS>
       <h1>Assinatura</h1>
@@ -186,7 +189,7 @@ function SubscriptionComponent() {
           onError={onError}
         />
         )}
-      {paymentId && paymentStatus === 'pending' && (
+      {paymentId && paymentStatus !== 'approved' && (
       <>
         <button type="button" className="primary" id="statusButton" onClick={() => getStatusPayment()}>Verificar Status do Pagamento</button>
         <button type="button" className="secondary" id="cancelButton" onClick={handleCancel}>Cancelar Pagamento</button>
