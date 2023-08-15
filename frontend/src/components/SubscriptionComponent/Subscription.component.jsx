@@ -63,6 +63,13 @@ function SubscriptionComponent() {
     }
   };
 
+  /* Função responsável por cancelar o pagamento */
+  const handleCancel = () => {
+    setPaymentId(null);
+    removePaymentId();
+    toast.info('Pagamento cancelado.');
+  };
+
   /* Função responsável por processar o pagamento via cartão de crédito */
   const handleCreditCardPayment = async (formData, selectedPaymentMethod) => {
     try {
@@ -180,7 +187,10 @@ function SubscriptionComponent() {
         />
         )}
       {paymentId && paymentStatus === 'pending' && (
+      <>
         <button type="button" className="primary" id="statusButton" onClick={() => getStatusPayment()}>Verificar Status do Pagamento</button>
+        <button type="button" className="secondary" id="cancelButton" onClick={handleCancel}>Cancelar Pagamento</button>
+      </>
       )}
       <button type="button" className="secondary" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
     </SubscriptionS>
