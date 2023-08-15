@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const boom = require('@hapi/boom');
 const { addDays } = require('date-fns');
 
-console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
+// console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
 
 // mercadopago.configure({
 //   access_token: process.env.MERCADOPAGO_ACCESS_TOKEN
@@ -117,10 +117,10 @@ const processCreditCardPayment = async (paymentData) => {
 
 /* Função que verifica o status do pagamento */
 const verifyPaymentStatus = async (transactionData) => {
-  const { transactionId } = transactionData;
+  const { PaymentId } = transactionData;
   
   try {
-    const payment = await mercadopago.payment.get(transactionId);
+    const payment = await mercadopago.payment.get(PaymentId);
 
     const { status, status_detail } = payment.body;
     
@@ -128,7 +128,7 @@ const verifyPaymentStatus = async (transactionData) => {
       await updateSubscription(transactionData.userId);
     }
 
-    return { status, status_detail, id: transactionId };
+    return { status, status_detail, id: PaymentId };
 
   } catch (error) {
     console.error('Erro ao verificar o status do pagamento:', error);

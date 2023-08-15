@@ -24,3 +24,19 @@ export const getMediaTime = () => {
   const mediaTime = localStorage.getItem('reactNodeMediaTime');
   return mediaTime ? JSON.parse(mediaTime) : null;
 };
+
+/* função que armazena o PaymentId no localStorage */
+export const addPaymentIdToLocalStorage = (PaymentId) => {
+  localStorage.setItem('reactNodePaymentId', JSON.stringify(PaymentId));
+};
+
+/* função que retorna o PaymentId armazenado no localStorage */
+export const getPaymentIdFromLocalStorage = () => {
+  const PaymentId = localStorage.getItem('reactNodePaymentId');
+  return PaymentId ? JSON.parse(PaymentId) : null;
+};
+
+/* função que remove o PaymentId do localStorage */
+export const removePaymentIdFromLocalStorage = () => {
+  localStorage.removeItem('reactNodePaymentId');
+};

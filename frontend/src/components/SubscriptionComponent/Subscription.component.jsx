@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { Payment, StatusScreen } from '@mercadopago/sdk-react';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-// import { getCardToken } from '../../services/mecadopago.helper';
+import { addPaymentIdIdToLocalStorage, getPaymentIdIdFromLocalStorage, removePaymentIdIdFromLocalStorage } from '../../services/mecadopago.helper';
 import formatCurrency from '../../helpers/formatCurrency.helper';
 import SubscriptionS from './Style';
 

@@ -54,6 +54,14 @@ async function processPayment(paymentDetails) {
   return handleRequest(() => api.post('/process_payment', paymentDetails), 'Payment error');
 }
 
+/* função axios que envia para o backend userId e PaymentId para serem processados */
+async function processPaymentStatus(userId, PaymentId) {
+  return handleRequest(
+    () => api.post('/process_payment_status', { userId, PaymentId }),
+    'Payment status error',
+  );
+}
+
 export {
   checkToken,
   signIn,
@@ -61,4 +69,5 @@ export {
   signUp,
   updateProfile,
   processPayment,
+  processPaymentStatus,
 };
