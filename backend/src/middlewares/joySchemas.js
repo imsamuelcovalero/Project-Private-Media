@@ -102,4 +102,12 @@ const paymentStatusSchema = joi.object({
   }),
 });
 
-module.exports = { loginSchema, registerSchema, updateSchema, paymentSchema, paymentStatusSchema };
+// esquema para cancelamento de pagamento
+const cancelPaymentSchema = joi.object({
+  paymentId: joi.number().integer().required().messages({
+    'number.base': 'Payment ID must be a number',
+    'any.required': 'Payment ID is required',
+  }),
+});
+
+module.exports = { loginSchema, registerSchema, updateSchema, paymentSchema, paymentStatusSchema, cancelPaymentSchema };

@@ -17,7 +17,16 @@ const verifyPaymentStatus = async (req, res, _next) => {
   return res.status(200).json(result);
 };
 
+/* função para cancelar o pagamento */
+const cancelPayment = async (req, res, _next) => {
+  const paymentId = req.params.paymentId;
+  console.log('paymentController.cancelPayment', paymentId);
+  const result = await paymentService.cancelPayment(paymentId);
+  return res.status(200).json(result);
+};
+
 module.exports = {
   processPayment,
   verifyPaymentStatus,
+  cancelPayment,
 };

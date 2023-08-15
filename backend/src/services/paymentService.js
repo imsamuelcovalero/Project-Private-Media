@@ -139,6 +139,20 @@ const verifyPaymentStatus = async (transactionData) => {
   }
 };
 
+/* Função que cancela o pagamento */
+const cancelPayment = async (paymentId) => {
+  try {
+    const payment = await mercadopago.payment.cancel(paymentId);
+    const { status, status_detail } = payment.body;
+
+    return { status, status_detail, id: paymentId };
+  } catch (error) {
+    console.error('Erro ao cancelar o pagamento:', error);
+    const { errorMessage } = validateError(error);
+    throw boom.internal(errorMessage);
+  }
+};
+
 /* Função que atualiza a assinatura do usuário no Firestore */
 const updateSubscription = async (uid) => {
   console.log('uid', uid);
@@ -173,6 +187,7 @@ const updateSubscription = async (uid) => {
 
 module.exports = {
   processPayment,
-  verifyPaymentStatus
+  verifyPaymentStatus,
+  cancelPayment,
 };
 
