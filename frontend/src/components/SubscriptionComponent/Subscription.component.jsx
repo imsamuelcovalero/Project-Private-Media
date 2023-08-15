@@ -16,7 +16,7 @@ function SubscriptionComponent() {
 
   // const paymentId = getPaymentId() || null;
 
-  console.log('key', process.env.REACT_APP_MERCADOPAGO_ID);
+  // console.log('key', process.env.REACT_APP_MERCADOPAGO_ID);
 
   const navigate = useNavigate();
 
@@ -64,10 +64,21 @@ function SubscriptionComponent() {
   };
 
   /* Função responsável por cancelar o pagamento */
-  const handleCancel = () => {
-    setPaymentId(null);
-    removePaymentId();
-    toast.info('Pagamento cancelado.');
+  const handleCancel = async () => {
+    try {
+      await api.cancelPayment(paymentId); // Chama a API para cancelar o pagamento
+
+      setPaymentId(null);
+      removePaymentId();
+      toast.success('Pagamento cancelado com sucesso.'); // Sucesso ao cancelar o pagamento
+    } catch (error) {
+      console.error('Error:', error);
+      if (error && error.message) {
+        toast.error(`Erro ao cancelar o pagamento: ${error.message}`);
+      } else {
+        toast.error('Erro desconhecido ao cancelar o pagamento.');
+      }
+    }
   };
 
   /* Função responsável por processar o pagamento via cartão de crédito */
@@ -154,8 +165,6 @@ function SubscriptionComponent() {
     // Se você estiver mostrando uma animação de carregamento, pode escondê-la aqui
   };
 
-  console.log('paymentStatus', paymentStatus);
-
   return (
     <SubscriptionS>
       <h1>Assinatura</h1>
@@ -192,7 +201,7 @@ function SubscriptionComponent() {
       {paymentId && paymentStatus !== 'approved' && (
       <>
         <button type="button" className="primary" id="statusButton" onClick={() => getStatusPayment()}>Verificar Status do Pagamento</button>
-        <button type="button" className="secondary" id="cancelButton" onClick={handleCancel}>Cancelar Pagamento</button>
+        <button type="button" className="secondary" id="cancelButton" onClick={() => handleCancel()}>Cancelar Pagamento</button>
       </>
       )}
       <button type="button" className="secondary" id="backButton" onClick={() => navigate(-1)}>Voltar</button>

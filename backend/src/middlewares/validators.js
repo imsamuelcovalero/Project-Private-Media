@@ -9,12 +9,12 @@ Portanto, a classe CustomError é utilizada aqui devido à sua flexibilidade na 
 */
 const CustomError = require('../errors/CustomError');
 
-function validate(schema, schemaName) {
-  
-  return (req, _res, next) => {
-    console.log(`validate ${schemaName}`, req.body);
+function validate(schema, schemaName, validationSource = "body") { 
 
-    const { error } = schema.validate(req.body);
+  return (req, _res, next) => {
+    console.log(`validate ${schemaName}`, req[validationSource]);
+
+    const { error } = schema.validate(req[validationSource]);
 
     if (error) {
       console.log('Validator Error', error.message);
@@ -42,12 +42,12 @@ function validate(schema, schemaName) {
 }
 
 const validators = {
-  validateLogin: validate(loginSchema, "loginSchema"),
-  validateRegister: validate(registerSchema, "registerSchema"),
-  validateUpdate: validate(updateSchema, "updateSchema"),
-  validatePayment: validate(paymentSchema, "paymentSchema"),
-  validatePaymentStatus: validate(paymentStatusSchema, "paymentStatusSchema"),
-  validateCancelPayment: validate(cancelPaymentSchema, "cancelPaymentSchema"),
+  validateLogin: validate(loginSchema, "loginSchema", "body"),
+  validateRegister: validate(registerSchema, "registerSchema", "body"),
+  validateUpdate: validate(updateSchema, "updateSchema", "body"),
+  validatePayment: validate(paymentSchema, "paymentSchema", "body"),
+  validatePaymentStatus: validate(paymentStatusSchema, "paymentStatusSchema", "body"),
+  validateCancelPayment: validate(cancelPaymentSchema, "cancelPaymentSchema", "params"),
 };
 
 module.exports = validators;
