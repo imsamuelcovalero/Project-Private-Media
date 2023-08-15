@@ -34,27 +34,27 @@ const SubscriptionS = styled.div`
     transition: background-color var(--transitionSpeed);
 
     &.primary {
-        background-color: var(--buttonPrimary);
-        
-        &:hover, &:focus {
-          background-color: var(--extraHover);
-        }
-
-        &:disabled {
-          cursor: not-allowed;
-          filter: saturate(0);
-          background-color: var(--buttonBackgroundDisabled);
-        }
+      background-color: var(--buttonPrimary);
+      
+      &:hover, &:focus {
+        background-color: var(--extraHover);
       }
 
-      &.secondary {
-        background-color: var(--buttonSecondary);
-        
-        &:hover, &:focus {
-          background-color: var(--extraHoverSecondary);
-        }
+      &:disabled {
+        cursor: not-allowed;
+        filter: saturate(0);
+        background-color: var(--buttonBackgroundDisabled);
       }
     }
+
+    &.secondary {
+      background-color: var(--buttonSecondary);
+      
+      &:hover, &:focus {
+        background-color: var(--extraHoverSecondary);
+      }
+    }
+  }
 
   /* button {
     width: 100%;

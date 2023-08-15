@@ -45,6 +45,7 @@ export default createGlobalStyle`
   //define as cores do root
   :root {
     --background: ${({ theme }) => theme.background};
+    --backgroundAccentTransparent: ${({ theme }) => theme.backgroundAccentTransparent};
     --main: ${({ theme }) => theme.main};
     --headline: ${({ theme }) => theme.headline};
     --paragraph: ${({ theme }) => theme.paragraph};

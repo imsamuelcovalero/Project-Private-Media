@@ -8,11 +8,18 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 import { addPaymentId, getPaymentId, removePaymentId } from '../../helpers/localStorage.helper';
 import formatCurrency from '../../helpers/formatCurrency.helper';
 import SubscriptionS from './Style';
+import LoadingSpinnerComponent from '../LoadingSpinnerComponent';
+import ModalComponent from '../ModalComponent';
 
 function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [paymentId, setPaymentId] = useState(getPaymentId() || null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalCallback, setModalCallback] = useState(null);
 
   // const paymentId = getPaymentId() || null;
 
@@ -41,6 +48,7 @@ function SubscriptionComponent() {
   /* Função responsável por verificar o status do pagamento */
   const getStatusPayment = async () => {
     console.log('paymentId', paymentId);
+    setIsLoading(true);
     try {
       const response = await api.processPaymentStatus(user.id, paymentId);
 
@@ -50,33 +58,17 @@ function SubscriptionComponent() {
         toast.success('Pagamento processado com sucesso!');
         setPaymentStatus('approved');
         removePaymentId();
+        navigate('/login');
       } else {
         throw new Error(response.message || 'Erro desconhecido ao processar o pagamento.');
       }
     } catch (error) {
       console.error('Error:', error);
+      setIsLoading(false);
       if (error && error.response && error.response.data && error.response.data.message) {
         toast.error(`Erro ao processar o pagamento: ${error.response.data.message}`);
       } else {
         toast.error(`Erro ao processar o pagamento: ${error.message}`);
-      }
-    }
-  };
-
-  /* Função responsável por cancelar o pagamento */
-  const handleCancel = async () => {
-    try {
-      await api.cancelPayment(paymentId); // Chama a API para cancelar o pagamento
-
-      setPaymentId(null);
-      removePaymentId();
-      toast.success('Pagamento cancelado com sucesso.'); // Sucesso ao cancelar o pagamento
-    } catch (error) {
-      console.error('Error:', error);
-      if (error && error.message) {
-        toast.error(`Erro ao cancelar o pagamento: ${error.message}`);
-      } else {
-        toast.error('Erro desconhecido ao cancelar o pagamento.');
       }
     }
   };
@@ -99,11 +91,13 @@ function SubscriptionComponent() {
         setPaymentStatus('approved');
         setPaymentId(response.id);
         toast.success('Pagamento processado com sucesso!');
+        navigate('/login');
       } else {
         throw new Error(response.message || 'Erro desconhecido ao processar o pagamento.');
       }
     } catch (error) {
       console.error('Error:', error);
+      setIsLoading(false);
       if (error && error.response && error.response.data && error.response.data.message) {
         toast.error(`Erro ao processar o pagamento: ${error.response.data.message}`);
       } else {
@@ -133,6 +127,7 @@ function SubscriptionComponent() {
       }
     } catch (error) {
       console.error('Error:', error);
+      setIsLoading(false);
       if (error && error.response && error.response.data && error.response.data.message) {
         toast.error(`Erro ao processar o pagamento: ${error.response.data.message}`);
       } else {
@@ -144,29 +139,67 @@ function SubscriptionComponent() {
   /* Função que é chamada quando o usuário clica em pagar */
   const onSubmit = async ({ selectedPaymentMethod, formData }) => {
     console.log('formData', formData);
-    const confirmation = window.confirm('Tem certeza que deseja efetuar o pagamento?');
-    if (!confirmation) return;
+    setModalMessage('Tem certeza que deseja efetuar o pagamento?');
+    setModalCallback(() => () => {
+      setIsLoading(true);
 
-    if (selectedPaymentMethod === 'credit_card') {
-      await handleCreditCardPayment(formData, selectedPaymentMethod);
-    } else if (selectedPaymentMethod === 'bank_transfer') { // Pix
-      await handlePixPayment(formData, selectedPaymentMethod);
-    } else {
-      toast.error('Método de pagamento inválido.');
-    }
+      if (selectedPaymentMethod === 'credit_card') {
+        handleCreditCardPayment(formData, selectedPaymentMethod);
+      } else if (selectedPaymentMethod === 'bank_transfer') {
+        handlePixPayment(formData, selectedPaymentMethod);
+      } else {
+        toast.error('Método de pagamento inválido.');
+      }
+    });
+    setShowModal(true);
+  };
+
+  /* Função responsável por cancelar o pagamento */
+  const handleCancel = async () => {
+    setModalMessage('Tem certeza que deseja cancelar este pix?');
+    setModalCallback(() => async () => {
+      try {
+        await api.cancelPayment(paymentId);
+        setPaymentId(null);
+        removePaymentId();
+        toast.success('Pagamento cancelado com sucesso.');
+      } catch (error) {
+        console.error('Error:', error);
+        setIsLoading(false);
+        if (error && error.message) {
+          toast.error(`Erro ao cancelar o pagamento: ${error.message}`);
+        } else {
+          toast.error('Erro desconhecido ao cancelar o pagamento.');
+        }
+      }
+    });
+    setShowModal(true);
   };
 
   const onError = async (error) => {
     console.log(error);
-    // Você pode adicionar lógica adicional para lidar com erros aqui
+    toast.error('Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.');
   };
 
   const onReady = async () => {
-    // Se você estiver mostrando uma animação de carregamento, pode escondê-la aqui
+    setIsLoading(false);
   };
 
   return (
     <SubscriptionS>
+      {isLoading && <LoadingSpinnerComponent />}
+      <ModalComponent
+        show={showModal}
+        title="Confirmação"
+        message={modalMessage}
+        onConfirm={() => {
+          if (typeof modalCallback === 'function') {
+            modalCallback();
+          }
+          setShowModal(false);
+        }}
+        onCancel={() => setShowModal(false)}
+      />
       <h1>Assinatura</h1>
       <p>
         Valor da Mensalidade:

@@ -1,5 +1,6 @@
 export const lightTheme = {
   background: '#FFFFFF',
+  backgroundAccentTransparent: 'rgba(241, 241, 241, 0.8)',
   main: '#F7F7F7',
   headline: '#2C2C2C',
   paragraph: '#505050',
@@ -33,6 +34,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   background: '#121212',
+  backgroundAccentTransparent: 'rgba(30, 30, 30, 0.8)',
   main: '#212121',
   headline: '#FFFFFF',
   paragraph: '#BDBDBD',
