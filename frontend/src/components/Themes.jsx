@@ -7,7 +7,7 @@ export const lightTheme = {
   // Buttons
   buttonText: '#FFFFFF',
   buttonBorder: '#2C2C2C',
-  buttonStandard: '#4D4D4D',
+  buttonStandard: '#5C6D7D',
   buttonStandardHover: '#1A237E',
   buttonPrimary: '#3949AB',
   buttonPrimaryHover: '#1A237E',
@@ -38,7 +38,7 @@ export const darkTheme = {
   // Buttons
   buttonText: '#FFFFFF',
   buttonBorder: '#757575',
-  buttonStandard: '#4D4D4D',
+  buttonStandard: '#768A9B',
   buttonStandardHover: '#1A237E',
   buttonPrimary: '#3949AB',
   buttonPrimaryHover: '#1A237E',
