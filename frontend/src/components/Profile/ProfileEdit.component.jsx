@@ -14,8 +14,9 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileEditComponent() {
   const {
-    user, logout, setUser, isEditFormActivated, setIsEditFormActivated,
+    user, logout, setUser,
   } = useContext(ReactNodeContext);
+
   const [formProfile, setFormProfile] = useState({
     name: user?.nome,
     email: user?.email,
@@ -27,23 +28,30 @@ function ProfileEditComponent() {
   const [originalProfile, setOriginalProfile] = useState({
     name: user.nome,
     email: user.email,
-    password: '',
+    oldPassword: '',
   });
 
-  const [isNameBtnDisabled, setNameBtnDisabled] = useState(true);
-  const [isPasswordBtnDisabled, setIsPasswordBtnDisabled] = useState(true);
-
+  /* Estado para controlar o botão de envio do password antigo */
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+  /* Estado para controlar o botão de atualizar o perfil */
+  const [isNameBtnDisabled, setNameBtnDisabled] = useState(true);
+  const [isNewPasswordBtnDisabled, setIsNewPasswordBtnDisabled] = useState(true);
+
   const [canChangePassword, setCanChangePassword] = useState(false);
-  const [hasEditFieldTouched, setHasEditFieldTouched] = useState(false);
 
   const [touchedName, setTouchedName] = useState(false);
-  const [touchedPassword, setTouchedPassword] = useState(false);
-  const [touchedPasswordConfirm, setTouchedPasswordConfirm] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState('');
-  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
-  const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] = useState('');
+
+  const [touchedOldPassword, setTouchedOldPassword] = useState(false);
+  const [oldPasswordErrorMessage, setOldPasswordErrorMessage] = useState('');
+
+  const [touchedNewPassword, setTouchedNewPassword] = useState(false);
+  const [newPasswordErrorMessage, setNewPasswordErrorMessage] = useState('');
+  const [touchedNewPasswordConfirm, setTouchedNewPasswordConfirm] = useState(false);
+  const [newPasswordConfirmErrorMessage, setNewPasswordConfirmErrorMessage] = useState('');
   const [serverError, setServerError] = useState('');
+
+  // const [hasEditFieldTouched, setHasEditFieldTouched] = useState(false);
 
   const navigate = useNavigate();
   const formRef = useRef();
@@ -69,60 +77,45 @@ function ProfileEditComponent() {
     setFormProfile({
       name: user?.nome,
       email: user?.email,
-      password: '',
-      passwordConfirm: '',
+      oldPassword: '',
+      newPassword: '',
+      newPasswordConfirm: '',
     });
 
     setOriginalProfile({
       name: user?.nome,
       email: user?.email,
-      password: '',
+      oldPassword: '',
     });
   }, [user]);
 
-  /* função responsável por redefinir o perfil do formulário */
-  const resetFormProfile = () => {
-    if (isEditFormActivated) {
-      setFormProfile(originalProfile);
-    } else {
-      setOriginalProfile(formProfile);
-    }
-  };
-
-  /* função responsável por alternar a ativação do formulário de edição */
-  const toggleEditForm = () => {
-    setIsEditFormActivated(!isEditFormActivated);
-    setCanChangePassword(false);
-    resetFormProfile();
-  };
-
   /* função responsável por cancelar a edição do formulário */
   const cancelEdit = (isFromApi) => {
-    if (!hasEditFieldTouched) {
-      toggleEditForm();
-      return;
-    }
-
     if (!isFromApi) {
       const confirmation = window.confirm('Tem certeza que deseja cancelar a edição?');
       if (!confirmation) return;
     }
 
-    setHasEditFieldTouched(false);
+    // setHasEditFieldTouched(false);
     setTouchedName(false);
-    setTouchedPassword(false);
+    setTouchedOldPassword(false);
+    setTouchedNewPassword(false);
+
+    setIsSubmitDisabled(true);
+    setNameBtnDisabled(true);
+    setIsNewPasswordBtnDisabled(true);
 
     if (canChangePassword) {
       setCanChangePassword(false);
     }
 
-    resetFormProfile();
+    setFormProfile(originalProfile);
   };
 
   /* useEffect que verifica se a tecla ESC foi pressionada */
   useEffect(() => {
     const handleEsc = (event) => {
-      if (event.key === 'Escape' && isEditFormActivated) {
+      if (event.key === 'Escape') {
         event.preventDefault();
         event.stopPropagation();
         cancelEdit();
@@ -134,23 +127,14 @@ function ProfileEditComponent() {
     return () => {
       document.removeEventListener('keydown', handleEsc, true);
     };
-  }, [cancelEdit, isEditFormActivated]);
+  }, [cancelEdit]);
 
   /* Função que valida o campo de nome */
   const validateName = (name) => {
-    if (!name) return 'Campo de nome é obrigatório';
+    if (name === originalProfile.name) return true;
+    if (name === '') return 'Campo de nome é obrigatório';
     if (name.length < 3) {
       return 'Nome deve ter ao menos 3 caracteres';
-    }
-
-    return '';
-  };
-
-  /* Função que valida o campo de confirmação de senha */
-  const validatePasswordConfirmation = (password, passwordConfirm) => {
-    if (!passwordConfirm) return 'Campo de confirmação de senha é obrigatório';
-    if (password !== passwordConfirm) {
-      return 'As senhas não correspondem';
     }
 
     return '';
@@ -160,7 +144,7 @@ function ProfileEditComponent() {
   const validateOldPassword = (oldPassword) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
-    if (!oldPassword) return 'Campo de senha é obrigatório';
+    if (!formProfile.oldPassword) return 'Campo de senha é obrigatório';
     if (oldPassword.length < 8) {
       return 'Senha deve ter ao menos 8 caracteres';
     }
@@ -172,80 +156,63 @@ function ProfileEditComponent() {
   };
 
   /* Função que valida a senha */
-  const validatePassword = (password) => {
+  const validateNewPassword = (password) => {
     const hasEightCharacters = /.{8,}/.test(password);
     const hasUpperCaseLetter = /[A-Z]/.test(password);
     const hasNumber = /\d/.test(password);
 
     let error = '';
 
+    // console.log('formProfile.newPassword', formProfile.newPassword);
+
+    if (!formProfile.newPassword) return 'Campo de senha é obrigatório. ';
     if (!hasEightCharacters) error += 'Senha deve ter ao menos 8 caracteres. ';
     if (!hasUpperCaseLetter) error += 'Senha deve ter ao menos uma letra maiúscula. ';
     if (!hasNumber) error += 'Senha deve ter ao menos um número.';
 
-    if (error === '') setIsSubmitDisabled(false);
-    else setIsSubmitDisabled(true);
-
     return error;
+  };
+
+  /* Função que valida o campo de confirmação de senha */
+  const validateNewPasswordConfirmation = (password, passwordConfirm) => {
+    if (!passwordConfirm) return 'Campo de confirmação de senha é obrigatório';
+    if (password !== passwordConfirm) {
+      return 'As senhas não correspondem';
+    }
+
+    return '';
   };
 
   /* useEffect que chama as funções de validação e atualiza o estado de acordo com o retorno */
   useEffect(() => {
     const nameError = (touchedName || formProfile.name) ? validateName(formProfile.name) : '';
-    const passwordConfirmError = (touchedPasswordConfirm || formProfile.passwordConfirm) ? validatePasswordConfirmation(formProfile.password, formProfile.passwordConfirm) : '';
+    const oldPasswordError = (touchedOldPassword || formProfile.oldPassword) ? validateOldPassword(formProfile.oldPassword) : '';
+    const newPasswordError = (touchedNewPassword || formProfile.newPassword) ? validateNewPassword(formProfile.newPassword) : '';
+    const newPasswordConfirmError = (touchedNewPasswordConfirm || formProfile.newPasswordConfirm) ? validateNewPasswordConfirmation(formProfile.newPassword, formProfile.newPasswordConfirm) : '';
 
     setNameErrorMessage(nameError);
-    setPasswordConfirmErrorMessage(passwordConfirmError);
+    setOldPasswordErrorMessage(oldPasswordError);
+    setNewPasswordErrorMessage(newPasswordError);
+    setNewPasswordConfirmErrorMessage(newPasswordConfirmError);
 
-    setNameBtnDisabled(
-      !formProfile.name
-    || nameError,
-    );
+    setNameBtnDisabled(!formProfile.name || nameError);
+    setIsSubmitDisabled(!formProfile.oldPassword || oldPasswordError);
 
-    setIsPasswordBtnDisabled(
-      !formProfile.passwordConfirm
-    || passwordConfirmError,
+    setIsNewPasswordBtnDisabled(
+      !formProfile.newPassword
+    || !formProfile.newPasswordConfirm
+    || newPasswordError
+    || newPasswordConfirmError,
     );
-  }, [formProfile, touchedPassword, touchedName, touchedPasswordConfirm]);
+  }, [formProfile, touchedName, touchedOldPassword, touchedNewPassword, touchedNewPasswordConfirm]);
 
   /* Função que atualiza o estado de acordo com o input digitado */
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
     if (name === 'oldPassword') {
-      const oldPasswordError = validateOldPassword(value);
-      setOldPasswordErrorMessage(oldPasswordError);
-      setIsOldPasswordBtnDisabled(oldPasswordError);
-    }
-
-    if (name === 'password') {
-      setTouchedPassword(true);
-      const passwordError = validatePassword(value);
-      setPasswordErrorMessage(passwordError);
-      setIsPasswordBtnDisabled(passwordError);
       if (serverError === 'oldPassword') {
         setServerError('');
-      }
-      if (!isEditFormActivated) {
-        setOriginalProfile((prevState) => ({
-          ...prevState,
-          password: value,
-        }));
-      }
-    } else if (name === 'passwordConfirm') {
-      setTouchedPasswordConfirm(true);
-    }
-
-    if (name === 'name') {
-      setTouchedName(true);
-      const nameError = validateName(value);
-      setNameErrorMessage(nameError);
-      setNameBtnDisabled(nameError);
-      if (!isEditFormActivated) {
-        setOriginalProfile((prevState) => ({
-          ...prevState,
-          name: value,
-        }));
       }
     }
 
@@ -285,7 +252,7 @@ function ProfileEditComponent() {
       toast.success('Conta editada com sucesso!', {
         position: 'bottom-right',
       });
-      setIsEditFormActivated(false);
+
       navigate('/profile');
     } catch (error) {
       if (error.message === 'Authentication error') {
@@ -311,7 +278,8 @@ function ProfileEditComponent() {
 
       setFormProfile((prevState) => ({
         ...prevState,
-        password: '',
+        oldPassword: '',
+        newPassword: '',
       }));
 
       setServerError(null);
@@ -328,13 +296,11 @@ function ProfileEditComponent() {
     }
   };
 
-  console.log('touchend', touchedName, touchedPassword);
-
   return (
     <ProfileEditS>
       <h1>Edição do Perfil</h1>
       <form id="profileForm" ref={formRef}>
-        {!touchedPassword && (
+        {!touchedOldPassword && (
         <label htmlFor="name">
           <p className="inputTitle">Nome</p>
           <InputS
@@ -344,13 +310,10 @@ function ProfileEditComponent() {
             placeholder="Seu nome"
             value={formProfile.name}
             onChange={handleChange}
-            onClick={() => {
-              setTouchedName(true);
-              setHasEditFieldTouched(true);
-            }}
+            onClick={() => setTouchedName(true)}
             required
           />
-          {touchedName && formProfile.name && nameErrorMessage && (
+          {touchedName && nameErrorMessage && (
           <p className="errorMsg">{nameErrorMessage}</p>
           )}
         </label>
@@ -359,27 +322,24 @@ function ProfileEditComponent() {
         <div>
           {!canChangePassword ? (
             <div id="oldPasswordDiv">
-              <label htmlFor="password">
+              <label htmlFor="oldPassword">
                 <p className="inputTitle">Password</p>
                 <InputS
-                  id="password"
+                  id="oldPassword"
                   type="password"
                   placeholder="Digite seu password"
-                  name="password"
-                  value={formProfile.password}
+                  name="oldPassword"
+                  value={formProfile.oldPassword}
                   onChange={handleChange}
-                  onClick={() => {
-                    setTouchedPassword(true);
-                    setHasEditFieldTouched(true);
-                  }}
+                  onClick={() => setTouchedOldPassword(true)}
                   required
                   hasError={serverError === 'oldPassword'}
                 />
-                {touchedPassword && formProfile.password && passwordErrorMessage && (
-                <p className="errorMsg">{passwordErrorMessage}</p>
+                {touchedOldPassword && oldPasswordErrorMessage && (
+                <p className="errorMsg">{oldPasswordErrorMessage}</p>
                 )}
               </label>
-              {touchedPassword && (
+              {touchedOldPassword && (
               <ButtonS
                 type="button"
                 id="sendPasswordButton"
@@ -388,7 +348,7 @@ function ProfileEditComponent() {
                 onClick={(event) => verifyOldPassword(
                   event,
                   formProfile.email,
-                  formProfile.password,
+                  formProfile.oldPassword,
                 )}
               >
                 Enviar
@@ -397,15 +357,17 @@ function ProfileEditComponent() {
             </div>
           ) : (
             <div id="newPasswordDiv">
-              <label htmlFor="password">
+              <label htmlFor="newPassword">
                 <p className="inputTitle">Nova senha</p>
                 <InputS
-                  id="password"
+                  id="newPassword"
                   type="password"
-                  name="password"
+                  name="newPassword"
                   placeholder="Digite sua nova senha"
-                  value={formProfile.password}
+                  value={formProfile.newPassword}
                   onChange={handleChange}
+                  onClick={() => setTouchedNewPassword(true)}
+                  onBlur={() => { setTouchedNewPassword(false); }}
                   onInvalid={(e) => {
                     e.target.setCustomValidity('');
                     if (!e.target.validity.valid) {
@@ -413,24 +375,27 @@ function ProfileEditComponent() {
                     }
                   }}
                   onInput={(e) => e.target.setCustomValidity('')}
-                />
-                {formProfile.password && passwordErrorMessage && (
-                <p className="errorMsg">{passwordErrorMessage}</p>
-                )}
-              </label>
-              <label htmlFor="passwordConfirm">
-                <p className="inputTitle">Confirme a senha</p>
-                <InputS
-                  id="passwordConfirm"
-                  type="password"
-                  name="passwordConfirm"
-                  placeholder="Digite novamente a nova senha"
-                  value={formProfile.passwordConfirm}
-                  onChange={handleChange}
                   required
                 />
-                {formProfile.passwordConfirm && passwordConfirmErrorMessage && (
-                <p className="errorMsg">{passwordConfirmErrorMessage}</p>
+                {touchedNewPassword && newPasswordErrorMessage && (
+                <p className="errorMsg">{newPasswordErrorMessage}</p>
+                )}
+              </label>
+              <label htmlFor="newPasswordConfirm">
+                <p className="inputTitle">Confirme a senha</p>
+                <InputS
+                  id="newPasswordConfirm"
+                  type="password"
+                  name="newPasswordConfirm"
+                  placeholder="Digite novamente a nova senha"
+                  value={formProfile.newPasswordConfirm}
+                  onChange={handleChange}
+                  onClick={() => setTouchedNewPasswordConfirm(true)}
+                  onBlur={() => { setTouchedNewPasswordConfirm(false); }}
+                  required
+                />
+                {touchedNewPasswordConfirm && newPasswordConfirmErrorMessage && (
+                <p className="errorMsg">{newPasswordConfirmErrorMessage}</p>
                 )}
               </label>
             </div>
@@ -441,7 +406,7 @@ function ProfileEditComponent() {
           id="updateButton"
           type="submit"
           className="primary"
-          disabled={touchedName ? isNameBtnDisabled : isPasswordBtnDisabled}
+          disabled={touchedName ? isNameBtnDisabled : isNewPasswordBtnDisabled}
           onClick={(event) => {
             if (touchedName) {
               updateProfile(
@@ -452,7 +417,7 @@ function ProfileEditComponent() {
             } else {
               updateProfile(
                 event,
-                formProfile.password,
+                formProfile.newPassword,
                 'password',
               );
             }
@@ -464,9 +429,9 @@ function ProfileEditComponent() {
           id="editProfileButton"
           type="button"
           className="secondary"
-          onClick={() => (touchedName || touchedPassword ? cancelEdit() : navigate('/profile'))}
+          onClick={() => (touchedName || touchedOldPassword ? cancelEdit() : navigate('/profile'))}
         >
-          {touchedName || touchedPassword ? 'Cancelar edição' : 'Voltar'}
+          {touchedName || touchedOldPassword ? 'Cancelar edição' : 'Voltar'}
         </ButtonS>
       </form>
     </ProfileEditS>

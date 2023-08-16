@@ -102,7 +102,7 @@ export const ProfileEditS = styled.div`
     #newPasswordDiv {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 2.5rem;
     }
 
     .errorMsg {
