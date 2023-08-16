@@ -122,7 +122,7 @@ export const BaseButtonS = styled.button`
   margin: 10px;
   border-radius: 5px;
   cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
+  box-shadow: var(--buttonShadow);
   transition: background-color 0.3s, transform 0.3s;
   
   &:hover {
@@ -141,6 +141,7 @@ export const BaseButtonS = styled.button`
   
   &:disabled {
     cursor: not-allowed;
+    filter: saturate(0);
     background-color: var(--buttonBackgroundDisabled);
   }
 `;
@@ -153,6 +154,7 @@ export const ViewModeButtonS = styled(BaseButtonS)`
 // BackHomeButtonS - Estilo para botão "Voltar" e "Home"
 export const BackHomeButtonS = styled(BaseButtonS)`
   background-color: ${(props) => (props.variant === 'home' ? 'var(--buttonStandard)' : 'var(--buttonSecondary)')};
+  border: 1px solid var(--buttonBorder);
   &:hover {
     background-color: ${(props) => (props.variant === 'home' ? 'var(--buttonStandardHover)' : 'var(--buttonSecondaryHover)')};
   }
@@ -173,5 +175,11 @@ export const PaginationButtonS = styled(BaseButtonS)`
 
 // BackButtonS
 export const BackButtonS = styled(BaseButtonS)`
-  margin-top: 10px;
+  margin-top: 15px;
+  background-color: var(--buttonSecondary);
+  border: 1px solid var(--buttonBorder);
+  
+  &:hover, &:focus {
+    background-color: var(--buttonSecondaryHover);
+  }
 `;

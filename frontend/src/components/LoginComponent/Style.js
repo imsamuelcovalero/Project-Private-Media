@@ -76,6 +76,7 @@ export const LoginS = styled.div`
 
       &.standard {
         background-color: var(--buttonStandard);
+        border: 1px solid var(--buttonBorder);
         
         &:hover, &:focus {
             background-color: var(--buttonStandardHover);
@@ -84,6 +85,7 @@ export const LoginS = styled.div`
       
       &.primary {
         background-color: var(--buttonPrimary);
+        border: 1px solid var(--buttonBorder);
         
         &:hover, &:focus {
           background-color: var(--buttonPrimaryHover);
@@ -98,6 +100,7 @@ export const LoginS = styled.div`
 
       &.secondary {
         background-color: var(--buttonSecondary);
+        border: 1px solid var(--buttonBorder);
         
         &:hover, &:focus {
           background-color: var(--buttonSecondaryHover);

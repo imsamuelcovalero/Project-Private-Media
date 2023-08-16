@@ -137,20 +137,24 @@ export const ButtonS = styled.button`
   transition: var(--transitionSpeed);
 
   &.primary {
-      background-color: var(--buttonPrimary);
-      color: var(--buttonText);
-      border: 1px solid var(--buttonBorder);
-      box-shadow: var(--boxShadow);
-      
-      &:hover, &:focus {
-          background-color: var(--buttonPrimaryHover);
-      }
+    background-color: var(--buttonPrimary);
+    border: 1px solid var(--buttonBorder);
+    
+    &:hover, &:focus {
+      background-color: var(--buttonPrimaryHover);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      filter: saturate(0);
+      background-color: var(--buttonBackgroundDisabled);
+    }
   }
 
   &.secondary {
       background-color: var(--buttonSecondary);
-      color: var(--buttonText);
       border: 1px solid var(--buttonBorder);
+      color: var(--buttonText);
       box-shadow: var(--boxShadow);
       
       &:hover, &:focus {
@@ -162,7 +166,7 @@ export const ButtonS = styled.button`
     background-color: var(--buttonBackgroundDisabled); 
     cursor: not-allowed;
     filter: saturate(0);
-}
+  }
 `;
 
 export const InputS = styled.input`
