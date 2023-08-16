@@ -148,7 +148,7 @@ function LoginComponent() {
       <form id="loginForm">
         <div id="inputs">
           <label htmlFor="email">
-            <p id="inputTitle">Login</p>
+            <p className="inputTitle">Login</p>
             <input
               id="email"
               type="email"
@@ -166,7 +166,7 @@ function LoginComponent() {
         </div>
         <div id="inputs">
           <label htmlFor="password">
-            <p id="inputTitle">Senha</p>
+            <p className="inputTitle">Senha</p>
             <input
               id="password"
               type="password"

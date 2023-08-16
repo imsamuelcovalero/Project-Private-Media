@@ -78,6 +78,7 @@ function PasswordResetComponent() {
           type="email"
           value={resetEmail}
           onChange={(e) => handleEmailChange(e)}
+          onBlur={() => setTouchedEmail(false)}
           placeholder="Digite seu e-mail"
           aria-label="Digite seu e-mail para redefinição de senha"
           required

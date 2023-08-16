@@ -65,6 +65,7 @@ function RegisterComponent() {
 
     let error = '';
 
+    if (!password) return 'Campo de senha é obrigatório. ';
     if (!hasEightCharacters) error += 'Senha deve ter ao menos 8 caracteres. ';
     if (!hasUpperCaseLetter) error += 'Senha deve ter ao menos uma letra maiúscula. ';
     if (!hasNumber) error += 'Senha deve ter ao menos um número.';
@@ -177,9 +178,10 @@ function RegisterComponent() {
               placeholder="Seu nome"
               value={formRegister.name}
               onChange={handleChange}
+              onBlur={() => { setTouchedName(false); }}
               required
             />
-            {touchedName && formRegister.name && nameErrorMessage && (
+            {touchedName && nameErrorMessage && (
               <p id="ErrorMsg">{nameErrorMessage}</p>
             )}
           </label>
@@ -192,11 +194,11 @@ function RegisterComponent() {
               name="email"
               value={formRegister.email}
               onChange={handleChange}
-              onBlur={() => { setTouchedEmail(true); }}
+              onBlur={() => { setTouchedEmail(false); }}
               required
               hasError={serverError === 'email'}
             />
-            {touchedEmail && formRegister.email && emailErrorMessage && (
+            {touchedEmail && emailErrorMessage && (
             <p id="ErrorMsg">{emailErrorMessage}</p>
             )}
           </label>
@@ -209,7 +211,7 @@ function RegisterComponent() {
               name="password"
               value={formRegister.password}
               onChange={handleChange}
-              onBlur={() => { setTouchedPassword(true); }}
+              onBlur={() => { setTouchedPassword(false); }}
               onInvalid={(e) => {
                 e.target.setCustomValidity('');
                 if (!e.target.validity.valid) {
@@ -218,7 +220,7 @@ function RegisterComponent() {
               }}
               onInput={(e) => e.target.setCustomValidity('')}
             />
-            {touchedPassword && formRegister.password && passwordErrorMessage && (
+            {touchedPassword && passwordErrorMessage && (
             <p id="ErrorMsg">{passwordErrorMessage}</p>
             )}
           </label>
@@ -231,11 +233,10 @@ function RegisterComponent() {
               name="passwordConfirm"
               value={formRegister.passwordConfirm}
               onChange={handleChange}
-              onBlur={() => { setTouchedPasswordConfirm(true); }}
+              onBlur={() => { setTouchedPasswordConfirm(false); }}
               required
             />
-            {touchedPasswordConfirm && formRegister.passwordConfirm
-            && passwordConfirmErrorMessage && (
+            {touchedPasswordConfirm && passwordConfirmErrorMessage && (
             <p id="ErrorMsg">{passwordConfirmErrorMessage}</p>
             )}
           </label>

@@ -17,6 +17,7 @@ export const RegisterS = styled.div`
     border: 1px solid var(--buttonBorder);
     background-color: var(--main);
     height: 550px;
+    padding: 2rem;
     width: 300px;
     display: flex;
     flex-direction: column;
@@ -68,7 +69,7 @@ export const RegisterS = styled.div`
     }
 
     button {
-      width: 200px;
+      width: 100%;
       padding: 0.7rem 0;
       border: none;
       border-radius: 4px;
@@ -113,7 +114,7 @@ export const RegisterS = styled.div`
 export const InputS = styled.input`
   border: ${(props) => (props.hasError ? '1px solid var(--error)' : '1px solid var(--headline)')};
   height: 40px;
-  width: 200px;
+  width: 100%;
   padding: 5px;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%)!important;
