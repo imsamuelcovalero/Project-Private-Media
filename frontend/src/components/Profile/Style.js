@@ -135,6 +135,7 @@ export const ButtonS = styled.button`
   margin-top: 10px;
   cursor: pointer;
   transition: var(--transitionSpeed);
+  color: var(--buttonText);
 
   &.primary {
     background-color: var(--buttonPrimary);
