@@ -164,6 +164,7 @@ export const HeadingS = styled.h1`
   margin-bottom: 20px;
   color: var(--headline);
   text-transform: capitalize;
+  margin-top: 20px;
 `;
 
 // PaginationButtonS

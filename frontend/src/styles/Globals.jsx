@@ -48,7 +48,7 @@ export default createGlobalStyle`
     --background: ${({ theme }) => theme.background};
     --main: ${({ theme }) => theme.main};
     --headline: ${({ theme }) => theme.headline};
-    --textColor: ${({ theme }) => theme.paragraph};
+    --textColor: ${({ theme }) => theme.textColor};
     // Buttons
     --buttonText: ${({ theme }) => theme.buttonText};
     --buttonBorder: ${({ theme }) => theme.buttonBorder};

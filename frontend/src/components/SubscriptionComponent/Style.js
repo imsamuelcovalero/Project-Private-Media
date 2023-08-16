@@ -15,7 +15,7 @@ const SubscriptionS = styled.div`
 
   h1 {
     font-size: 2.5rem;
-    color: var(--buttonPrimary);
+    color: var(--headline);
     margin-bottom: 1rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
   }

@@ -2,7 +2,7 @@ export const lightTheme = {
   // Core
   background: '#FFFFFF',
   main: '#F7F7F7',
-  headline: '#2C2C2C',
+  headline: '#3949AB',
   textColor: '#505050',
   // Buttons
   buttonText: '#FFFFFF',
@@ -33,7 +33,7 @@ export const darkTheme = {
   // Core
   background: '#121212',
   main: '#212121',
-  headline: '#FFFFFF',
+  headline: '#3949AB',
   textColor: '#BDBDBD',
   // Buttons
   buttonText: '#FFFFFF',

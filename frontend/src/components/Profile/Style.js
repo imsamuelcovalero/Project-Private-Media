@@ -12,7 +12,7 @@ export const ProfileS = styled.div`
 
   h1 {
     font-size: 2.5rem;
-    color: var(--buttonPrimary);
+    color: var(--headline);
     margin-bottom: 1rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -23,6 +23,7 @@ export const ProfileS = styled.div`
   .subscription-status {
     font-size: 18px;
     margin-bottom: 10px;
+    color: var(--textColor);
   }
 
   .profile-items {
@@ -35,6 +36,7 @@ export const ProfileS = styled.div`
       display: flex;
       flex-direction: column;
       gap: 15px;
+      color: var(--textColor);
 
       .label-title {
         font-size: 18px;
@@ -56,7 +58,7 @@ export const ProfileEditS = styled.div`
 
   h1 {
     font-size: 2.5rem;
-    color: var(--buttonPrimary);
+    color: var(--headline);
     margin-bottom: 1rem;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     width: 100%;
@@ -67,7 +69,7 @@ export const ProfileEditS = styled.div`
     border: 1px solid var(--buttonBorder);
     background-color: var(--main);
     padding: 2rem;
-    width: 350px;
+    width: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -79,12 +81,13 @@ export const ProfileEditS = styled.div`
     .inputTitle {
       font-size: 16px;
       color: var(--textColor);
+      font-weight: 600;
     }
     
     #oldPasswordDiv {
       display: flex;
       flex-direction: column;
-      width: 250px;
+      width: 230px;
       gap: 1.5rem;
 
       label {
@@ -113,7 +116,7 @@ export const ErrorMsgS = styled.p`
 `;
 
 export const ButtonS = styled.button`
-  width: 250px;
+  width: 230px;
   height: 30px;
   line-height: 2.5em;
   display: flex;
@@ -155,7 +158,7 @@ export const ButtonS = styled.button`
 `;
 
 export const InputS = styled.input`
-  width: 250px; // largura fixa
+  width: 230px; // largura fixa
   padding: 0.5rem;
   border: none;
   border-radius: 4px;
@@ -163,7 +166,6 @@ export const InputS = styled.input`
   box-shadow: ${(props) => (props.hasError ? '0 -2px 0 var(--error) inset' : '0 -2px 0 var(--borderColor) inset')};
   transition: border-bottom-color 0.3s;
   font-size: 14px;
-  color: var(--textColor);
   background-color: rgba(0, 0, 0, 0.02);
 
   &:focus {
@@ -172,7 +174,7 @@ export const InputS = styled.input`
   }
 
   border-color: ${(props) => (props.hasError ? 'var(--error)' : 'var(--headline)')};
-  color: ${(props) => (props.hasError ? 'red' : 'inherit')}!important;
+  color: ${(props) => (props.hasError ? 'var(--error)' : 'var(--textColor)')}!important;
   
   ::placeholder {
     font-size: 13px;
