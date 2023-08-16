@@ -8,8 +8,8 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 import { addPaymentId, getPaymentId, removePaymentId } from '../../helpers/localStorage.helper';
 import formatCurrency from '../../helpers/formatCurrency.helper';
 import SubscriptionS from './Style';
-import LoadingSpinnerComponent from '../LoadingSpinnerComponent';
-import ModalComponent from '../ModalComponent';
+import LoadingSpinner from '../LoadingSpinner.component';
+import ConfirmationModal from '../ConfirmationModal.component';
 
 function SubscriptionComponent() {
   const { logout, user } = useContext(ReactNodeContext);
@@ -20,10 +20,6 @@ function SubscriptionComponent() {
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [modalCallback, setModalCallback] = useState(null);
-
-  // const paymentId = getPaymentId() || null;
-
-  // console.log('key', process.env.REACT_APP_MERCADOPAGO_ID);
 
   const navigate = useNavigate();
 
@@ -187,8 +183,8 @@ function SubscriptionComponent() {
 
   return (
     <SubscriptionS>
-      {isLoading && <LoadingSpinnerComponent />}
-      <ModalComponent
+      {isLoading && <LoadingSpinner />}
+      <ConfirmationModal
         show={showModal}
         title="Confirmação"
         message={modalMessage}

@@ -1,9 +1,9 @@
-/* File: src/components/ModalComponent.js */
+/* File: src/components/ConfirmationModal.component.js */
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const ModalS = styled.div`
+const ConfirmationModalS = styled.div`
   position: fixed;
   top: 0;
   left: 0;
@@ -61,24 +61,24 @@ const ModalS = styled.div`
   }
 `;
 
-function ModalComponent({
+function ConfirmationModal({
   show, title, message, onConfirm, onCancel,
 }) {
   if (!show) return null;
 
   return (
-    <ModalS>
+    <ConfirmationModalS>
       <div className="modal-content">
         <h2>{title}</h2>
         <p>{message}</p>
         <button type="button" className="primary" onClick={onConfirm}>Confirmar</button>
         <button type="button" className="secondary" onClick={onCancel}>Cancelar</button>
       </div>
-    </ModalS>
+    </ConfirmationModalS>
   );
 }
 
-ModalComponent.propTypes = {
+ConfirmationModal.propTypes = {
   show: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   message: PropTypes.string.isRequired,
@@ -86,4 +86,4 @@ ModalComponent.propTypes = {
   onCancel: PropTypes.func.isRequired,
 };
 
-export default ModalComponent;
+export default ConfirmationModal;

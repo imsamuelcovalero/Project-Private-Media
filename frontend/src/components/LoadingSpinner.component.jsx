@@ -1,9 +1,9 @@
-/* File: src/Components/LoadingSpinnerComponent */
+/* File: src/Components/LoadingSpinner.component */
 import React from 'react';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
-const SpinnerS = styled(motion.div)`
+const LoadingSpinnerS = styled(motion.div)`
   position: fixed;
   top: 50%;
   left: 50%;
@@ -14,14 +14,14 @@ const SpinnerS = styled(motion.div)`
   border-radius: 8px;
 `;
 
-export default function LoadingSpinnerComponent() {
+export default function LoadingSpinner() {
   return (
-    <SpinnerS
+    <LoadingSpinnerS
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
       Carregando...
-    </SpinnerS>
+    </LoadingSpinnerS>
   );
 }

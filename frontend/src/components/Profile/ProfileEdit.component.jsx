@@ -7,10 +7,11 @@ import { toast } from 'react-toastify';
 import { firebaseReauthenticate, firebaseUpdateProfile } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
+import ConfirmationModal from '../ConfirmationModal.component';
+import ReactNodeContext from '../../context/ReactNodeContext';
 import {
   ProfileEditS, InputS, ButtonS,
 } from './Style';
-import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileEditComponent() {
   const {
@@ -41,7 +42,6 @@ function ProfileEditComponent() {
 
   const [touchedName, setTouchedName] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState('');
-
   const [touchedOldPassword, setTouchedOldPassword] = useState(false);
   const [oldPasswordErrorMessage, setOldPasswordErrorMessage] = useState('');
 
@@ -51,7 +51,9 @@ function ProfileEditComponent() {
   const [newPasswordConfirmErrorMessage, setNewPasswordConfirmErrorMessage] = useState('');
   const [serverError, setServerError] = useState('');
 
-  // const [hasEditFieldTouched, setHasEditFieldTouched] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
+  const [modalCallback, setModalCallback] = useState(null);
 
   const navigate = useNavigate();
   const formRef = useRef();
@@ -91,12 +93,29 @@ function ProfileEditComponent() {
 
   /* função responsável por cancelar a edição do formulário */
   const cancelEdit = (isFromApi) => {
-    if (!isFromApi) {
-      const confirmation = window.confirm('Tem certeza que deseja cancelar a edição?');
-      if (!confirmation) return;
+    if (!touchedName && !touchedOldPassword) {
+      return navigate('/profile');
+    } if (!isFromApi) {
+      setModalMessage('Tem certeza que deseja cancelar a edição?');
+      setModalCallback(() => {
+        setTouchedName(false);
+        setTouchedOldPassword(false);
+        setTouchedNewPassword(false);
+
+        setIsSubmitDisabled(true);
+        setNameBtnDisabled(true);
+        setIsNewPasswordBtnDisabled(true);
+
+        if (canChangePassword) {
+          setCanChangePassword(false);
+        }
+
+        setFormProfile(originalProfile);
+      });
+      setShowModal(true);
+      return null;
     }
 
-    // setHasEditFieldTouched(false);
     setTouchedName(false);
     setTouchedOldPassword(false);
     setTouchedNewPassword(false);
@@ -110,6 +129,8 @@ function ProfileEditComponent() {
     }
 
     setFormProfile(originalProfile);
+
+    return null;
   };
 
   /* useEffect que verifica se a tecla ESC foi pressionada */
@@ -226,43 +247,44 @@ function ProfileEditComponent() {
   const updateProfile = async (event, data, type) => {
     event.preventDefault();
 
-    const confirmation = window.confirm('Tem certeza que deseja atualizar seu perfil?');
-    if (!confirmation) return;
+    setModalMessage('Tem certeza que deseja atualizar seu perfil?');
+    setModalCallback(() => async () => {
+      const updateData = {};
+      updateData[type] = data;
 
-    const updateData = {};
-    updateData[type] = data;
+      try {
+        const idToken = await firebaseUpdateProfile(updateData);
+        if (!idToken) toast.error('Erro ao tentar fazer a edição');
 
-    try {
-      const idToken = await firebaseUpdateProfile(updateData);
-      if (!idToken) toast.error('Erro ao tentar fazer a edição');
+        const response = await api.signUp(idToken);
+        const {
+          id, nome, email, assinaturaAtiva,
+        } = response;
 
-      const response = await api.signUp(idToken);
-      const {
-        id, nome, email, assinaturaAtiva,
-      } = response;
+        const userInfo = {
+          id, email, nome, assinaturaAtiva,
+        };
 
-      const userInfo = {
-        id, email, nome, assinaturaAtiva,
-      };
+        saveUserInfo(userInfo);
 
-      saveUserInfo(userInfo);
+        setUser(userInfo);
 
-      setUser(userInfo);
+        toast.success('Conta editada com sucesso!', {
+          position: 'bottom-right',
+        });
 
-      toast.success('Conta editada com sucesso!', {
-        position: 'bottom-right',
-      });
-
-      navigate('/profile');
-    } catch (error) {
-      if (error.message === 'Authentication error') {
-        toast.error('Erro na autenticação. Por favor, tente novamente.');
-      } else {
-        toast.error(error.message || 'Erro ao tentar editar o perfil');
+        navigate('/profile');
+      } catch (error) {
+        if (error.message === 'Authentication error') {
+          toast.error('Erro na autenticação. Por favor, tente novamente.');
+        } else {
+          toast.error(error.message || 'Erro ao tentar editar o perfil');
+        }
       }
-    }
-    setCanChangePassword(false);
-    cancelEdit(true);
+      setCanChangePassword(false);
+      cancelEdit(true);
+    });
+    setShowModal(true);
   };
 
   /* Função para lidar com a verificação de senha antiga */
@@ -299,6 +321,18 @@ function ProfileEditComponent() {
   return (
     <ProfileEditS>
       <h1>Edição do Perfil</h1>
+      <ConfirmationModal
+        show={showModal}
+        title="Confirmação"
+        message={modalMessage}
+        onConfirm={() => {
+          if (typeof modalCallback === 'function') {
+            modalCallback();
+          }
+          setShowModal(false);
+        }}
+        onCancel={() => setShowModal(false)}
+      />
       <form id="profileForm" ref={formRef}>
         {!touchedOldPassword && (
         <label htmlFor="name">
