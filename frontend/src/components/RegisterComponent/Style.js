@@ -15,6 +15,7 @@ export const RegisterS = styled.div`
   }
   #registerForm {
     border: 1px solid var(--buttonBorder);
+    background-color: var(--main);
     height: 550px;
     width: 300px;
     display: flex;
@@ -44,11 +45,11 @@ export const RegisterS = styled.div`
     }
 
     #ErrorMsg {
-      color: red;
+      color: var(--error)
     }
 
     #registerButton, #backBtn {
-      background-color: var(--buttonBackground);
+      background-color: var(--buttonStandard);
       :disabled { background-color: var(--buttonBackgroundDisabled); }
       color: var(--buttonText);
       border: 1px solid var(--buttonBorder);
@@ -62,6 +63,47 @@ export const RegisterS = styled.div`
       box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
       border-radius: 4px;
       cursor: pointer;
+    }
+
+    button {
+      width: 200px;
+      padding: 0.7rem 0;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &.standard {
+        background-color: var(--buttonStandard);
+        
+        &:hover, &:focus {
+            background-color: var(--buttonStandardHover);
+        }
+      }
+      
+      &.primary {
+        background-color: var(--buttonPrimary);
+        
+        &:hover, &:focus {
+          background-color: var(--buttonPrimaryHover);
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          filter: saturate(0);
+          background-color: var(--buttonBackgroundDisabled);
+        }
+      }
+
+      &.secondary {
+        background-color: var(--buttonSecondary);
+        
+        &:hover, &:focus {
+          background-color: var(--buttonSecondaryHover);
+        }
+      }
     }
   }
 `;

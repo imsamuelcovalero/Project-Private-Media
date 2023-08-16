@@ -44,31 +44,30 @@ export default createGlobalStyle`
 
   //define as cores do root
   :root {
+    // Core
     --background: ${({ theme }) => theme.background};
-    --backgroundAccentTransparent: ${({ theme }) => theme.backgroundAccentTransparent};
     --main: ${({ theme }) => theme.main};
     --headline: ${({ theme }) => theme.headline};
-    --paragraph: ${({ theme }) => theme.paragraph};
-    --buttonBorder: ${({ theme }) => theme.buttonBorder};
+    --textColor: ${({ theme }) => theme.paragraph};
+    // Buttons
     --buttonText: ${({ theme }) => theme.buttonText};
-    --buttonBackground: ${({ theme }) => theme.buttonBackground};
-    --buttonBackgroundDisabled: ${({ theme }) => theme.buttonBackgroundDisabled};
+    --buttonBorder: ${({ theme }) => theme.buttonBorder};
+    --buttonStandard: ${({ theme }) => theme.buttonStandard};
+    --buttonStandardHover: ${({ theme }) => theme.buttonStandardHover};
     --buttonPrimary: ${({ theme }) => theme.buttonPrimary};
     --buttonPrimaryHover: ${({ theme }) => theme.buttonPrimaryHover};
     --buttonSecondary: ${({ theme }) => theme.buttonSecondary};
     --buttonSecondaryHover: ${({ theme }) => theme.buttonSecondaryHover};
-    --secondary: ${({ theme }) => theme.secondary};
-    --secondaryHover: ${({ theme }) => theme.secondaryHover};
+    --buttonBackgroundDisabled: ${({ theme }) => theme.buttonBackgroundDisabled};
+    // Others
     --tertiary: ${({ theme }) => theme.tertiary};
     --extra: ${({ theme }) => theme.extra};
-    --extraHover: ${({ theme }) => theme.extraHover};
-    --extraSecondary: ${({ theme }) => theme.extraSecondary};
-    --extraHoverSecondary: ${({ theme }) => theme.extraHoverSecondary};
     // Additional
     --transitionSpeed: ${({ theme }) => theme.transitionSpeed};
     --boxShadow: ${({ theme }) => theme.boxShadow};
     --borderColor: ${({ theme }) => theme.borderColor};
     --backgroundAccent: ${({ theme }) => theme.backgroundAccent};
+    --backgroundAccentTransparent: ${({ theme }) => theme.backgroundAccentTransparent};
     --success: ${({ theme }) => theme.success};
     --error: ${({ theme }) => theme.error};
     --warning: ${({ theme }) => theme.warning};

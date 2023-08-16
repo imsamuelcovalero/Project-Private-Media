@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import ThemeComponent from './ThemeComponent';
-import { HeaderS, BtnMain, StyledButton } from './Style';
+import { HeaderS, BtnMain, ButtonS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 // import { removeUserInfo } from '../../helpers/localStorage.helper';
 
@@ -48,20 +48,20 @@ function Header() {
       {user ? (
         <>
           {location.pathname !== '/profile' && (
-            <StyledButton type="button" onClick={() => navigate('/profile')}>
+            <ButtonS type="button" onClick={() => navigate('/profile')}>
               <FaUserCircle />
               {' '}
               Perfil
-            </StyledButton>
+            </ButtonS>
           )}
-          <StyledButton type="button" onClick={handleLogout}>
+          <ButtonS type="button" onClick={handleLogout}>
             <FaSignOutAlt />
             {' '}
             Sair
-          </StyledButton>
+          </ButtonS>
         </>
       ) : (
-        <StyledButton type="button" onClick={() => navigate('/login')}>Entrar</StyledButton>
+        <ButtonS type="button" onClick={() => navigate('/login')}>Entrar</ButtonS>
       )}
       <div id="themeDiv">
         <ThemeComponent />

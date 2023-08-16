@@ -210,7 +210,7 @@ function LoginComponent() {
         </div>
         <div>
           <button
-            className="secondary"
+            className="standard"
             type="button"
             onClick={() => navigate('/visitors')}
           >

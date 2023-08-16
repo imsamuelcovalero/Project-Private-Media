@@ -65,6 +65,7 @@ export const ProfileEditS = styled.div`
 
   #profileForm {
     border: 1px solid var(--buttonBorder);
+    background-color: var(--main);
     padding: 2rem;
     width: 350px;
     display: flex;
@@ -74,35 +75,45 @@ export const ProfileEditS = styled.div`
     border-radius: 5px;
     box-shadow: var(--boxShadow);
     transition: 0.3s;
+
+    .inputTitle {
+      font-size: 16px;
+      color: var(--textColor);
+    }
     
-    #inputs, #oldPasswordDiv {
+    #oldPasswordDiv {
       display: flex;
       flex-direction: column;
+      width: 250px;
       gap: 1.5rem;
 
       label {
+        position: relative;  // Adicionado para posicionar o erro relativo a este contêiner
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        
-        #inputTitle {
-          font-size: 16px;
-          color: var(--textPrimary);
-        }
+
       }
     }
 
-    #ErrorMsg {
-      color: var(--error);
-      font-size: 12px;
-      align-self: flex-start;
-      margin-left: 0.5rem;
+    #newPasswordDiv {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
     }
   }
 `;
 
+export const ErrorMsgS = styled.p`
+  height: 20px;
+  color: var(--error);
+  font-size: 12px;
+  align-self: flex-start;
+  margin-left: 0.5rem;
+`;
+
 export const ButtonS = styled.button`
-  width: 200px;
+  width: 250px;
   height: 30px;
   line-height: 2.5em;
   display: flex;
@@ -123,12 +134,6 @@ export const ButtonS = styled.button`
       &:hover, &:focus {
           background-color: var(--buttonPrimaryHover);
       }
-      
-      &:disabled { 
-          background-color: var(--buttonBackgroundDisabled); 
-          cursor: not-allowed;
-          filter: saturate(0);
-      }
   }
 
   &.secondary {
@@ -140,24 +145,25 @@ export const ButtonS = styled.button`
       &:hover, &:focus {
           background-color: var(--buttonSecondaryHover);
       }
-      
-      &:disabled { 
-          background-color: var(--buttonBackgroundDisabled); 
-          cursor: not-allowed;
-          filter: saturate(0);
-      }
   }
+
+  &:disabled { 
+    background-color: var(--buttonBackgroundDisabled); 
+    cursor: not-allowed;
+    filter: saturate(0);
+}
 `;
 
 export const InputS = styled.input`
-  width: 100%;
+  width: 250px; // largura fixa
   padding: 0.5rem;
   border: none;
   border-radius: 4px;
-  border-bottom: 2px solid var(--borderColor);
+  border-bottom: none;
+  box-shadow: ${(props) => (props.hasError ? '0 -2px 0 var(--error) inset' : '0 -2px 0 var(--borderColor) inset')};
   transition: border-bottom-color 0.3s;
   font-size: 14px;
-  color: var(--paragraph);
+  color: var(--textColor);
   background-color: rgba(0, 0, 0, 0.02);
 
   &:focus {
@@ -165,7 +171,7 @@ export const InputS = styled.input`
     outline: none;
   }
 
-  border: ${(props) => (props.hasError ? '1px solid red' : '1px solid var(--headline)')};
+  border-color: ${(props) => (props.hasError ? 'var(--error)' : 'var(--headline)')};
   color: ${(props) => (props.hasError ? 'red' : 'inherit')}!important;
   
   ::placeholder {

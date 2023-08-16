@@ -37,7 +37,7 @@ const SubscriptionS = styled.div`
       background-color: var(--buttonPrimary);
       
       &:hover, &:focus {
-        background-color: var(--extraHover);
+        background-color: var(--buttonPrimaryHover);
       }
 
       &:disabled {
@@ -51,43 +51,10 @@ const SubscriptionS = styled.div`
       background-color: var(--buttonSecondary);
       
       &:hover, &:focus {
-        background-color: var(--extraHoverSecondary);
+        background-color: var(--buttonSecondaryHover);
       }
     }
   }
-
-  /* button {
-    width: 100%;
-    padding: 0.7rem 0;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.3s;
-    
-    &.primary {
-      background-color: var(--buttonPrimary);
-      
-      &:hover, &:focus {
-        background-color: var(--extraHover);
-      }
-
-      &:disabled {
-        cursor: not-allowed;
-        filter: saturate(0);
-        background-color: var(--buttonBackgroundDisabled);
-      }
-    }
-
-    &.secondary {
-      background-color: var(--buttonSecondary);
-      
-      &:hover, &:focus {
-        background-color: var(--extraHoverSecondary);
-      }
-    }
-  } */
 `;
 
 export default SubscriptionS;

@@ -57,7 +57,7 @@ function RegisterComponent() {
     return '';
   };
 
-  /* Função que valida os dados digitados e habilita ou desabilita o botão de Entrar */
+  /* Função que valida os dados digitados em password */
   const validatePassword = (password) => {
     const hasEightCharacters = /.{8,}/.test(password);
     const hasUpperCaseLetter = /[A-Z]/.test(password);
@@ -241,7 +241,8 @@ function RegisterComponent() {
           </label>
         </div>
         <button
-          id="registerButton"
+          // id="registerButton"
+          className="primary"
           type="submit"
           disabled={isDisabled || serverError === 'email'}
           onClick={(event) => signUp(
@@ -254,7 +255,8 @@ function RegisterComponent() {
           Cadastrar
         </button>
         <button
-          id="backBtn"
+          // id="backBtn"
+          className="secondary"
           type="button"
           onClick={() => navigate(-1)}
         >

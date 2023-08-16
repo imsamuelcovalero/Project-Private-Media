@@ -12,6 +12,7 @@ export const LoginS = styled.div`
   
   #loginForm {
     border: 1px solid var(--buttonBorder);
+    background-color: var(--main);
     padding: 2rem;
     width: 300px;
     display: flex;
@@ -33,7 +34,7 @@ export const LoginS = styled.div`
         
         #inputTitle {
           font-size: 16px;
-          color: var(--textPrimary);
+          color: var(--textColor);
         }
 
         input {
@@ -44,7 +45,7 @@ export const LoginS = styled.div`
           border-bottom: 2px solid var(--borderColor);
           transition: border-bottom-color 0.3s;
           font-size: 14px;
-          color: var(--textSecondary);
+          color: var(--textColor);
           background-color: rgba(0, 0, 0, 0.02);
           
           &:focus {
@@ -71,12 +72,20 @@ export const LoginS = styled.div`
       font-weight: 500;
       cursor: pointer;
       transition: 0.3s;
+
+      &.standard {
+        background-color: var(--buttonStandard);
+        
+        &:hover, &:focus {
+            background-color: var(--buttonStandardHover);
+        }
+      }
       
       &.primary {
         background-color: var(--buttonPrimary);
         
         &:hover, &:focus {
-          background-color: var(--extraHover);
+          background-color: var(--buttonPrimaryHover);
         }
 
         &:disabled {
@@ -90,20 +99,20 @@ export const LoginS = styled.div`
         background-color: var(--buttonSecondary);
         
         &:hover, &:focus {
-          background-color: var(--extraHoverSecondary);
+          background-color: var(--buttonSecondaryHover);
         }
       }
     }
 
     button.forgot-password {
       background-color: transparent;
-      color: var(--buttonBackground);
+      color: var(--buttonStandard);
       text-decoration: underline;
       font-size: 14px;
       padding: 0;
       &:hover, &:focus {
         background-color: transparent;
-        color: var(--extraHover);
+        color: var(--buttonStandardHover);
       }
     }
   }
@@ -119,6 +128,7 @@ export const PasswordResetS = styled.div`
   
   .reset-modal {
     border: 1px solid var(--buttonBorder);
+    background-color: var(--main);
     padding: 2rem;
     width: 300px;
     display: flex;
@@ -130,7 +140,7 @@ export const PasswordResetS = styled.div`
 
     h2 {
       font-size: 24px;
-      color: var(--textPrimary);
+      color: var(--textColor);
       margin-bottom: 1rem;
       text-align: center;
     }
@@ -151,7 +161,7 @@ export const PasswordResetS = styled.div`
       border-bottom: 2px solid var(--borderColor);
       transition: border-bottom-color 0.3s;
       font-size: 14px;
-      color: var(--textSecondary);
+      color: var(--textColor);
       background-color: rgba(0, 0, 0, 0.02);
       
       &:focus {
@@ -174,7 +184,7 @@ export const PasswordResetS = styled.div`
         background-color: var(--buttonPrimary);
         
         &:hover, &:focus {
-          background-color: var(--extraHover);
+          background-color: var(--buttonPrimaryHover);
         }
 
         &:disabled {
@@ -188,7 +198,7 @@ export const PasswordResetS = styled.div`
         background-color: var(--buttonSecondary);
         
         &:hover, &:focus {
-          background-color: var(--extraHoverSecondary);
+          background-color: var(--buttonSecondaryHover);
         }
       }
     }

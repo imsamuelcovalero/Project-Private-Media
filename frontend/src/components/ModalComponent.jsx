@@ -41,7 +41,7 @@ const ModalS = styled.div`
       background-color: var(--buttonPrimary);
       
       &:hover, &:focus {
-        background-color: var(--extraHover);
+        background-color: var(--buttonPrimaryHover);
       }
 
       &:disabled {
@@ -55,7 +55,7 @@ const ModalS = styled.div`
       background-color: var(--buttonSecondary);
       
       &:hover, &:focus {
-        background-color: var(--extraHoverSecondary);
+        background-color: var(--buttonSecondaryHover);
       }
     }
   }

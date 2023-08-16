@@ -7,7 +7,9 @@ import { toast } from 'react-toastify';
 import { firebaseReauthenticate, firebaseUpdateProfile } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
-import { ProfileEditS, InputS, ButtonS } from './Style';
+import {
+  ProfileEditS, InputS, ButtonS, ErrorMsgS,
+} from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileEditComponent() {
@@ -310,7 +312,7 @@ function ProfileEditComponent() {
       <form id="profileForm" ref={formRef}>
         {!touchedPassword && (
         <label htmlFor="name">
-          <p id="inputTitle">Nome</p>
+          <p className="inputTitle">Nome</p>
           <InputS
             id="name"
             type="text"
@@ -325,91 +327,91 @@ function ProfileEditComponent() {
             required
           />
           {touchedName && formProfile.name && nameErrorMessage && (
-          <p id="ErrorMsg">{nameErrorMessage}</p>
+          <ErrorMsgS>{nameErrorMessage}</ErrorMsgS>
           )}
         </label>
         )}
         {!touchedName && (
-          <div>
-            {!canChangePassword ? (
-              <div id="oldPasswordDiv">
-                <label htmlFor="password">
-                  <p id="inputTitle">Password</p>
-                  <InputS
-                    id="password"
-                    type="password"
-                    placeholder="Digite seu password"
-                    name="password"
-                    value={formProfile.password}
-                    onChange={handleChange}
-                    onClick={() => {
-                      setTouchedPassword(true);
-                      setHasEditFieldTouched(true);
-                    }}
-                    required
-                    hasError={serverError === 'oldPassword'}
-                  />
-                  {touchedPassword && formProfile.password && passwordErrorMessage && (
-                  <p id="ErrorMsg">{passwordErrorMessage}</p>
-                  )}
-                </label>
-                {touchedPassword && (
-                <ButtonS
-                  type="button"
-                  id="sendPasswordButton"
-                  className="primary"
-                  disabled={isSubmitDisabled || serverError === 'oldPassword'}
-                  onClick={(event) => verifyOldPassword(
-                    event,
-                    formProfile.email,
-                    formProfile.password,
-                  )}
-                >
-                  Enviar
-                </ButtonS>
-                ) }
-              </div>
-            ) : (
-              <>
-                <label htmlFor="password">
-                  <p id="inputTitle">Nova senha</p>
-                  <InputS
-                    id="password"
-                    type="password"
-                    name="password"
-                    placeholder="Digite sua nova senha"
-                    value={formProfile.password}
-                    onChange={handleChange}
-                    onInvalid={(e) => {
-                      e.target.setCustomValidity('');
-                      if (!e.target.validity.valid) {
-                        e.target.setCustomValidity('A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caracter especial');
-                      }
-                    }}
-                    onInput={(e) => e.target.setCustomValidity('')}
-                  />
-                  {formProfile.password && passwordErrorMessage && (
-                  <p id="ErrorMsg">{passwordErrorMessage}</p>
-                  )}
-                </label>
-                <label htmlFor="passwordConfirm">
-                  <p id="inputTitle">Confirme a senha</p>
-                  <InputS
-                    id="passwordConfirm"
-                    type="password"
-                    name="passwordConfirm"
-                    placeholder="Digite novamente a nova senha"
-                    value={formProfile.passwordConfirm}
-                    onChange={handleChange}
-                    required
-                  />
-                  {formProfile.passwordConfirm && passwordConfirmErrorMessage && (
-                  <p id="ErrorMsg">{passwordConfirmErrorMessage}</p>
-                  )}
-                </label>
-              </>
-            )}
-          </div>
+        <div>
+          {!canChangePassword ? (
+            <div id="oldPasswordDiv">
+              <label htmlFor="password">
+                <p className="inputTitle">Password</p>
+                <InputS
+                  id="password"
+                  type="password"
+                  placeholder="Digite seu password"
+                  name="password"
+                  value={formProfile.password}
+                  onChange={handleChange}
+                  onClick={() => {
+                    setTouchedPassword(true);
+                    setHasEditFieldTouched(true);
+                  }}
+                  required
+                  hasError={serverError === 'oldPassword'}
+                />
+                {touchedPassword && formProfile.password && passwordErrorMessage && (
+                <ErrorMsgS>{passwordErrorMessage}</ErrorMsgS>
+                )}
+              </label>
+              {touchedPassword && (
+              <ButtonS
+                type="button"
+                id="sendPasswordButton"
+                className="primary"
+                disabled={isSubmitDisabled || serverError === 'oldPassword'}
+                onClick={(event) => verifyOldPassword(
+                  event,
+                  formProfile.email,
+                  formProfile.password,
+                )}
+              >
+                Enviar
+              </ButtonS>
+              ) }
+            </div>
+          ) : (
+            <div id="newPasswordDiv">
+              <label htmlFor="password">
+                <p className="inputTitle">Nova senha</p>
+                <InputS
+                  id="password"
+                  type="password"
+                  name="password"
+                  placeholder="Digite sua nova senha"
+                  value={formProfile.password}
+                  onChange={handleChange}
+                  onInvalid={(e) => {
+                    e.target.setCustomValidity('');
+                    if (!e.target.validity.valid) {
+                      e.target.setCustomValidity('A senha deve conter pelo menos 8 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caracter especial');
+                    }
+                  }}
+                  onInput={(e) => e.target.setCustomValidity('')}
+                />
+                {formProfile.password && passwordErrorMessage && (
+                <ErrorMsgS>{passwordErrorMessage}</ErrorMsgS>
+                )}
+              </label>
+              <label htmlFor="passwordConfirm">
+                <p className="inputTitle">Confirme a senha</p>
+                <InputS
+                  id="passwordConfirm"
+                  type="password"
+                  name="passwordConfirm"
+                  placeholder="Digite novamente a nova senha"
+                  value={formProfile.passwordConfirm}
+                  onChange={handleChange}
+                  required
+                />
+                {formProfile.passwordConfirm && passwordConfirmErrorMessage && (
+                <ErrorMsgS>{passwordConfirmErrorMessage}</ErrorMsgS>
+                )}
+              </label>
+            </div>
+          )}
+        </div>
         )}
         <ButtonS
           id="updateButton"
