@@ -42,7 +42,7 @@ function LoginComponent() {
     verifyToken();
   }, []);
 
-  /* Função que valida os dados digitados e habilita ou desabilita o botão de Entrar */
+  /* Função que valida os dados digitados e lança mensagem de erro caso necessário */
   const validateField = (field) => {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
     const emailRegex = /\S+@\S+\.\S{2,}/;
@@ -67,7 +67,7 @@ function LoginComponent() {
     return '';
   };
 
-  /* useEffect que chama a função validateField e atualiza o estado de acordo com o retorno */
+  /* useEffect que chama a função validateField e habilita ou desabilita o botão de Entrar */
   useEffect(() => {
     const emailError = (touchedEmail || formLogin.email) ? validateField('email') : '';
     const passwordError = (touchedPassword || formLogin.password) ? validateField('password') : '';
@@ -156,11 +156,11 @@ function LoginComponent() {
               name="email"
               value={formLogin.email}
               onChange={handleChange}
-              onBlur={() => { setTouchedEmail(true); }}
+              onBlur={() => { setTouchedEmail(false); }}
               required
             />
-            {touchedEmail && formLogin.email && emailErrorMessage && (
-            <p id="ErrorMsg">{emailErrorMessage}</p>
+            {touchedEmail && emailErrorMessage && (
+            <p className="errorMsg">{emailErrorMessage}</p>
             )}
           </label>
         </div>
@@ -174,11 +174,11 @@ function LoginComponent() {
               name="password"
               value={formLogin.password}
               onChange={handleChange}
-              onBlur={() => { setTouchedPassword(true); }}
+              onBlur={() => { setTouchedPassword(false); }}
               required
             />
-            {touchedPassword && formLogin.password && passwordErrorMessage && (
-            <p id="ErrorMsg">{passwordErrorMessage}</p>
+            {touchedPassword && passwordErrorMessage && (
+            <p className="errorMsg">{passwordErrorMessage}</p>
             )}
           </label>
         </div>

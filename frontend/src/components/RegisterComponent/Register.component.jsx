@@ -169,7 +169,7 @@ function RegisterComponent() {
       <form id="registerForm">
         <div id="inputs">
           <label htmlFor="name">
-            <p id="inputTitle">Nome</p>
+            <p className="inputTitle">Nome</p>
             <InputS
               id="name"
               type="text"
@@ -184,7 +184,7 @@ function RegisterComponent() {
             )}
           </label>
           <label htmlFor="email">
-            <p id="inputTitle">Email</p>
+            <p className="inputTitle">Email</p>
             <InputS
               id="email"
               type="email"
@@ -201,7 +201,7 @@ function RegisterComponent() {
             )}
           </label>
           <label htmlFor="password">
-            <p id="inputTitle">Senha</p>
+            <p className="inputTitle">Senha</p>
             <InputS
               id="password"
               type="password"
@@ -223,7 +223,7 @@ function RegisterComponent() {
             )}
           </label>
           <label htmlFor="passwordConfirm">
-            <p id="inputTitle">Confirmar senha</p>
+            <p className="inputTitle">Confirmar senha</p>
             <InputS
               id="passwordConfirm"
               type="password"

@@ -8,7 +8,7 @@ import { firebaseReauthenticate, firebaseUpdateProfile } from '../../services/fi
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
 import {
-  ProfileEditS, InputS, ButtonS, ErrorMsgS,
+  ProfileEditS, InputS, ButtonS,
 } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
@@ -19,8 +19,9 @@ function ProfileEditComponent() {
   const [formProfile, setFormProfile] = useState({
     name: user?.nome,
     email: user?.email,
-    password: '',
-    passwordConfirm: '',
+    oldPassword: '',
+    newPassword: '',
+    newPasswordConfirm: '',
   });
 
   const [originalProfile, setOriginalProfile] = useState({
@@ -155,6 +156,21 @@ function ProfileEditComponent() {
     return '';
   };
 
+  /* Função que valida os dados do password antigo e lança mensagem de erro caso necessário */
+  const validateOldPassword = (oldPassword) => {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
+    if (!oldPassword) return 'Campo de senha é obrigatório';
+    if (oldPassword.length < 8) {
+      return 'Senha deve ter ao menos 8 caracteres';
+    }
+    if (!passwordRegex.test(oldPassword)) {
+      return 'Senha em formato inválido';
+    }
+
+    return '';
+  };
+
   /* Função que valida a senha */
   const validatePassword = (password) => {
     const hasEightCharacters = /.{8,}/.test(password);
@@ -195,6 +211,12 @@ function ProfileEditComponent() {
   /* Função que atualiza o estado de acordo com o input digitado */
   const handleChange = ({ target }) => {
     const { name, value } = target;
+
+    if (name === 'oldPassword') {
+      const oldPasswordError = validateOldPassword(value);
+      setOldPasswordErrorMessage(oldPasswordError);
+      setIsOldPasswordBtnDisabled(oldPasswordError);
+    }
 
     if (name === 'password') {
       setTouchedPassword(true);
@@ -306,6 +328,8 @@ function ProfileEditComponent() {
     }
   };
 
+  console.log('touchend', touchedName, touchedPassword);
+
   return (
     <ProfileEditS>
       <h1>Edição do Perfil</h1>
@@ -327,7 +351,7 @@ function ProfileEditComponent() {
             required
           />
           {touchedName && formProfile.name && nameErrorMessage && (
-          <ErrorMsgS>{nameErrorMessage}</ErrorMsgS>
+          <p className="errorMsg">{nameErrorMessage}</p>
           )}
         </label>
         )}
@@ -352,7 +376,7 @@ function ProfileEditComponent() {
                   hasError={serverError === 'oldPassword'}
                 />
                 {touchedPassword && formProfile.password && passwordErrorMessage && (
-                <ErrorMsgS>{passwordErrorMessage}</ErrorMsgS>
+                <p className="errorMsg">{passwordErrorMessage}</p>
                 )}
               </label>
               {touchedPassword && (
@@ -391,7 +415,7 @@ function ProfileEditComponent() {
                   onInput={(e) => e.target.setCustomValidity('')}
                 />
                 {formProfile.password && passwordErrorMessage && (
-                <ErrorMsgS>{passwordErrorMessage}</ErrorMsgS>
+                <p className="errorMsg">{passwordErrorMessage}</p>
                 )}
               </label>
               <label htmlFor="passwordConfirm">
@@ -406,7 +430,7 @@ function ProfileEditComponent() {
                   required
                 />
                 {formProfile.passwordConfirm && passwordConfirmErrorMessage && (
-                <ErrorMsgS>{passwordConfirmErrorMessage}</ErrorMsgS>
+                <p className="errorMsg">{passwordConfirmErrorMessage}</p>
                 )}
               </label>
             </div>
@@ -439,7 +463,7 @@ function ProfileEditComponent() {
         <ButtonS
           id="editProfileButton"
           type="button"
-          className="secondary" // Adicionando a classe secondary
+          className="secondary"
           onClick={() => (touchedName || touchedPassword ? cancelEdit() : navigate('/profile'))}
         >
           {touchedName || touchedPassword ? 'Cancelar edição' : 'Voltar'}

@@ -104,6 +104,14 @@ export const ProfileEditS = styled.div`
       flex-direction: column;
       gap: 1.5rem;
     }
+
+    .errorMsg {
+      height: 20px;
+      color: var(--error);
+      font-size: 12px;
+      align-self: flex-start;
+      margin-left: 0.5rem;
+    }
   }
 `;
 

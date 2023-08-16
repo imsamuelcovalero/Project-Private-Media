@@ -35,11 +35,13 @@ export const RegisterS = styled.div`
         align-items: center;
         gap: 5px; 
         margin-bottom: 10px;
-        #inputTitle {
+        .inputTitle {
           font-size: 18px;
           text-align: left;
           width: 100%;
           margin-left: 40px;
+          font-weight: 600;
+          color: var(--textColor);
         }  
       }
     }
@@ -115,5 +117,5 @@ export const InputS = styled.input`
   padding: 5px;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%)!important;
-  color: ${(props) => (props.hasError ? 'var(--error)' : 'inherit')}!important;
+  color: ${(props) => (props.hasError ? 'var(--error)' : 'var(--textColor')}!important;
 `;

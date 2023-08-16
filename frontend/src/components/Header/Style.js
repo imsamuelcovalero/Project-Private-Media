@@ -19,6 +19,7 @@ export const HeaderS = styled.div`
     justify-content: space-between;
     flex-direction: column;
     width: 100%;
+    color: var(--buttonText);
     #name {
       grid-area: n;
       height: 100%;

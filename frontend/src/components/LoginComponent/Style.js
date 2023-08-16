@@ -56,7 +56,7 @@ export const LoginS = styled.div`
       }
     }
     
-    #ErrorMsg {
+    .errorMsg {
       color: var(--error);
       font-size: 12px;
       align-self: flex-start;
