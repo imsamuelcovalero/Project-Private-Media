@@ -1,20 +1,14 @@
 import React, { useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
-import ThemeComponent from './ThemeComponent';
+import { FaUserCircle } from 'react-icons/fa';
 import { HeaderS, BtnMain, ButtonS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
-// import { removeUserInfo } from '../../helpers/localStorage.helper';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useContext(ReactNodeContext);
+  const { user } = useContext(ReactNodeContext);
   // console.log('user', user);
-
-  const handleLogout = async () => {
-    await logout();
-  };
 
   const isSignatureActive = user?.assinaturaAtiva?.status;
   // console.log('isSignatureActive', isSignatureActive);
@@ -45,27 +39,15 @@ function Header() {
           Seja bem-vindo(a)!
         </span>
       </div>
-      {user ? (
-        <>
-          {location.pathname !== '/profile' && (
-            <ButtonS type="button" onClick={() => navigate('/profile')}>
-              <FaUserCircle />
-              {' '}
-              Perfil
-            </ButtonS>
-          )}
-          <ButtonS type="button" onClick={handleLogout}>
-            <FaSignOutAlt />
-            {' '}
-            Sair
-          </ButtonS>
-        </>
-      ) : (
-        <ButtonS type="button" onClick={() => navigate('/login')}>Entrar</ButtonS>
+      {user && (
+        location.pathname !== '/profile' && (
+        <ButtonS type="button" onClick={() => navigate('/profile')}>
+          <FaUserCircle />
+          {' '}
+          Perfil
+        </ButtonS>
+        )
       )}
-      <div id="themeDiv">
-        <ThemeComponent />
-      </div>
     </HeaderS>
   );
 }

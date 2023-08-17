@@ -26,6 +26,10 @@ export const ProfileS = styled.div`
     color: var(--textColor);
   }
 
+  #paymentButton {
+    margin-bottom: 20px;
+  }
+
   .profile-items {
     display: flex;
     flex-direction: column;

@@ -14,11 +14,15 @@ export const HeaderS = styled.div`
   left: 0;
   z-index: 1000;
   #centerHeaderSpace{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
-    width: 100%;
+    width: auto; // ou defina uma largura fixa se necessário
     color: var(--textColor);
     #name {
       grid-area: n;
@@ -39,7 +43,7 @@ export const HeaderS = styled.div`
 
 export const BtnMain = styled.button`
   height: 100%;
-  width: 200px;
+  width: 120px;
   background: var(--buttonStandard);
   border: 1px solid var(--buttonBorder);
   border-radius: 4px;
@@ -67,6 +71,39 @@ export const BtnMain = styled.button`
   }
 `;
 
+export const ButtonS = styled.button`
+  margin-left: auto;
+  right: 16px;
+  background: var(--buttonStandard);
+  border: 1px solid var(--buttonBorder);
+  border-radius: 4px;
+  color: var(--buttonText);
+  cursor: pointer;
+  padding: 8px 16px; // Adicionado padding para um melhor espaçamento// 
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
+  &.active {
+    background-color: var(--buttonStandardHover);
+    border: 1px solid var(--buttonStandardHover);
+  }
+  &:hover:not(:disabled) {
+    background-color: var(--buttonStandardHover);
+    filter: brightness(0.9);
+  }
+  &:disabled {
+    cursor: not-allowed;
+    filter: saturate(0);
+  }
+  svg { // Estilização para os ícones
+    margin-right: 8px;
+  }
+`;
+
 export const ThemeS = styled.button`
     border: 1px solid var(--buttonBorder);
     height: 100%;
@@ -91,36 +128,4 @@ export const ThemeS = styled.button`
       cursor: pointer;
       background: var(--buttonStandardHover);
     }
-`;
-
-export const ButtonS = styled.button`
-  background: var(--buttonStandard);
-  border: 1px solid var(--buttonBorder);
-  border-radius: 4px;
-  color: var(--buttonText);
-  cursor: pointer;
-  padding: 8px 16px; // Adicionado padding para um melhor espaçamento
-  margin: 0 8px; // Espaçamento entre botões
-  font-weight: bold;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
-  &.active {
-    background-color: var(--buttonStandardHover);
-    border: 1px solid var(--buttonStandardHover);
-  }
-  &:hover:not(:disabled) {
-    background-color: var(--buttonStandardHover);
-    filter: brightness(0.9);
-  }
-  &:disabled {
-    cursor: not-allowed;
-    filter: saturate(0);
-  }
-  svg { // Estilização para os ícones
-    margin-right: 8px;
-  }
 `;

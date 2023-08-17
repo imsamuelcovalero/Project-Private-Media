@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { CategoryHeaderS, BtnCategory } from './CategoryHeader.style';
-import ReactNodeContext from '../../context/ReactNodeContext';
+import ReactNodeContext from '../../../context/ReactNodeContext';
 
 function CategoryHeaderComponent() {
   const { categoryId } = useParams();

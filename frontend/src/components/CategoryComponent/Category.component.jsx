@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import CategoryHeaderComponent from './CategoryHeader.component';
+import CategoryHeaderComponent from './CategoryHeaderComponent/CategoryHeader.component';
 import PhotoRenderComponent from './PhotoRender.component';
 import VideoRenderComponent from './VideoRender.component';
 import {

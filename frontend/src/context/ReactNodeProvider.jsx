@@ -8,7 +8,7 @@ import { getUserInfo, removeUserInfo } from '../helpers/localStorage.helper';
 import api from '../services';
 
 function ReactNodeProvider({ children }) {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState('dark');
   const [user, setUser] = useState(getUserInfo());
   const [categoryPhotos, setCategoryPhotos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
