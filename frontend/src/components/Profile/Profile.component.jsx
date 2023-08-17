@@ -26,6 +26,8 @@ function ProfileComponent() {
     verifyToken();
   }, []);
 
+  console.log('user', user);
+
   return (
     <ProfileS>
       <h1>Perfil</h1>
@@ -50,7 +52,7 @@ function ProfileComponent() {
         <div className="details">
           <div>
             <span className="label-title">Nome</span>
-            <p>{user.name}</p>
+            <p>{user.nome}</p>
           </div>
           <div>
             <span className="label-title">Email</span>
