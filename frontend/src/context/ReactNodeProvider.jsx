@@ -10,6 +10,7 @@ import api from '../services';
 function ReactNodeProvider({ children }) {
   const [theme, setTheme] = useState('dark');
   const [user, setUser] = useState(getUserInfo());
+  const [currentMainUrl, setCurrentMainUrl] = useState(`/main/${process.env.REACT_APP_FIREBASE_CATEGORY_ID1}`);
   const [categoryPhotos, setCategoryPhotos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
 
@@ -27,6 +28,15 @@ function ReactNodeProvider({ children }) {
     process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
     process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
   ];
+
+  useEffect(() => {
+    const path = window.location.pathname;
+    const mainPattern = /^\/main\/([a-zA-Z0-9-_]+)(\/|$)/; // Regex para capturar /main/{categoryId}/
+    const matches = path.match(mainPattern);
+    if (matches && matches[1]) {
+      setCurrentMainUrl(`/main/${matches[1]}`);
+    }
+  }, []);
 
   useEffect(() => {
     const userInfo = getUserInfo();
@@ -76,8 +86,10 @@ function ReactNodeProvider({ children }) {
     setViewMode,
     isEditFormActivated,
     setIsEditFormActivated,
+    currentMainUrl,
+    setCurrentMainUrl,
   }), [theme, user, categoryPhotos, categoryVideos, categoryIds,
-    mediaSelected, viewMode, isEditFormActivated]);
+    mediaSelected, viewMode, isEditFormActivated, currentMainUrl]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,

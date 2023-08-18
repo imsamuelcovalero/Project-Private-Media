@@ -44,7 +44,7 @@ function PhotoRenderComponent() {
       {selectedPhoto ? (
         <PhotoCardS className="selected">
           <img id="selectedPhoto" src={selectedPhoto.url} alt="Selected" />
-          <BackButtonS type="button" onClick={handleBackClick}>Voltar</BackButtonS>
+          <BackButtonS type="button" onClick={handleBackClick}>Voltar para fotos</BackButtonS>
         </PhotoCardS>
       ) : (
         <GalleryContainerS>

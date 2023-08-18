@@ -80,17 +80,6 @@ function CategoryComponent() {
             </div>
           )}
         </div>
-        <BackHomeButtonS
-          type="button"
-          variant="home"
-          onClick={() => {
-            setViewMode(null);
-            navigate('/main');
-          }}
-        >
-          Main
-
-        </BackHomeButtonS>
       </div>
     </CategoryS>
   );

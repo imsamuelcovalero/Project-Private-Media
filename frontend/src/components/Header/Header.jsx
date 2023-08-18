@@ -7,8 +7,8 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useContext(ReactNodeContext);
-  // console.log('user', user);
+  const { user, currentMainUrl } = useContext(ReactNodeContext);
+  // console.log('currentMainUrl', currentMainUrl);
 
   const isSignatureActive = user?.assinaturaAtiva?.status;
   // console.log('isSignatureActive', isSignatureActive);
@@ -18,7 +18,7 @@ function Header() {
       <BtnMain
         type="button"
         id="mainBtn"
-        onClick={() => (isSignatureActive ? navigate('/main') : navigate('/visitors'))}
+        onClick={() => (isSignatureActive ? navigate(`${currentMainUrl}`) : navigate('/visitors'))}
       >
         Main
       </BtnMain>

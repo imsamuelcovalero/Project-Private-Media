@@ -13,14 +13,13 @@ export const CategoryS = styled.div`
   #content {
     /* border: 2px solid blue; */
     margin-top: 140px;
-    height: calc(100vh - 140px); 
+    min-height: calc(100vh - 140px); 
     width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow-x: hidden; 
-    overflow-y: auto;
+    overflow: auto; 
     .content-inner { 
       display: flex;
       flex-direction: column;
@@ -83,7 +82,7 @@ export const PhotoCardS = styled.div`
 `;
 
 export const VideosDivS = styled.div`
-  /* border: 1px solid blue; */
+  /* border: 2px solid red; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

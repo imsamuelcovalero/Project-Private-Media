@@ -12,7 +12,7 @@ import {
 } from './Style';
 
 function VisitorsComponent() {
-  const { logout, user } = useContext(ReactNodeContext);
+  const { logout, user, categoryIds } = useContext(ReactNodeContext);
 
   const [mediaToRender, setMediaToRender] = useState(null);
   const [isSignatureActive, setIsSignatureActive] = useState(false);
@@ -27,7 +27,7 @@ function VisitorsComponent() {
         const data = await api.checkToken();
         if (data) {
           if (data.assinaturaAtiva.status) {
-            navigate('/main');
+            navigate(`/main/${categoryIds[0]}`);
           }
           setIsUserLogged(true);
           setIsSignatureActive(data.assinaturaAtiva.status);
