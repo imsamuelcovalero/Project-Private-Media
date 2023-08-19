@@ -6,7 +6,9 @@ import ReactNodeContext from '../../../context/ReactNodeContext';
 
 function CategoryHeaderComponent() {
   const { categoryId } = useParams();
-  const { categoryIds, setViewMode, setMediaSelected } = useContext(ReactNodeContext);
+  const {
+    categoryIds, setViewMode, setMediaSelected, setCurrentMainUrl,
+  } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
 
@@ -14,6 +16,7 @@ function CategoryHeaderComponent() {
     // Redefinindo o estado ao mudar de categoria
     setViewMode(null);
     setMediaSelected(false);
+    setCurrentMainUrl(`/main/${id}`);
     navigate(`/main/${id}`);
   };
 

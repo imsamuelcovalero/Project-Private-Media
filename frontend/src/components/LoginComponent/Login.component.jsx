@@ -9,7 +9,7 @@ import { LoginS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function LoginComponent() {
-  const { setUser } = useContext(ReactNodeContext);
+  const { setUser, categoryIds } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [formLogin, setFormLogin] = useState({
     email: '',
@@ -29,7 +29,7 @@ function LoginComponent() {
       try {
         const data = await api.checkToken();
         if (data && data.assinaturaAtiva.status) {
-          navigate('/main');
+          navigate(`/main/${categoryIds[0]}`);
         } else if (data && !data.assinaturaAtiva.status) {
           toast.warning(data.assinaturaAtiva.message);
           navigate('/visitors');
@@ -122,7 +122,7 @@ function LoginComponent() {
           position: 'top-right',
         });
         navigate('/visitors');
-      } else navigate('/main');
+      } else navigate(`/main/${categoryIds[0]}`);
     } catch (error) {
       // Check the code property of the error to determine the type of the error
       switch (error.code) {

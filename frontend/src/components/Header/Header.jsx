@@ -7,18 +7,26 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, currentMainUrl } = useContext(ReactNodeContext);
+  const {
+    user, currentMainUrl, setViewMode, setMediaSelected,
+  } = useContext(ReactNodeContext);
   // console.log('currentMainUrl', currentMainUrl);
 
   const isSignatureActive = user?.assinaturaAtiva?.status;
   // console.log('isSignatureActive', isSignatureActive);
+
+  const handleNavigateToMain = () => {
+    setViewMode(null);
+    setMediaSelected(false);
+    navigate(currentMainUrl);
+  };
 
   return (
     <HeaderS>
       <BtnMain
         type="button"
         id="mainBtn"
-        onClick={() => (isSignatureActive ? navigate(`${currentMainUrl}`) : navigate('/visitors'))}
+        onClick={() => (isSignatureActive ? handleNavigateToMain() : navigate('/visitors'))}
       >
         Main
       </BtnMain>

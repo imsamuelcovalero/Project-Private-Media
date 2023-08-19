@@ -38,6 +38,8 @@ function ReactNodeProvider({ children }) {
     }
   }, []);
 
+  // console.log('currentMainUrl', currentMainUrl);
+
   useEffect(() => {
     const userInfo = getUserInfo();
     if (userInfo !== user) {
