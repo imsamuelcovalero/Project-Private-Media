@@ -7,7 +7,7 @@ import { ProfileS, ButtonS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function ProfileComponent() {
-  const { user, logout, setIsEditFormActivated } = useContext(ReactNodeContext);
+  const { user, logout } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
 
@@ -57,10 +57,7 @@ function ProfileComponent() {
           className="primary"
           type="button"
           id="editProfileButton"
-          onClick={() => {
-            setIsEditFormActivated(true);
-            navigate('/profile/edit');
-          }}
+          onClick={() => navigate('/profile/edit')}
         >
           Editar perfil
         </ButtonS>

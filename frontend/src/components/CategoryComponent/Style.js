@@ -182,3 +182,33 @@ export const BackButtonS = styled(BaseButtonS)`
     background-color: var(--buttonSecondaryHover);
   }
 `;
+
+export const StyledButton = styled.button`
+  background: var(--buttonPrimary);
+  border: none;
+  border-radius: 4px;
+  color: var(--buttonText);
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 1rem;
+  text-align: center;  // Manter o alinhamento centralizado do texto
+  box-shadow: var(--boxShadow);
+  transition: var(--transitionSpeed);
+
+  &:hover {
+    background-color: var(--buttonPrimaryHover);
+    filter: brightness(0.9);
+  }
+
+  svg {
+    margin: 0 5px; // Espaçamento uniforme para ícones
+  }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;

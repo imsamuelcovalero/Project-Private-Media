@@ -18,10 +18,12 @@ function ReactNodeProvider({ children }) {
   const [categoryPhotos, setCategoryPhotos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
 
+  const [isSignatureActive, setIsSignatureActive] = useState(false);
+  const [isUserLogged, setIsUserLogged] = useState(false);
   const [mediaSelected, setMediaSelected] = useState(false);
   const [viewMode, setViewMode] = useState(null);
 
-  const [isEditFormActivated, setIsEditFormActivated] = useState(false);
+  // const [isEditFormActivated, setIsEditFormActivated] = useState(false);
 
   const navigate = useNavigate();
 
@@ -46,12 +48,34 @@ function ReactNodeProvider({ children }) {
   // console.log('currentCategory', currentCategory);
   // console.log('currentMainUrl', currentMainUrl);
 
+  /* useEffect que verifica se o usuário atual é diferente do usuário salvo no localStorage */
+  // useEffect(() => {
+  //   const userInfo = getUserInfo();
+  //   console.log('userInfo', userInfo);
+  //   if (userInfo !== user) {
+  //     setUser(userInfo);
+  //   }
+  // }, []);
+
+  /* useEffect que verifica se o usuário está logado e tem a assinatura ativa */
   useEffect(() => {
-    const userInfo = getUserInfo();
-    if (userInfo !== user) {
-      setUser(userInfo);
+    if (!user) {
+      console.log('usuário não logado');
+      setIsUserLogged(false);
+      // setIsSignatureActive(false);
+    } else {
+      console.log('usuário logado');
+      setIsUserLogged(true);
+      console.log('user', user);
+      if (user.assinaturaAtiva.status) {
+        console.log('assinatura ativa');
+        setIsSignatureActive(true);
+      } else {
+        console.log('assinatura inativa');
+        setIsSignatureActive(false);
+      }
     }
-  }, []);
+  }, [user]);
 
   /* função que faz logout */
   const handleLogout = async () => {
@@ -59,6 +83,8 @@ function ReactNodeProvider({ children }) {
       await api.logout();
       removeUserInfo();
       setUser(null); // Defina o estado do usuário como null depois de fazer logout
+      // setIsUserLogged(false);
+      console.log('user', user);
       navigate('/visitors');
     } catch (error) {
       console.error('Error during logout:', error);
@@ -97,14 +123,16 @@ function ReactNodeProvider({ children }) {
     setMediaSelected,
     viewMode,
     setViewMode,
-    isEditFormActivated,
-    setIsEditFormActivated,
     currentMainUrl,
     setCurrentMainUrl,
     currentCategory,
     setCurrentCategory,
-  }), [theme, user, categoryPhotos, categoryVideos, categoryIds,
-    mediaSelected, viewMode, isEditFormActivated, currentMainUrl, currentCategory]);
+    isSignatureActive,
+    setIsSignatureActive,
+    isUserLogged,
+    setIsUserLogged,
+  }), [theme, user, categoryPhotos, categoryVideos, categoryIds, mediaSelected,
+    viewMode, currentMainUrl, currentCategory, isSignatureActive, isUserLogged]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,
