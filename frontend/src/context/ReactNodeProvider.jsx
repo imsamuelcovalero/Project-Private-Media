@@ -10,7 +10,11 @@ import api from '../services';
 function ReactNodeProvider({ children }) {
   const [theme, setTheme] = useState('dark');
   const [user, setUser] = useState(getUserInfo());
+
   const [currentMainUrl, setCurrentMainUrl] = useState(`/main/${process.env.REACT_APP_FIREBASE_CATEGORY_ID1}`);
+  const [currentCategory, setCurrentCategory] = useState(process.env
+    .REACT_APP_FIREBASE_CATEGORY_ID1);
+
   const [categoryPhotos, setCategoryPhotos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
 
@@ -35,9 +39,11 @@ function ReactNodeProvider({ children }) {
     const matches = path.match(mainPattern);
     if (matches && matches[1]) {
       setCurrentMainUrl(`/main/${matches[1]}`);
+      setCurrentCategory(matches[1]);
     }
   }, []);
 
+  // console.log('currentCategory', currentCategory);
   // console.log('currentMainUrl', currentMainUrl);
 
   useEffect(() => {
@@ -70,6 +76,11 @@ function ReactNodeProvider({ children }) {
     }
   };
 
+  /* useEffect que busca as fotos e vídeos da categoryId referente */
+  useEffect(() => {
+    getCategoryData(currentCategory);
+  }, [currentCategory]);
+
   // console.log('categoryPhotos', categoryPhotos, 'categoryVideos', categoryVideos);
 
   const contextValue = useMemo(() => ({
@@ -90,8 +101,10 @@ function ReactNodeProvider({ children }) {
     setIsEditFormActivated,
     currentMainUrl,
     setCurrentMainUrl,
+    currentCategory,
+    setCurrentCategory,
   }), [theme, user, categoryPhotos, categoryVideos, categoryIds,
-    mediaSelected, viewMode, isEditFormActivated, currentMainUrl]);
+    mediaSelected, viewMode, isEditFormActivated, currentMainUrl, currentCategory]);
 
   ReactNodeProvider.propTypes = {
     children: PropTypes.node.isRequired,

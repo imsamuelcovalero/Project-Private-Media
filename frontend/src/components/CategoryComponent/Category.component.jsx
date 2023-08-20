@@ -13,7 +13,7 @@ import {
 
 function CategoryComponent() {
   const {
-    logout, getCategoryData, mediaSelected, viewMode, setViewMode,
+    logout, mediaSelected, viewMode, setViewMode,
   } = useContext(ReactNodeContext);
 
   // const [mediaSelected, setMediaSelected] = useState(false);
@@ -42,11 +42,6 @@ function CategoryComponent() {
 
     verifyToken();
   }, []);
-
-  /* useEffect que busca as fotos e vídeos da categoryId referente */
-  useEffect(() => {
-    getCategoryData(categoryId);
-  }, [categoryId]);
 
   const renderContent = () => {
     if (viewMode === 'photos') {
