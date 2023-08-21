@@ -38,6 +38,7 @@ function PhotosGalleryComponent() {
   const indexOfLastPhoto = currentPage * photosPerPage;
   const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
   const currentPhotos = categoryPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
+  const hasNextPage = indexOfLastPhoto < categoryPhotos.length;
   // console.log('currentPhotos', currentPhotos);
 
   return (
@@ -52,7 +53,7 @@ function PhotosGalleryComponent() {
         </PhotosDivS>
         <PaginationContainerS>
           <PaginationButtonS type="button" disabled={currentPage === 1} onClick={handlePreviousPage}>Página anterior</PaginationButtonS>
-          <PaginationButtonS type="button" disabled={currentPhotos.length < photosPerPage} onClick={handleNextPage}>Próxima página</PaginationButtonS>
+          <PaginationButtonS type="button" disabled={!hasNextPage} onClick={handleNextPage}>Próxima página</PaginationButtonS>
         </PaginationContainerS>
       </GalleryContainerS>
     </div>

@@ -38,6 +38,7 @@ function VideosGalleryComponent() {
   const indexOfLastVideo = currentPage * videosPerPage;
   const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
   const currentVideos = categoryVideos.slice(indexOfFirstVideo, indexOfLastVideo);
+  const hasNextPage = indexOfLastVideo < categoryVideos.length;
 
   return (
     <div role="main" aria-label="Video viewer">
@@ -51,7 +52,7 @@ function VideosGalleryComponent() {
         </VideosDivS>
         <PaginationContainerS>
           <PaginationButtonS type="button" disabled={currentPage === 1} onClick={handlePreviousPage}>Página anterior</PaginationButtonS>
-          <PaginationButtonS type="button" disabled={currentVideos.length < videosPerPage} onClick={handleNextPage}>Próxima página</PaginationButtonS>
+          <PaginationButtonS type="button" disabled={!hasNextPage} onClick={handleNextPage}>Próxima página</PaginationButtonS>
         </PaginationContainerS>
       </GalleryContainerS>
     </div>
