@@ -111,6 +111,35 @@ export const VideoCardS = styled.div`
   }
 `;
 
+export const MediaCardS = styled.div`
+  border: 1px solid var(--main);
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+  img {
+    height: 180px;
+    width: 198px;
+  }
+
+  &.selected img {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  video {
+    height: 112px;
+    width: 198px;
+  }
+
+  &.selected video {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+  }
+`;
+
 // BaseButtonS
 export const BaseButtonS = styled.button`
   background-color: var(--buttonPrimary);

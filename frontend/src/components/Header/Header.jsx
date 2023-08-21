@@ -5,12 +5,13 @@ import { HeaderS, BtnMain, ButtonS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function Header() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const {
     user, currentMainUrl, setViewMode, setMediaSelected,
   } = useContext(ReactNodeContext);
   // console.log('currentMainUrl', currentMainUrl);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // const isSignatureActive = user?.assinaturaAtiva?.status;
   // console.log('isSignatureActive', isSignatureActive);

@@ -146,7 +146,7 @@ const firebaseReauthenticate = async (email, password) => {
 };
 
 /* Função que busca uma foto ou vídeo de uma categoria específica */
-const firebaseGetMediaByCategoryAndId = async (categoriaId, mediaId, mediaType) => {
+const firebaseGetMediaByCategoryAndId = async (categoriaId, mediaType, mediaId) => {
   try {
     if (!['fotos', 'videos'].includes(mediaType)) {
       console.error('Invalid media type provided');

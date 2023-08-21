@@ -9,8 +9,6 @@ import {
 function PhotosGalleryComponent() {
   const { categoryPhotos, setMediaSelected, currentMainUrl } = useContext(ReactNodeContext);
 
-  // const [selectedPhoto, setSelectedPhoto] = useState(null);
-
   const navigate = useNavigate();
 
   // Paginação
@@ -19,15 +17,13 @@ function PhotosGalleryComponent() {
 
   const handlePhotoClick = (photo) => {
     console.log('photo', photo);
-    navigate(`${currentMainUrl}/photos/${photo.id}`);
+    navigate(`${currentMainUrl}/fotos/${photo.id}`);
     // setSelectedPhoto(photo);
-    setMediaSelected(true);
+    setMediaSelected({
+      mediaType: 'fotos',
+      media: photo,
+    });
   };
-
-  // const handleBackClick = () => {
-  //   setSelectedPhoto(null);
-  //   setMediaSelected(false);
-  // };
 
   // Funções para manipular a paginação
   const handleNextPage = () => {
@@ -42,7 +38,7 @@ function PhotosGalleryComponent() {
   const indexOfLastPhoto = currentPage * photosPerPage;
   const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
   const currentPhotos = categoryPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
-  console.log('currentPhotos', currentPhotos);
+  // console.log('currentPhotos', currentPhotos);
 
   return (
     <div role="main" aria-label="Photo viewer">
