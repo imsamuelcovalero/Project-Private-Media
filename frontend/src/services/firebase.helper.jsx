@@ -10,7 +10,7 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import {
-  collection, getDocs, doc, setDoc, updateDoc, getDoc,
+  collection, doc, getDocs, getDoc, setDoc, updateDoc, query, where,
 } from 'firebase/firestore';
 import { auth, db } from './firebase.config';
 
@@ -145,7 +145,47 @@ const firebaseReauthenticate = async (email, password) => {
   }
 };
 
+/* Função que busca uma foto ou vídeo de uma categoria específica */
+const firebaseGetMediaByCategoryAndId = async (categoriaId, mediaId, mediaType) => {
+  try {
+    if (!['fotos', 'videos'].includes(mediaType)) {
+      console.error('Invalid media type provided');
+      return null;
+    }
+
+    // Primeiro, obtenha o documento da categoria baseado no categoriaId
+    const categoryQuery = query(collection(db, 'categorias'), where('categoriaId', '==', categoriaId));
+    const categorySnapshot = await getDocs(categoryQuery);
+
+    if (categorySnapshot.empty) {
+      console.error('Category does not exist');
+      return null;
+    }
+
+    // Asumindo que categoriaId é único e só há um documento correspondente
+    const categoryDoc = categorySnapshot.docs[0];
+    const mediaList = categoryDoc.data()[mediaType];
+
+    if (!mediaList.includes(mediaId)) {
+      console.error(`${mediaType.slice(0, -1)} does not exist in the given category`);
+      return null;
+    }
+
+    // Se o media existir na lista, obtenha o documento na respectiva coleção (fotos ou videos)
+    const mediaDoc = await getDoc(doc(db, mediaType, mediaId));
+    if (!mediaDoc.exists) {
+      console.error(`${mediaType.slice(0, -1)} document does not exist`);
+      return null;
+    }
+
+    return { id: mediaDoc.id, ...mediaDoc.data() };
+  } catch (error) {
+    console.error(`Error fetching ${mediaType.slice(0, -1)} by category and ID:`, error);
+    throw error;
+  }
+};
+
 export {
   firebaseSignIn, firebaseSignUp, firebaseUpdateProfile, firebaseReauthenticate,
-  firebaseGetCategory, firebaseSendPasswordResetEmail,
+  firebaseGetCategory, firebaseSendPasswordResetEmail, firebaseGetMediaByCategoryAndId,
 };

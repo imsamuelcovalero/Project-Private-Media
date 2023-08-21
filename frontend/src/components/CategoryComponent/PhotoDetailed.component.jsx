@@ -1,4 +1,4 @@
-/* File: src/components/CategoryComponent/PhotoRender.component.jsx */
+/* File: src/components/CategoryComponent/VideoDetailed.component.jsx */
 import React, { useContext, useState } from 'react';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import {

@@ -24,9 +24,9 @@ function Content() {
       <Route path="/profile/edit" element={<ProfileEdit />} />
       <Route path="/subscription" element={<Subscription />} />
       <Route path="/:categoryId" element={<Category />} />
-      <Route path="/:categoryId/photos" element={<PhotosGallery />} />
+      <Route path="/:categoryId/fotos" element={<PhotosGallery />} />
       <Route path="/:categoryId/videos" element={<VideosGallery />} />
-      <Route path="/:categoryId/photos/:photoId" element={<PhotoDetailed />} />
+      <Route path="/:categoryId/fotos/:photoId" element={<PhotoDetailed />} />
       <Route path="/:categoryId/videos/:videoId" element={<VideoDetailed />} />
     </Routes>
   );
