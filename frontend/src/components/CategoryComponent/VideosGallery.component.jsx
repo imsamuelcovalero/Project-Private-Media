@@ -17,8 +17,8 @@ function VideosGalleryComponent() {
   const videosPerPage = 10; // ajuste conforme necessário
 
   const handleVideoClick = (video) => {
+    document.getElementById(`video-${video.id}`).pause();
     navigate(`${currentMainUrl}/videos/${video.id}`);
-    // setSelectedPhoto(photo);
     setMediaSelected({
       mediaType: 'videos',
       media: video,
@@ -46,7 +46,7 @@ function VideosGalleryComponent() {
         <VideosDivS>
           {currentVideos.map((video) => (
             <VideoCardS key={video.id} role="button" tabIndex="0" onClick={() => handleVideoClick(video)} onKeyDown={(e) => { if (e.key === 'Enter') handleVideoClick(video); }}>
-              <video id={`video-${video.id}`} src={video.url} controls />
+              <video id={`video-${video.id}`} src={video.url} controls preload="none" />
             </VideoCardS>
           ))}
         </VideosDivS>

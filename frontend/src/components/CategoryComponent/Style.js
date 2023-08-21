@@ -31,10 +31,10 @@ export const CategoryS = styled.div`
 `;
 
 export const GalleryContainerS = styled.div`
-  border: 1px solid red;
+  /* border: 1px solid red; */
   margin-top: 140px;
   height: calc(100vh - 140px); 
-  max-width: 100vw;
+  width: 100vw;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -54,7 +54,7 @@ export const PaginationContainerS = styled.div`
 `;
 
 export const PhotosDivS = styled.div`
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -130,10 +130,10 @@ export const VideoCardS = styled.div`
 `;
 
 export const MediaCardS = styled.div`
-  border: 1px solid blue;
+  border: 1px solid var(--main);
   margin-top: 140px;
   height: calc(100vh - 140px); 
-  max-width: 100vw;
+  width: 100vw;
   border-radius: 3px;
   overflow: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
