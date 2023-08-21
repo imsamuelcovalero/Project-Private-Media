@@ -20,6 +20,7 @@ function Content() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/edit" element={<ProfileEdit />} />
       <Route path="/visitors" element={<Visitors />} />
+      <Route path="/:categoryId" element={<Category />} />
       <Route path="/main" element={<Main />} />
       <Route path="/main/:categoryId" element={<Category />} />
       <Route path="/subscription" element={<Subscription />} />

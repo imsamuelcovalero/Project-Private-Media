@@ -5,11 +5,14 @@ import { toast } from 'react-toastify';
 import { firebaseSignIn } from '../../services/firebase.helper';
 import { saveUserInfo } from '../../helpers/localStorage.helper';
 import api from '../../services';
-import { LoginS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
+import { LoginS } from './Style';
 
 function LoginComponent() {
-  const { setUser, categoryIds } = useContext(ReactNodeContext);
+  const {
+    setUser, categoryIds, setIsSignatureActive,
+    setIsUserLogged,
+  } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [formLogin, setFormLogin] = useState({
     email: '',
@@ -28,12 +31,15 @@ function LoginComponent() {
     const verifyToken = async () => {
       try {
         const data = await api.checkToken();
-        if (data && data.assinaturaAtiva.status) {
-          navigate(`/main/${categoryIds[0]}`);
-        } else if (data && !data.assinaturaAtiva.status) {
-          toast.warning(data.assinaturaAtiva.message);
-          navigate('/visitors');
+        if (data && !data.assinaturaAtiva.status) {
+          toast.warning(data.assinaturaAtiva.message, {
+            position: 'top-right',
+          });
+          setIsSignatureActive(false);
+        } else if (data && data.assinaturaAtiva.status) {
+          setIsSignatureActive(true);
         }
+        navigate(`/${categoryIds[0]}`);
       } catch (error) {
         console.error(error);
       }
@@ -121,8 +127,12 @@ function LoginComponent() {
         toast.warning(assinaturaAtiva.message, {
           position: 'top-right',
         });
-        navigate('/visitors');
-      } else navigate(`/main/${categoryIds[0]}`);
+        setIsSignatureActive(false);
+      } else {
+        setIsSignatureActive(true);
+      }
+      setIsUserLogged(true);
+      navigate(`/${categoryIds[0]}`);
     } catch (error) {
       // Check the code property of the error to determine the type of the error
       switch (error.code) {

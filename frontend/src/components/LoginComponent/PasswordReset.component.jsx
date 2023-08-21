@@ -1,12 +1,14 @@
 /* File: src/components/LoginComponent/PasswordReset.component.jsx */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { firebaseSendPasswordResetEmail } from '../../services/firebase.helper';
 import api from '../../services';
+import ReactNodeContext from '../../context/ReactNodeContext';
 import { PasswordResetS } from './Style';
 
 function PasswordResetComponent() {
+  const { categoryIds } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [resetEmail, setResetEmail] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
@@ -20,7 +22,7 @@ function PasswordResetComponent() {
       try {
         const data = await api.checkToken();
         if (data) {
-          navigate('/main');
+          navigate(`/${categoryIds[0]}`);
         }
       } catch (error) {
         console.error(error);
@@ -56,6 +58,7 @@ function PasswordResetComponent() {
     try {
       await firebaseSendPasswordResetEmail(resetEmail);
       toast.success('Email de redefinição de senha enviado com sucesso! Por favor, verifique sua caixa de entrada.');
+      navigate('/login');
     } catch (error) {
       switch (error.code) {
         case 'auth/user-not-found':

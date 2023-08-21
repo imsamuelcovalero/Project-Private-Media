@@ -14,7 +14,8 @@ import {
 
 function CategoryComponent() {
   const {
-    logout, mediaSelected, viewMode, setViewMode, isUserLogged, isSignatureActive, currentCategory,
+    logout, mediaSelected, viewMode, setViewMode, isUserLogged,
+    isSignatureActive, currentCategory, setIsSignatureActive, setIsUserLogged,
   } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
@@ -27,14 +28,20 @@ function CategoryComponent() {
     const verifyToken = async () => {
       try {
         const data = await api.checkToken();
-        if (!data.assinaturaAtiva.status) {
-          navigate('/visitors');
+        if (data) {
+          if (data.assinaturaAtiva.status) {
+            setIsUserLogged(true);
+            setIsSignatureActive(data.assinaturaAtiva.status);
+          } else {
+            setIsUserLogged(true);
+            setIsSignatureActive(data.assinaturaAtiva.status);
+          }
         }
       } catch (error) {
         console.error(error);
         toast.error('Sessão expirada, faça login novamente');
         logout();
-        navigate('/visitors');
+        // navigate('/visitors');
       }
     };
 
