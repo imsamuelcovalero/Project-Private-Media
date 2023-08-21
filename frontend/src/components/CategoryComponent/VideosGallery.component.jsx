@@ -17,7 +17,7 @@ function VideosGalleryComponent() {
   const videosPerPage = 10; // ajuste conforme necessário
 
   const handleVideoClick = (video) => {
-    navigate(`${currentMainUrl}/fotos/${video.id}`);
+    navigate(`${currentMainUrl}/videos/${video.id}`);
     // setSelectedPhoto(photo);
     setMediaSelected({
       mediaType: 'videos',

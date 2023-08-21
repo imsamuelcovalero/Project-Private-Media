@@ -3,15 +3,15 @@ import React from 'react';
 import PhotoDetailedComponent from '../../components/CategoryComponent/MediaDetailed.component';
 import Header from '../../components/Header/Header';
 import CategoryHeaderComponent from '../../components/CategoryComponent/CategoryHeaderComponent/CategoryHeader.component';
-import DivExterna from './Style';
+import { RenderS } from './Style';
 
 function PhotoDetailed() {
   return (
-    <DivExterna>
+    <RenderS>
       <Header />
       <CategoryHeaderComponent />
       <PhotoDetailedComponent />
-    </DivExterna>
+    </RenderS>
   );
 }
 

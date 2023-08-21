@@ -19,11 +19,11 @@ function MediaDetailedComponent() {
   const renderMediaContent = () => {
     if (mediaSelected.mediaType === 'fotos') {
       console.log('mediaSelectedDetailed', mediaSelected);
-      return <img id="selectedMedia" src={mediaSelected.media.url} alt="Selected" />;
+      return <img className="selectedMedia" src={mediaSelected.media.url} alt="Selected" />;
     }
     if (mediaSelected.mediaType === 'videos') {
       return (
-        <video id="selectedMedia" src={mediaSelected.media.url} controls />
+        <video className="selectedMedia" src={mediaSelected.media.url} controls />
       );
     }
     return null;
@@ -38,7 +38,7 @@ function MediaDetailedComponent() {
 
   return (
     <div role="main" aria-label={`${mediaSelected.mediaType} viewer`}>
-      <MediaCardS className="selected">
+      <MediaCardS>
         {renderMediaContent()}
         <BackButtonS type="button" onClick={handleBackClick}>
           Voltar para a galeria

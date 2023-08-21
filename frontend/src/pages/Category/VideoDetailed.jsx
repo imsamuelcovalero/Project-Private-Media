@@ -3,15 +3,15 @@ import React from 'react';
 import VideoDetailedComponent from '../../components/CategoryComponent/MediaDetailed.component';
 import Header from '../../components/Header/Header';
 import CategoryHeaderComponent from '../../components/CategoryComponent/CategoryHeaderComponent/CategoryHeader.component';
-import DivExterna from './Style';
+import { RenderS } from './Style';
 
 function VideoDetailed() {
   return (
-    <DivExterna>
+    <RenderS>
       <Header />
       <CategoryHeaderComponent />
       <VideoDetailedComponent />
-    </DivExterna>
+    </RenderS>
   );
 }
 

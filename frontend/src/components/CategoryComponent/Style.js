@@ -31,13 +31,15 @@ export const CategoryS = styled.div`
 `;
 
 export const GalleryContainerS = styled.div`
-  /* border: 1px solid red; */
+  border: 1px solid red;
+  margin-top: 140px;
+  height: calc(100vh - 140px); 
+  max-width: 100vw;
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 64vh;
 `;
 
 export const PaginationContainerS = styled.div`
@@ -52,7 +54,7 @@ export const PaginationContainerS = styled.div`
 `;
 
 export const PhotosDivS = styled.div`
-  /* border: 1px solid blue; */
+  border: 1px solid blue;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -74,10 +76,18 @@ export const PhotoCardS = styled.div`
     width: 198px;
   }
 
-  &.selected img {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+  @media (max-width: 890px) {
+    img {
+      height: 130px;
+      width: 148px;
+    }
+  }
+
+  @media (max-width: 525px) {
+    img {
+      height: 90px;
+      width: 99px;
+    }
   }
 `;
 
@@ -104,40 +114,47 @@ export const VideoCardS = styled.div`
     width: 198px;
   }
 
-  &.selected video {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
+  @media (max-width: 890px) {
+    video {
+      height: 130px;
+      width: 148px;
+    }
+  }
+
+  @media (max-width: 525px) {
+    video {
+      height: 90px;
+      width: 99px;
+    }
   }
 `;
 
 export const MediaCardS = styled.div`
-  border: 1px solid var(--main);
+  border: 1px solid blue;
+  margin-top: 140px;
+  height: calc(100vh - 140px); 
+  max-width: 100vw;
   border-radius: 3px;
   overflow: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-  img {
-    height: 180px;
-    width: 198px;
+  /* Estilo para imagem e vídeo */
+  img, video {
+    /* Asseguramos que a mídia não ultrapasse o tamanho da janela, mas ainda seja exibida em sua dimensão original */
+    max-height: 90%;
+    max-width: 90%;
   }
 
-  &.selected img {
-    width: 100%;
-    height: 100%;
+  /* .selectedMedia {
+    border: 1px solid red;
+    width: 75%;
+    height: 75%;
     margin: 0 auto;
-  }
-
-  video {
-    height: 112px;
-    width: 198px;
-  }
-
-  &.selected video {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-  }
+  } */
 `;
 
 // BaseButtonS
