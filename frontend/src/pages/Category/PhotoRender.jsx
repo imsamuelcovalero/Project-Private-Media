@@ -1,18 +1,18 @@
 /* File: src/pages/Category/Category.jsx */
 import React from 'react';
-import CategoryComponent from '../../components/CategoryComponent/Category.component';
+import PhotoRenderComponent from '../../components/CategoryComponent/PhotoRender.component';
 import Header from '../../components/Header/Header';
 import CategoryHeaderComponent from '../../components/CategoryComponent/CategoryHeaderComponent/CategoryHeader.component';
 import DivExterna from './Style';
 
-function Category() {
+function PhotoRender() {
   return (
     <DivExterna>
       <Header />
       <CategoryHeaderComponent />
-      <CategoryComponent />
+      <PhotoRenderComponent />
     </DivExterna>
   );
 }
 
-export default Category;
+export default PhotoRender;

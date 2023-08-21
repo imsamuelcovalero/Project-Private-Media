@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-import CategoryHeaderComponent from './CategoryHeaderComponent/CategoryHeader.component';
+// import CategoryHeaderComponent from './CategoryHeaderComponent/CategoryHeader.component';
 import PhotoRenderComponent from './PhotoRender.component';
 import VideoRenderComponent from './VideoRender.component';
 import {
@@ -29,13 +29,8 @@ function CategoryComponent() {
       try {
         const data = await api.checkToken();
         if (data) {
-          if (data.assinaturaAtiva.status) {
-            setIsUserLogged(true);
-            setIsSignatureActive(data.assinaturaAtiva.status);
-          } else {
-            setIsUserLogged(true);
-            setIsSignatureActive(data.assinaturaAtiva.status);
-          }
+          setIsUserLogged(true);
+          setIsSignatureActive(data.assinaturaAtiva.status);
         }
       } catch (error) {
         console.error(error);
@@ -61,7 +56,7 @@ function CategoryComponent() {
 
   return (
     <CategoryS>
-      <CategoryHeaderComponent />
+      {/* <CategoryHeaderComponent /> */}
       <div id="content">
         <HeadingS>{categoryId || currentCategory}</HeadingS>
         {!isUserLogged && (

@@ -1,18 +1,18 @@
 /* File: src/pages/Category/Category.jsx */
 import React from 'react';
-import CategoryComponent from '../../components/CategoryComponent/Category.component';
+import VideoDetailedComponent from '../../components/CategoryComponent/VideoDetailed.component';
 import Header from '../../components/Header/Header';
 import CategoryHeaderComponent from '../../components/CategoryComponent/CategoryHeaderComponent/CategoryHeader.component';
 import DivExterna from './Style';
 
-function Category() {
+function VideoDetailed() {
   return (
     <DivExterna>
       <Header />
       <CategoryHeaderComponent />
-      <CategoryComponent />
+      <VideoDetailedComponent />
     </DivExterna>
   );
 }
 
-export default Category;
+export default VideoDetailed;
