@@ -6,7 +6,7 @@ import {
   VideosDivS, VideoCardS, BackButtonS, PaginationButtonS, PaginationContainerS, GalleryContainerS,
 } from './Style';
 
-function VideoRenderComponent() {
+function VideosGalleryComponent() {
   const { categoryVideos, setMediaSelected } = useContext(ReactNodeContext);
 
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -65,4 +65,4 @@ function VideoRenderComponent() {
   );
 }
 
-export default VideoRenderComponent;
+export default VideosGalleryComponent;

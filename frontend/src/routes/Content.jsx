@@ -8,8 +8,8 @@ import Profile from '../pages/Profile/Profile';
 import ProfileEdit from '../pages/Profile/ProfileEdit';
 import Subscription from '../pages/Subscription/Subscription';
 import Category from '../pages/Category/Category';
-import PhotoRender from '../pages/Category/PhotoRender';
-import VideoRender from '../pages/Category/VideoRender';
+import PhotosGallery from '../pages/Category/PhotosGallery';
+import VideosGallery from '../pages/Category/VideosGallery';
 import PhotoDetailed from '../pages/Category/PhotoDetailed';
 import VideoDetailed from '../pages/Category/VideoDetailed';
 
@@ -24,8 +24,8 @@ function Content() {
       <Route path="/profile/edit" element={<ProfileEdit />} />
       <Route path="/subscription" element={<Subscription />} />
       <Route path="/:categoryId" element={<Category />} />
-      <Route path="/:categoryId/photos" element={<PhotoRender />} />
-      <Route path="/:categoryId/videos" element={<VideoRender />} />
+      <Route path="/:categoryId/photos" element={<PhotosGallery />} />
+      <Route path="/:categoryId/videos" element={<VideosGallery />} />
       <Route path="/:categoryId/photos/:photoId" element={<PhotoDetailed />} />
       <Route path="/:categoryId/videos/:videoId" element={<VideoDetailed />} />
     </Routes>

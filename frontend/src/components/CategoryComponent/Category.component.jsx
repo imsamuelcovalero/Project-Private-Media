@@ -84,12 +84,6 @@ function CategoryComponent() {
         <div className="content-inner">
           <div>
             <ViewModeButtonS type="button" onClick={() => navigate(`${currentMainUrl}/photos`)}>Visualizar fotos</ViewModeButtonS>
-            {/* <ViewModeButtonS
-                type="button"
-                onClick={() => setViewMode('photos')}
-              >
-                Visualizar fotos
-              </ViewModeButtonS> */}
             <ViewModeButtonS type="button" onClick={() => navigate(`${currentMainUrl}/videos`)}>Visualizar vídeos</ViewModeButtonS>
           </div>
         </div>

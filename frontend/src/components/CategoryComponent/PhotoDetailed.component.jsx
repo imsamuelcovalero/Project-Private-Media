@@ -19,7 +19,7 @@ function PhotoDetailedComponent() {
     <div role="main" aria-label="Photo viewer">
       <PhotoCardS className="selected">
         <img id="selectedPhoto" src={selectedPhoto.url} alt="Selected" />
-        <BackButtonS type="button" onClick={handleBackClick}>Voltar para fotos</BackButtonS>
+        <BackButtonS type="button" onClick={handleBackClick}>Voltar para a galeria</BackButtonS>
       </PhotoCardS>
     </div>
   );
