@@ -8,7 +8,7 @@ import api from '../../services';
 // import { getMediaTime, addMediaTimeToLocalStorage } from '../../helpers/localStorage.helper';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import CategoryComponent from '../CategoryComponent/Category.component';
-import { VisitorsS } from './Style';
+// import { VisitorsS } from './Style';
 
 function VisitorsComponent() {
   const {
@@ -87,7 +87,7 @@ function VisitorsComponent() {
   // const isPhotoUrl = (url) => url.includes('.jpeg') || url.includes('.jpg');
 
   return (
-    <VisitorsS>
+    <div>
       {/* {!isUserLogged && (
         <div>
           <ButtonContainer>
@@ -121,7 +121,7 @@ function VisitorsComponent() {
           </StyledVideo>
         )
       )} */}
-    </VisitorsS>
+    </div>
   );
 }
 
