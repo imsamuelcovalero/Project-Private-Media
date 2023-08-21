@@ -6,15 +6,15 @@ import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
 import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
 // import CategoryHeaderComponent from './CategoryHeaderComponent/CategoryHeader.component';
-import PhotoRenderComponent from './PhotoRender.component';
-import VideoRenderComponent from './VideoRender.component';
+// import PhotoRenderComponent from './PhotoRender.component';
+// import VideoRenderComponent from './VideoRender.component';
 import {
-  CategoryS, HeadingS, ViewModeButtonS, BackHomeButtonS, StyledButton, ButtonContainer,
+  CategoryS, HeadingS, ViewModeButtonS, StyledButton, ButtonContainer,
 } from './Style';
 
 function CategoryComponent() {
   const {
-    logout, mediaSelected, viewMode, setViewMode, isUserLogged,
+    logout, isUserLogged, currentMainUrl,
     isSignatureActive, currentCategory, setIsSignatureActive, setIsUserLogged,
   } = useContext(ReactNodeContext);
 
@@ -42,17 +42,17 @@ function CategoryComponent() {
     verifyToken();
   }, []);
 
-  const renderContent = () => {
-    if (viewMode === 'photos') {
-      return <PhotoRenderComponent />;
-    }
+  // const renderContent = () => {
+  //   if (viewMode === 'photos') {
+  //     return <PhotoRenderComponent />;
+  //   }
 
-    if (viewMode === 'videos') {
-      return <VideoRenderComponent />;
-    }
+  //   if (viewMode === 'videos') {
+  //     return <VideoRenderComponent />;
+  //   }
 
-    return null;
-  };
+  //   return null;
+  // };
 
   return (
     <CategoryS>
@@ -82,19 +82,16 @@ function CategoryComponent() {
           </ButtonContainer>
         )}
         <div className="content-inner">
-          {(viewMode === null) ? (
-            <div>
-              <ViewModeButtonS type="button" onClick={() => setViewMode('photos')}>Visualizar fotos</ViewModeButtonS>
-              <ViewModeButtonS type="button" onClick={() => setViewMode('videos')}>Visualizar vídeos</ViewModeButtonS>
-            </div>
-          ) : (
-            <div>
-              {renderContent()}
-              {(!mediaSelected && viewMode !== null) && (
-              <BackHomeButtonS type="button" variant="back" onClick={() => setViewMode(null)}>Voltar</BackHomeButtonS>
-              )}
-            </div>
-          )}
+          <div>
+            <ViewModeButtonS type="button" onClick={() => navigate(`${currentMainUrl}/photos`)}>Visualizar fotos</ViewModeButtonS>
+            {/* <ViewModeButtonS
+                type="button"
+                onClick={() => setViewMode('photos')}
+              >
+                Visualizar fotos
+              </ViewModeButtonS> */}
+            <ViewModeButtonS type="button" onClick={() => navigate(`${currentMainUrl}/videos`)}>Visualizar vídeos</ViewModeButtonS>
+          </div>
         </div>
       </div>
     </CategoryS>
