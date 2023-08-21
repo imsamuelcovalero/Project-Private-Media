@@ -34,7 +34,6 @@ function SubscriptionComponent() {
       } catch (error) {
         console.error(error);
         logout();
-        navigate('/visitors');
       }
     };
 

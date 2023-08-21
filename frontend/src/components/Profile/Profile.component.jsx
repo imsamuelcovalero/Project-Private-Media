@@ -60,8 +60,6 @@ function ProfileComponent() {
         >
           Editar perfil
         </ButtonS>
-        {/* <ButtonS className="secondary" type="button"id="backButton"
-        onClick={() => navigate('/visitors')}>Voltar</ButtonS> */}
         <ButtonS className="secondary" type="button" onClick={handleLogout}>
           <FaSignOutAlt />
           {' '}

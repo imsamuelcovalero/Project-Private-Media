@@ -8,6 +8,7 @@ export const CategoryHeaderS = styled.div`
   width: 100%;
   background-color: var(--main);
   display: flex;
+  justify-content: space-around;
   align-items: center;
   padding: 8px 16px;
   position: fixed;

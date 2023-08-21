@@ -122,7 +122,7 @@ function RegisterComponent() {
   };
 
   /* Função que envia os dados do registro para a API (api.singUp) e
-  em caso de sucesso redireciona para a rota /visitors */
+  em caso de sucesso redireciona para a rota principal */
   const signUp = async (event, name, email, password) => {
     event.preventDefault();
     console.log('isDisabled1', isDisabled);

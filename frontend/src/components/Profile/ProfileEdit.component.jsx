@@ -67,7 +67,6 @@ function ProfileEditComponent() {
       } catch (error) {
         console.error(error);
         logout();
-        navigate('/visitors');
       }
     };
 
