@@ -10,9 +10,9 @@ import { LoginS } from './Style';
 
 function LoginComponent() {
   const {
-    setUser, categoryIds, setIsSignatureActive,
-    setIsUserLogged,
+    setUser, setIsSignatureActive, currentMainUrl,
   } = useContext(ReactNodeContext);
+
   const [isDisabled, setIsDisabled] = useState(true);
   const [formLogin, setFormLogin] = useState({
     email: '',
@@ -39,7 +39,7 @@ function LoginComponent() {
         } else if (data && data.assinaturaAtiva.status) {
           setIsSignatureActive(true);
         }
-        navigate(`/${categoryIds[0]}`);
+        navigate(currentMainUrl);
       } catch (error) {
         console.error(error);
       }
@@ -127,12 +127,9 @@ function LoginComponent() {
         toast.warning(assinaturaAtiva.message, {
           position: 'top-right',
         });
-        setIsSignatureActive(false);
-      } else {
-        setIsSignatureActive(true);
       }
-      setIsUserLogged(true);
-      navigate(`/${categoryIds[0]}`);
+      // setIsUserLogged(true);
+      navigate(currentMainUrl);
     } catch (error) {
       // Check the code property of the error to determine the type of the error
       switch (error.code) {
@@ -222,7 +219,7 @@ function LoginComponent() {
           <button
             className="standard"
             type="button"
-            onClick={() => navigate('/visitors')}
+            onClick={() => navigate(currentMainUrl)}
           >
             Acessar página de visitantes
           </button>

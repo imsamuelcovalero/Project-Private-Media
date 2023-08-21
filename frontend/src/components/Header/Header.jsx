@@ -12,7 +12,7 @@ function Header() {
   } = useContext(ReactNodeContext);
   // console.log('currentMainUrl', currentMainUrl);
 
-  const isSignatureActive = user?.assinaturaAtiva?.status;
+  // const isSignatureActive = user?.assinaturaAtiva?.status;
   // console.log('isSignatureActive', isSignatureActive);
 
   const handleNavigateToMain = () => {
@@ -26,7 +26,7 @@ function Header() {
       <BtnMain
         type="button"
         id="mainBtn"
-        onClick={() => (isSignatureActive ? handleNavigateToMain() : navigate('/visitors'))}
+        onClick={() => handleNavigateToMain()}
       >
         Main
       </BtnMain>

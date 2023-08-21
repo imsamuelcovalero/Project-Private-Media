@@ -20,7 +20,6 @@ function ProfileComponent() {
       } catch (error) {
         console.error(error);
         logout();
-        navigate('/visitors');
       }
     };
 

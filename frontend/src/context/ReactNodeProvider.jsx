@@ -11,7 +11,7 @@ function ReactNodeProvider({ children }) {
   const [theme, setTheme] = useState('dark');
   const [user, setUser] = useState(getUserInfo());
 
-  const [currentMainUrl, setCurrentMainUrl] = useState(`/main/${process.env.REACT_APP_FIREBASE_CATEGORY_ID1}`);
+  const [currentMainUrl, setCurrentMainUrl] = useState(`/${process.env.REACT_APP_FIREBASE_CATEGORY_ID1}`);
   const [currentCategory, setCurrentCategory] = useState(process.env
     .REACT_APP_FIREBASE_CATEGORY_ID1);
 
@@ -48,15 +48,6 @@ function ReactNodeProvider({ children }) {
   // console.log('currentCategory', currentCategory);
   // console.log('currentMainUrl', currentMainUrl);
 
-  /* useEffect que verifica se o usuário atual é diferente do usuário salvo no localStorage */
-  // useEffect(() => {
-  //   const userInfo = getUserInfo();
-  //   console.log('userInfo', userInfo);
-  //   if (userInfo !== user) {
-  //     setUser(userInfo);
-  //   }
-  // }, []);
-
   /* useEffect que verifica se o usuário está logado e tem a assinatura ativa */
   useEffect(() => {
     if (!user) {
@@ -85,7 +76,7 @@ function ReactNodeProvider({ children }) {
       setUser(null); // Defina o estado do usuário como null depois de fazer logout
       // setIsUserLogged(false);
       console.log('user', user);
-      navigate('/visitors');
+      navigate(`/${categoryIds[0]}`);
     } catch (error) {
       console.error('Error during logout:', error);
     }

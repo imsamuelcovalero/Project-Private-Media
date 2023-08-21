@@ -8,7 +8,7 @@ import { RegisterS, InputS } from './Style';
 import ReactNodeContext from '../../context/ReactNodeContext';
 
 function RegisterComponent() {
-  const { setUser, categoryIds } = useContext(ReactNodeContext);
+  const { setUser, currentMainUrl } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [formRegister, setFormRegister] = useState({
     name: '',
@@ -146,7 +146,7 @@ function RegisterComponent() {
       toast.warning('Conta criada! Para acessar todo o conteúdo, faça uma assinatura.', {
         position: 'bottom-right',
       });
-      navigate(`/${categoryIds[0]}`);
+      navigate(currentMainUrl);
     } catch (error) {
       if (error.message === 'Authentication error') {
         toast.error('Erro na autenticação. Por favor, tente novamente.');

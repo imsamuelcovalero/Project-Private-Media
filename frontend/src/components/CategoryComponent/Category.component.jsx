@@ -39,9 +39,8 @@ function CategoryComponent() {
         }
       } catch (error) {
         console.error(error);
-        toast.error('Sessão expirada, faça login novamente');
+        toast.warning('Usuário não logado');
         logout();
-        // navigate('/visitors');
       }
     };
 

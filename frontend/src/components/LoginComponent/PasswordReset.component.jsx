@@ -8,7 +8,7 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 import { PasswordResetS } from './Style';
 
 function PasswordResetComponent() {
-  const { categoryIds } = useContext(ReactNodeContext);
+  const { currentMainUrl } = useContext(ReactNodeContext);
   const [isDisabled, setIsDisabled] = useState(true);
   const [resetEmail, setResetEmail] = useState('');
   const [emailErrorMessage, setEmailErrorMessage] = useState('');
@@ -22,7 +22,7 @@ function PasswordResetComponent() {
       try {
         const data = await api.checkToken();
         if (data) {
-          navigate(`/${categoryIds[0]}`);
+          navigate(currentMainUrl);
         }
       } catch (error) {
         console.error(error);
