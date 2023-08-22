@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ReactNodeContext from './ReactNodeContext';
-import { firebaseGetCategory, firebaseGetMediaByCategoryAndId } from '../services/firebase.helper';
-import { getUserInfo, removeUserInfo } from '../helpers/localStorage.helper';
 import api from '../services';
+import { firebaseGetCategory, firebaseGetMediaByCategoryAndId } from '../services/firebase.helper';
+import {
+  getUserInfo, removeUserInfo, getMediasTime, addMediasTimeToLocalStorage,
+} from '../helpers/localStorage.helper';
 
 function ReactNodeProvider({ children }) {
   const [theme, setTheme] = useState('dark');
@@ -16,7 +18,6 @@ function ReactNodeProvider({ children }) {
   const [currentCategory, setCurrentCategory] = useState(process.env
     .REACT_APP_FIREBASE_CATEGORY_ID1);
   const [mediaSelected, setMediaSelected] = useState(null);
-  console.log('mediaSelected', mediaSelected);
 
   const [categoryPhotos, setCategoryPhotos] = useState([]);
   const [categoryVideos, setCategoryVideos] = useState([]);
@@ -113,11 +114,11 @@ function ReactNodeProvider({ children }) {
     if (!user) {
       console.log('usuário não logado');
       setIsUserLogged(false);
-      // setIsSignatureActive(false);
+      setIsSignatureActive(false);
     } else {
-      console.log('usuário logado');
+      // console.log('usuário logado');
       setIsUserLogged(true);
-      console.log('user', user);
+      // console.log('user', user);
       if (user.assinaturaAtiva.status) {
         console.log('assinatura ativa');
         setIsSignatureActive(true);
@@ -142,12 +143,56 @@ function ReactNodeProvider({ children }) {
     }
   };
 
+  const getRandomElements = (arr, count) => {
+    const shuffled = arr.slice(0);
+    for (let i = arr.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, count);
+  };
+
   const getCategoryData = async (categoryId) => {
     try {
-      const data = await firebaseGetCategory(categoryId);
-      // console.log('data', data);
-      setCategoryPhotos(data.fotos);
-      setCategoryVideos(data.videos);
+      if (isSignatureActive) {
+        // Se o usuário estiver logado e tiver uma assinatura ativa
+        const data = await firebaseGetCategory(categoryId);
+        console.log('aqui');
+        setCategoryPhotos(data.fotos);
+        setCategoryVideos(data.videos);
+      } else {
+        const storedPhotos = getMediasTime(categoryId, 'fotos');
+        console.log('storedPhotos', storedPhotos);
+        const storedVideos = getMediasTime(categoryId, 'videos');
+        console.log('storedVideos', storedVideos);
+        const twoHours = 2 * 60 * 60 * 1000;
+
+        if (storedPhotos && (Date.now() - storedPhotos.time) < twoHours) {
+          console.log('storedPhotos2', storedPhotos);
+          setCategoryPhotos(storedPhotos.data);
+        }
+
+        if (storedVideos && (Date.now() - storedVideos.time) < twoHours) {
+          console.log('storedVideos2', storedVideos);
+          setCategoryVideos(storedVideos.data);
+        }
+
+        if ((!storedPhotos || (Date.now() - storedPhotos.time) >= twoHours)
+            || (!storedVideos || (Date.now() - storedVideos.time) >= twoHours)) {
+          const data = await firebaseGetCategory(categoryId);
+          console.log('data', data);
+
+          const randomPhotos = getRandomElements(data.fotos, 5);
+          const randomVideos = getRandomElements(data.videos, 5);
+
+          setCategoryPhotos(randomPhotos);
+          setCategoryVideos(randomVideos);
+
+          addMediasTimeToLocalStorage(categoryId, 'fotos', randomPhotos);
+          addMediasTimeToLocalStorage(categoryId, 'videos', randomVideos);
+          return;
+        }
+      }
     } catch (error) {
       console.error('Error fetching category data:', error);
     }
@@ -156,7 +201,7 @@ function ReactNodeProvider({ children }) {
   /* useEffect que busca as fotos e vídeos da categoryId referente */
   useEffect(() => {
     getCategoryData(currentCategory);
-  }, [currentCategory]);
+  }, [currentCategory, isUserLogged, isSignatureActive]);
 
   // console.log('categoryPhotos', categoryPhotos, 'categoryVideos', categoryVideos);
 
