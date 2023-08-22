@@ -32,7 +32,6 @@ function MediaDetailedComponent() {
   const handleBackClick = () => {
     // setSelectedPhoto(null);
     setMediaSelected(null);
-    // chama o navigate e faz voltar uma página
     navigate(-1);
   };
 

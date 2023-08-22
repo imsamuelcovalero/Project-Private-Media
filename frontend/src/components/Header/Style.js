@@ -25,12 +25,17 @@ export const HeaderS = styled.div`
     width: auto; // ou defina uma largura fixa se necessário
     color: var(--textColor);
     #name {
-      grid-area: n;
+      /* grid-area: n; */
       height: 100%;
       width: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    @media (max-width: 478px) {
+      #name, #greetings {
+        font-size: 0.75rem;
+      }
     }
   }
   #themeDiv {
@@ -69,6 +74,11 @@ export const BtnMain = styled.button`
     cursor: not-allowed;
     filter: saturate(0);
   }
+
+  @media (max-width: 478px) {
+    height: 100%;
+    width: 90px;
+  }
 `;
 
 export const ButtonS = styled.button`
@@ -101,6 +111,11 @@ export const ButtonS = styled.button`
   }
   svg { // Estilização para os ícones
     margin-right: 8px;
+  }
+
+  @media (max-width: 478px) {
+    width: 90px;
+    font-size: 0.65rem;
   }
 `;
 

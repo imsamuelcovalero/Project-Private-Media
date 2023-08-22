@@ -9,7 +9,7 @@ import ReactNodeContext from '../../context/ReactNodeContext';
 // import PhotoRenderComponent from './PhotoRender.component';
 // import VideoRenderComponent from './VideoRender.component';
 import {
-  CategoryS, HeadingS, ViewModeButtonS, StyledButton, ButtonContainer,
+  CategoryS, HeadingS, ViewModeButtonS, StyledButtonS, /* BaseButtonS,  */ButtonContainerS,
 } from './Style';
 
 function CategoryComponent() {
@@ -42,27 +42,14 @@ function CategoryComponent() {
     verifyToken();
   }, []);
 
-  // const renderContent = () => {
-  //   if (viewMode === 'photos') {
-  //     return <PhotoRenderComponent />;
-  //   }
-
-  //   if (viewMode === 'videos') {
-  //     return <VideoRenderComponent />;
-  //   }
-
-  //   return null;
-  // };
-
   return (
     <CategoryS>
-      {/* <CategoryHeaderComponent /> */}
       <div id="content">
         <HeadingS>{categoryId || currentCategory}</HeadingS>
         {!isUserLogged && (
           <div>
-            <ButtonContainer>
-              <StyledButton type="button" onClick={() => navigate('/login')}>
+            <ButtonContainerS>
+              <StyledButtonS type="button" onClick={() => navigate('/login')}>
                 <FaSignInAlt />
                 {' '}
                 LOGIN
@@ -70,16 +57,16 @@ function CategoryComponent() {
                 <FaUserPlus />
                 {' '}
                 CADASTRO
-              </StyledButton>
-            </ButtonContainer>
+              </StyledButtonS>
+            </ButtonContainerS>
           </div>
         )}
         {isUserLogged && !isSignatureActive && (
-          <ButtonContainer>
-            <StyledButton type="button" onClick={() => navigate('/subscription')}>
+          <ButtonContainerS>
+            <StyledButtonS type="button" onClick={() => navigate('/subscription')}>
               Assine para ser membro!
-            </StyledButton>
-          </ButtonContainer>
+            </StyledButtonS>
+          </ButtonContainerS>
         )}
         <div className="content-inner">
           <div>

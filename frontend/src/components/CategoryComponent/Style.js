@@ -148,13 +148,15 @@ export const MediaCardS = styled.div`
     max-height: 90%;
     max-width: 90%;
   }
+`;
 
-  /* .selectedMedia {
-    border: 1px solid red;
-    width: 75%;
-    height: 75%;
-    margin: 0 auto;
-  } */
+// Estilo para o <h1>
+export const HeadingS = styled.h1`
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: var(--headline);
+  text-transform: capitalize;
+  margin-top: 20px;
 `;
 
 // BaseButtonS
@@ -163,16 +165,23 @@ export const BaseButtonS = styled.button`
   color: var(--buttonText);
   border: none;
   padding: 10px 20px;
-  text-transform: uppercase;
   margin: 10px;
   border-radius: 5px;
   cursor: pointer;
   box-shadow: var(--buttonShadow);
   transition: background-color 0.3s, transform 0.3s;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 1rem;
+  
+  svg {
+    margin: 0 5px; // Espaçamento uniforme para ícones
+  }
   
   &:hover {
     background-color: var(--buttonPrimaryHover);
     transform: translateY(-1px);
+    filter: brightness(0.9);
   }
   
   &:active {
@@ -196,29 +205,16 @@ export const ViewModeButtonS = styled(BaseButtonS)`
   margin: 5px 10px;
 `;
 
-// BackHomeButtonS - Estilo para botão "Voltar" e "Home"
-export const BackHomeButtonS = styled(BaseButtonS)`
-  background-color: ${(props) => (props.variant === 'home' ? 'var(--buttonStandard)' : 'var(--buttonSecondary)')};
-  border: 1px solid var(--buttonBorder);
-  &:hover {
-    background-color: ${(props) => (props.variant === 'home' ? 'var(--buttonStandardHover)' : 'var(--buttonSecondaryHover)')};
+// PaginationButtonS
+export const PaginationButtonS = styled(BaseButtonS)`
+  @media (max-width: 405px) {
+    /* height: 100%;
+    width: 90px; */
+    font-size: 0.75rem;
   }
 `;
 
-// Estilo para o <h1>
-export const HeadingS = styled.h1`
-  font-size: 2em;
-  margin-bottom: 20px;
-  color: var(--headline);
-  text-transform: capitalize;
-  margin-top: 20px;
-`;
-
-// PaginationButtonS
-export const PaginationButtonS = styled(BaseButtonS)`
-`;
-
-// BackButtonS
+// BackButtonS - Mantendo a ref. a BaseButtonS
 export const BackButtonS = styled(BaseButtonS)`
   margin-top: 15px;
   background-color: var(--buttonSecondary);
@@ -229,30 +225,12 @@ export const BackButtonS = styled(BaseButtonS)`
   }
 `;
 
-export const StyledButton = styled.button`
-  background: var(--buttonPrimary);
-  border: none;
-  border-radius: 4px;
-  color: var(--buttonText);
-  cursor: pointer;
-  padding: 10px 20px;
-  margin: 10px;
-  font-size: 1rem;
-  text-align: center;  // Manter o alinhamento centralizado do texto
-  box-shadow: var(--boxShadow);
-  transition: var(--transitionSpeed);
-
-  &:hover {
-    background-color: var(--buttonPrimaryHover);
-    filter: brightness(0.9);
-  }
-
-  svg {
-    margin: 0 5px; // Espaçamento uniforme para ícones
-  }
+// As duas últimas classes vieram com os elementos de Visitors
+export const StyledButtonS = styled(BaseButtonS)`
+  text-transform: none;
 `;
 
-export const ButtonContainer = styled.div`
+export const ButtonContainerS = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
