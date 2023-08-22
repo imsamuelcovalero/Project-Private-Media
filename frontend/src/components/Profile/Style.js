@@ -51,7 +51,10 @@ export const ProfileS = styled.div`
 `;
 
 export const ProfileEditS = styled.div`
-  height: 100vh;
+  /* border: 2px solid red; */
+  overflow: auto;
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
   width: 100vw;
   display: flex;
   flex-direction: column;

@@ -9,14 +9,14 @@ import { firebaseGetCategory, firebaseGetMediaByCategoryAndId } from '../service
 import {
   getUserInfo, removeUserInfo, getMediasTime, addMediasTimeToLocalStorage,
 } from '../helpers/localStorage.helper';
+import categoryIds from '../helpers/categoryIds.helper';
 
 function ReactNodeProvider({ children }) {
   const [theme, setTheme] = useState('dark');
   const [user, setUser] = useState(getUserInfo());
 
-  const [currentMainUrl, setCurrentMainUrl] = useState(`/${process.env.REACT_APP_FIREBASE_CATEGORY_ID1}`);
-  const [currentCategory, setCurrentCategory] = useState(process.env
-    .REACT_APP_FIREBASE_CATEGORY_ID1);
+  const [currentMainUrl, setCurrentMainUrl] = useState(`/main/${categoryIds[0]}`);
+  const [currentCategory, setCurrentCategory] = useState(categoryIds[0]);
   const [mediaSelected, setMediaSelected] = useState(null);
 
   const [categoryPhotos, setCategoryPhotos] = useState([]);
@@ -32,20 +32,23 @@ function ReactNodeProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const categoryIds = [
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
-    process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
-  ];
+  // const categoryIds = [
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
+  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
+  // ];
 
+  /* useEffect que verifica a url atual e define a categoria atual e a url principal,
+  usada pelo botão MAIN */
   useEffect(() => {
     const path = location.pathname;
-    const mainPattern = /^\/([a-zA-Z0-9-_]+)(\/|$)/; // Regex para capturar /main/{categoryId}/
+    const mainPattern = /^\/main\/([a-zA-Z0-9-_]+)(\/|$)/; // Regex para capturar /main/{categoryId}/
     const matches = path.match(mainPattern);
     if (matches && matches[1]) {
-      setCurrentMainUrl(`/${matches[1]}`);
+      console.log('matches[1]', matches[1]);
+      setCurrentMainUrl(`/main/${matches[1]}`);
       setCurrentCategory(matches[1]);
     }
   }, []);
@@ -137,7 +140,7 @@ function ReactNodeProvider({ children }) {
       setUser(null); // Defina o estado do usuário como null depois de fazer logout
       // setIsUserLogged(false);
       console.log('user', user);
-      navigate(`/${categoryIds[0]}`);
+      navigate(`/main/${categoryIds[0]}`);
     } catch (error) {
       console.error('Error during logout:', error);
     }
@@ -155,32 +158,34 @@ function ReactNodeProvider({ children }) {
   const getCategoryData = async (categoryId) => {
     try {
       if (isSignatureActive) {
+        console.log('categoriaId', categoryId);
         // Se o usuário estiver logado e tiver uma assinatura ativa
         const data = await firebaseGetCategory(categoryId);
-        console.log('aqui');
+        console.log('data', data);
+        // console.log('aqui');
         setCategoryPhotos(data.fotos);
         setCategoryVideos(data.videos);
       } else {
         const storedPhotos = getMediasTime(categoryId, 'fotos');
-        console.log('storedPhotos', storedPhotos);
+        // console.log('storedPhotos', storedPhotos);
         const storedVideos = getMediasTime(categoryId, 'videos');
-        console.log('storedVideos', storedVideos);
+        // console.log('storedVideos', storedVideos);
         const twoHours = 2 * 60 * 60 * 1000;
 
         if (storedPhotos && (Date.now() - storedPhotos.time) < twoHours) {
-          console.log('storedPhotos2', storedPhotos);
+          // console.log('storedPhotos2', storedPhotos);
           setCategoryPhotos(storedPhotos.data);
         }
 
         if (storedVideos && (Date.now() - storedVideos.time) < twoHours) {
-          console.log('storedVideos2', storedVideos);
+          // console.log('storedVideos2', storedVideos);
           setCategoryVideos(storedVideos.data);
         }
 
         if ((!storedPhotos || (Date.now() - storedPhotos.time) >= twoHours)
             || (!storedVideos || (Date.now() - storedVideos.time) >= twoHours)) {
           const data = await firebaseGetCategory(categoryId);
-          console.log('data', data);
+          // console.log('data', data);
 
           const randomPhotos = getRandomElements(data.fotos, 5);
           const randomVideos = getRandomElements(data.videos, 5);

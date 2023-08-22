@@ -2,7 +2,9 @@ import styled from 'styled-components';
 
 const SubscriptionS = styled.div`
   /* border: 2px solid blue; */
-  min-height: calc(100vh - 80px);;
+  overflow: auto;
+  margin-top: 80px;
+  min-height: calc(100vh - 80px);
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -10,8 +12,6 @@ const SubscriptionS = styled.div`
   justify-content: center;
   text-align: center;
   background-color: var(--background); 
-  margin-top: 80px;
-  overflow: auto;
 
   h1 {
     font-size: 2.5rem;

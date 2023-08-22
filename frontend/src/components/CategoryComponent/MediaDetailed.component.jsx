@@ -9,7 +9,6 @@ import {
 
 function MediaDetailedComponent() {
   const { setMediaSelected, mediaSelected } = useContext(ReactNodeContext);
-  console.log('mediaSelectedDetailed', mediaSelected);
 
   const navigate = useNavigate();
 
@@ -18,7 +17,6 @@ function MediaDetailedComponent() {
 
   const renderMediaContent = () => {
     if (mediaSelected.mediaType === 'fotos') {
-      console.log('mediaSelectedDetailed', mediaSelected);
       return <img className="selectedMedia" src={mediaSelected.media.url} alt="Selected" />;
     }
     if (mediaSelected.mediaType === 'videos') {

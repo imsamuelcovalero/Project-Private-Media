@@ -22,9 +22,9 @@ function CategoryHeaderComponent() {
     // Redefinindo o estado ao mudar de categoria
     setViewMode(null);
     setMediaSelected(false);
-    setCurrentMainUrl(`/${id}`);
+    setCurrentMainUrl(`/main/${id}`);
     setCurrentCategory(id);
-    navigate(`/${id}`);
+    navigate(`/main/${id}`);
   };
 
   return (

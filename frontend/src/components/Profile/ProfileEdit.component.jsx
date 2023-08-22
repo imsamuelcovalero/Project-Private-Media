@@ -317,6 +317,8 @@ function ProfileEditComponent() {
     }
   };
 
+  console.log('touchedName', touchedName);
+
   return (
     <ProfileEditS>
       <h1>Edição do Perfil</h1>
