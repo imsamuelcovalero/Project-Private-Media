@@ -232,7 +232,14 @@ function SubscriptionComponent() {
         <button type="button" className="secondary" id="cancelButton" onClick={() => handleCancel()}>Cancelar Pagamento</button>
       </>
       )}
-      <button type="button" className="secondary" id="backButton" onClick={() => navigate(-1)}>Voltar</button>
+      {/* <button
+        type="button"
+        className="secondary"
+        id="backButton"
+        onClick={() => navigate(-1)}
+      >
+        Voltar
+      </button> */}
     </SubscriptionS>
   );
 }

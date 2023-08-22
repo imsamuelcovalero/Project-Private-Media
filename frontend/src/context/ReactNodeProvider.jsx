@@ -32,14 +32,6 @@ function ReactNodeProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const categoryIds = [
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID1,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID2,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID3,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID4,
-  //   process.env.REACT_APP_FIREBASE_CATEGORY_ID5,
-  // ];
-
   /* useEffect que verifica a url atual e define a categoria atual e a url principal,
   usada pelo botão MAIN */
   useEffect(() => {
