@@ -8,6 +8,7 @@ import {
 
 function PhotosGalleryComponent() {
   const { categoryPhotos, setMediaSelected, currentMainUrl } = useContext(ReactNodeContext);
+  console.log('categoryPhotos', categoryPhotos);
 
   const navigate = useNavigate();
 

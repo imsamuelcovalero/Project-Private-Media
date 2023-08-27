@@ -130,9 +130,8 @@ function ReactNodeProvider({ children }) {
       await api.logout();
       removeUserInfo();
       setUser(null); // Defina o estado do usuário como null depois de fazer logout
-      // setIsUserLogged(false);
       console.log('user', user);
-      navigate(`/main/${categoryIds[0]}`);
+      // navigate(`/main/${categoryIds[0]}`);
     } catch (error) {
       console.error('Error during logout:', error);
     }

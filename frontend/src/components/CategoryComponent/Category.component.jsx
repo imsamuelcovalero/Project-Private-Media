@@ -1,46 +1,22 @@
 /* File: src/components/CategoryComponent/Category.component.jsx */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { FaSignInAlt, FaUserPlus } from 'react-icons/fa';
-import api from '../../services';
 import ReactNodeContext from '../../context/ReactNodeContext';
-// import CategoryHeaderComponent from './CategoryHeaderComponent/CategoryHeader.component';
-// import PhotoRenderComponent from './PhotoRender.component';
-// import VideoRenderComponent from './VideoRender.component';
 import {
-  CategoryS, HeadingS, ViewModeButtonS, StyledButtonS, /* BaseButtonS,  */ButtonContainerS,
+  CategoryS, HeadingS, ViewModeButtonS, StyledButtonS, ButtonContainerS,
 } from './Style';
 
 function CategoryComponent() {
   const {
-    logout, isUserLogged, currentMainUrl,
-    isSignatureActive, currentCategory, setIsSignatureActive, setIsUserLogged,
+    isUserLogged, currentMainUrl,
+    isSignatureActive, currentCategory,
   } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
   const { categoryId } = useParams();
 
   // console.log('categoryId', categoryId);
-
-  /* useEffect que verifica se existe um token válido */
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const data = await api.checkToken();
-        if (data) {
-          setIsUserLogged(true);
-          setIsSignatureActive(data.assinaturaAtiva.status);
-        }
-      } catch (error) {
-        console.error(error);
-        toast.warning('Usuário não logado');
-        logout();
-      }
-    };
-
-    verifyToken();
-  }, []);
 
   return (
     <CategoryS>
