@@ -55,7 +55,7 @@ export const RegisterS = styled.div`
       background-color: var(--buttonStandard);
       :disabled { background-color: var(--buttonBackgroundDisabled); }
       color: var(--buttonText);
-      border: 1px solid var(--buttonBorder);
+      /* border: 1px solid var(--buttonBorder); */
       width: 200px;
       height: 30px;
       line-height: 2.5em;

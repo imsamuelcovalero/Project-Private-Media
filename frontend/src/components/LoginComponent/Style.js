@@ -11,7 +11,7 @@ export const LoginS = styled.div`
   background-color: var(--background);
   
   #loginForm {
-    border: 1px solid var(--buttonBorder);
+    /* border: 1px solid var(--buttonBorder); */
     background-color: var(--main);
     padding: 2rem;
     width: 300px;
@@ -76,7 +76,7 @@ export const LoginS = styled.div`
 
       &.standard {
         background-color: var(--buttonStandard);
-        border: 1px solid var(--buttonBorder);
+        /* border: 1px solid var(--buttonBorder); */
         
         &:hover, &:focus {
             background-color: var(--buttonStandardHover);
@@ -85,7 +85,7 @@ export const LoginS = styled.div`
       
       &.primary {
         background-color: var(--buttonPrimary);
-        border: 1px solid var(--buttonBorder);
+        /* border: 1px solid var(--buttonBorder); */
         
         &:hover, &:focus {
           background-color: var(--buttonPrimaryHover);
@@ -100,7 +100,7 @@ export const LoginS = styled.div`
 
       &.secondary {
         background-color: var(--buttonSecondary);
-        border: 1px solid var(--buttonBorder);
+        /* border: 1px solid var(--buttonBorder); */
         
         &:hover, &:focus {
           background-color: var(--buttonSecondaryHover);
@@ -131,7 +131,7 @@ export const PasswordResetS = styled.div`
   background-color: var(--background);
   
   .reset-modal {
-    border: 1px solid var(--buttonBorder);
+    /* border: 1px solid var(--buttonBorder); */
     background-color: var(--main);
     padding: 2rem;
     width: 300px;

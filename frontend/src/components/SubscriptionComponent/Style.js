@@ -31,7 +31,7 @@ const SubscriptionS = styled.div`
     display: block;
     margin: 1rem auto 0;
     background: var(--buttonSecondary);
-    border: 1px solid var(--buttonBorder);
+    /* border: 1px solid var(--buttonBorder); */
     border-radius: 4px;
     color: var(--buttonText);
     cursor: pointer;

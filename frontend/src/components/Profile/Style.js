@@ -146,7 +146,7 @@ export const ButtonS = styled.button`
 
   &.primary {
     background-color: var(--buttonPrimary);
-    border: 1px solid var(--buttonBorder);
+    /* border: 1px solid var(--buttonBorder); */
     
     &:hover, &:focus {
       background-color: var(--buttonPrimaryHover);
@@ -161,7 +161,7 @@ export const ButtonS = styled.button`
 
   &.secondary {
       background-color: var(--buttonSecondary);
-      border: 1px solid var(--buttonBorder);
+      /* border: 1px solid var(--buttonBorder); */
       color: var(--buttonText);
       box-shadow: var(--boxShadow);
       

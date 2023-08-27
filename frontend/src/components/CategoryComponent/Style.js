@@ -208,8 +208,6 @@ export const ViewModeButtonS = styled(BaseButtonS)`
 // PaginationButtonS
 export const PaginationButtonS = styled(BaseButtonS)`
   @media (max-width: 405px) {
-    /* height: 100%;
-    width: 90px; */
     font-size: 0.75rem;
   }
 `;
@@ -218,7 +216,7 @@ export const PaginationButtonS = styled(BaseButtonS)`
 export const BackButtonS = styled(BaseButtonS)`
   margin-top: 15px;
   background-color: var(--buttonSecondary);
-  border: 1px solid var(--buttonBorder);
+  /* border: 1px solid var(--buttonBorder); */
   
   &:hover, &:focus {
     background-color: var(--buttonSecondaryHover);

@@ -22,7 +22,7 @@ export const BtnCategory = styled.button`
   height: 100%;
   width: 300px;
   background: var(--buttonPrimary);
-  border: 1px solid var(--buttonBorder);
+  /* border: 1px solid var(--buttonBorder); */
   border-radius: 4px;
   color: var(--buttonText);
   cursor: pointer;
@@ -35,11 +35,11 @@ export const BtnCategory = styled.button`
   text-align: center;
   box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
   &.active {
-    background-color: var(--buttonStandardHover);
-    border: 1px solid var(--buttonStandardHover);
+    background-color: var(--buttonPrimaryHover);
+    /* border: 1px solid var(--buttonStandardHover); */
   }
   &:hover:not(:disabled) {
-    background-color: var(--buttonStandardHover);
+    background-color: var(--buttonPrimaryHover);
     filter: brightness(0.9);
   }
   &:disabled {

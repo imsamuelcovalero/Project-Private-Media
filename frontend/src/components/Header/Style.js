@@ -50,7 +50,7 @@ export const BtnMain = styled.button`
   height: 100%;
   width: 120px;
   background: var(--buttonStandard);
-  border: 1px solid var(--buttonBorder);
+  /* border: 1px solid var(--buttonBorder); */
   border-radius: 4px;
   color: var(--buttonText);
   cursor: pointer;
@@ -64,7 +64,7 @@ export const BtnMain = styled.button`
   box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
   &.active {
     background-color: var(--buttonStandardHover);
-    border: 1px solid var(--buttonStandardHover);
+    /* border: 1px solid var(--buttonStandardHover); */
   }
   &:hover:not(:disabled) {
     background-color: var(--buttonStandardHover);
@@ -85,7 +85,7 @@ export const ButtonS = styled.button`
   margin-left: auto;
   right: 16px;
   background: var(--buttonStandard);
-  border: 1px solid var(--buttonBorder);
+  /* border: 1px solid var(--buttonBorder); */
   border-radius: 4px;
   color: var(--buttonText);
   cursor: pointer;
@@ -99,7 +99,7 @@ export const ButtonS = styled.button`
   box-shadow: 0 1px 3px rgb(145 103 172 / 12%), 0 1px 2px rgb(145 103 172 / 24%);
   &.active {
     background-color: var(--buttonStandardHover);
-    border: 1px solid var(--buttonStandardHover);
+    /* border: 1px solid var(--buttonStandardHover); */
   }
   &:hover:not(:disabled) {
     background-color: var(--buttonStandardHover);
