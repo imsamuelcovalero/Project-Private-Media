@@ -29,7 +29,7 @@ function CategoryHeaderComponent() {
       } catch (error) {
         console.error(error);
         toast.warning('Usuário não logado');
-        logout();
+        logout(false);
       }
     };
 
