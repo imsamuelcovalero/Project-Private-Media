@@ -40,7 +40,7 @@ O __Project-Private-Media__ vem com um conjunto robusto de funcionalidades que a
 
 - **Navegação por Categorias de Mídias:** Os usuários podem explorar e interagir com diferentes categorias de mídias, contendo fotos e vídeos. O conteúdo disponível varia de acordo com o status da assinatura.
 
-- **Sistema de Assinatura:** Com a integração da API do Mercado Pago, os usuários podem adquirir assinaturas para acessar ainda mais conteúdo exclusivo, com opção de pagamento por cartão de crédito ou pix.
+- **Sistema de Assinatura:** Com a integração da `API` do `Mercado Pago`, os usuários podem adquirir assinaturas para acessar ainda mais conteúdo exclusivo, com opção de pagamento por cartão de crédito ou pix.
 
 ## Como rodar a aplicação e detalhes do funcionamento
 
