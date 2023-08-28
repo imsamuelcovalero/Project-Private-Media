@@ -4,7 +4,7 @@ O __Project-Private-Media__ é uma aplicação dedicada à exibição de mídias
 
 ## Sumário
 
-- [Bem-vindo ao Project-Our-Shop-App-Angular](#bem-vindo-ao-project-our-shop-app-angular)
+- [Bem-vindo ao Project-Private-Media 🎥 📸](#bem-vindo-ao-project-private-media--)
   - [Sumário](#sumário)
   - [Visualização](#visualização)
   - [Contexto](#contexto)
@@ -15,7 +15,7 @@ O __Project-Private-Media__ é uma aplicação dedicada à exibição de mídias
     - [Backend](#backend)
   - [Notas](#notas)
     - [Git, GitHub e Histórico de Commits](#git-github-e-histórico-de-commits)
-   
+
 ## Visualização
 
 <div align="center">
@@ -34,21 +34,23 @@ O __Project-Private-Media__ é uma plataforma destinada à exibição de mídias
 
 O __Project-Private-Media__ vem com um conjunto robusto de funcionalidades que ampliam a experiência padrão de exibição de mídias. Algumas das funcionalidades incluem:
 
-- **Criação e Autenticação de Usuários:** Novos usuários podem facilmente se registrar e os usuários existentes podem fazer login para acessar o conteúdo premium.
+- __Criação e Autenticação de Usuários:__ Novos usuários podem facilmente se registrar e os usuários existentes podem fazer login para acessar o conteúdo premium.
   
-- **Edição de Perfil:** Os usuários pode editar o perfil, alterando o nome e a senha, se assim o desejar.
+- __Edição de Perfil:__ Os usuários pode editar o perfil, alterando o nome e a senha, se assim o desejar.
 
-- **Navegação por Categorias de Mídias:** Os usuários podem explorar e interagir com diferentes categorias de mídias, contendo fotos e vídeos. O conteúdo disponível varia de acordo com o status da assinatura.
+- __Navegação por Categorias de Mídias:__ Os usuários podem explorar e interagir com diferentes categorias de mídias, contendo fotos e vídeos. O conteúdo disponível varia de acordo com o status da assinatura.
 
-- **Sistema de Assinatura:** Com a integração da `API` do `Mercado Pago`, os usuários podem adquirir assinaturas para acessar ainda mais conteúdo exclusivo, com opção de pagamento por cartão de crédito ou pix.
+- __Sistema de Assinatura:__ Com a integração da `API` do `Mercado Pago`, os usuários podem adquirir assinaturas para acessar ainda mais conteúdo exclusivo, com opção de pagamento por cartão de crédito ou pix.
 
 ## Como rodar a aplicação e detalhes do funcionamento
 
 ### Início Rápido
+
 <details>
 <summary><strong>Detalhes</strong></summary>
 
 Para começar, clone o repositório em sua máquina local.
+
   ```bash
   git clone git@github.com:imsamuelcovalero/Project-Private-Media
   ```
@@ -83,4 +85,3 @@ Este projeto utiliza a [Especificação de Commits Convencionais](https://www.co
 Durante o desenvolvimento da aplicação, utilizamos o `Git` como ferramenta de controle de versão e o `GitHub` como plataforma de hospedagem. A `branch develop` foi o principal local de desenvolvimento, e suas mudanças foram periodicamente mescladas à `branch main`.
 
 [⬆ Voltar ao topo](#sumário)
-
