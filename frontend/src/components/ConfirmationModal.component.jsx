@@ -21,6 +21,13 @@ const ConfirmationModalS = styled.div`
     border-radius: 5px;
     width: 80%;
     max-width: 500px;
+    h2 {
+      font-size: 1.5rem;
+    }
+    p {
+      font-size: 1.2rem;
+      color: black;
+    }
   }
 
   .modal-content button {
