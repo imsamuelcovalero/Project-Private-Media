@@ -4,12 +4,6 @@ const admin = require('firebase-admin');
 const boom = require('@hapi/boom');
 const { addDays } = require('date-fns');
 
-// console.log("Token do MercadoPago:", process.env.MERCADOPAGO_ACCESS_TOKEN);
-
-// mercadopago.configure({
-//   access_token: process.env.MERCADOPAGO_ACCESS_TOKEN
-// });
-
 mercadopago.configurations.setAccessToken(process.env.MERCADOPAGO_ACCESS_TOKEN);
 
 /* função para processar o pagamento */

@@ -1,8 +1,10 @@
-# Estrutura e Criação
+# Criação e Configuração do Projeto no Firebase
 
 ## Storage
 
-O Storage é a solução do Firebase para armazenar arquivos como imagens, vídeos e outros conteúdos. É neste local que os clientes irão fazer o upload de suas mídias para uso na aplicação. Cada mídia carregada gera uma URL que será posteriormente utilizada no Firestore Database nas coleções "fotos" e "videos".
+O `Storage` é a solução do `Firebase` para armazenar arquivos como imagens, vídeos e outros conteúdos. É neste local que os clientes irão fazer o *upload* de suas mídias para uso na aplicação. Cada mídia carregada gera uma `URL` que será posteriormente utilizada no `Firestore Database` nas coleções "fotos" e "videos".
+
+> ⚠️ **Atenção**: É importante manter os mesmos nomes de coleções e documentos utilizados neste documento, pois eles são utilizados no código para referenciar os dados.
 
 <div align="center">
 
@@ -12,7 +14,7 @@ O Storage é a solução do Firebase para armazenar arquivos como imagens, víde
 
 ## Authentication
 
-O Authentication é a ferramenta do Firebase para autenticação de usuários. A estrutura é a seguinte:
+O **Authentication** é a ferramenta do `Firebase` para autenticação de usuários. A estrutura é a seguinte:
 
 ```plaintext
 Identificador: [e-mail do usuário]
@@ -29,15 +31,15 @@ UID do usuário: [ID gerado automaticamente pelo Firebase, deve ser linkado ao u
 
 </div>
 
-Nota: O UID gerado é essencial, pois ele é utilizado como identificador único em outros lugares, como no Firestore Database.
+Nota: O `UID` gerado é essencial, pois ele é utilizado como identificador único em outros lugares, como no `Firestore Database`.
 
 ## Firestore Database
 
-Este é o banco de dados em tempo real do Firebase. Ele é organizado em coleções e documentos. As coleções utilizadas no projeto são:
+Este é o banco de dados em tempo real do `Firebase`. Ele é organizado em coleções e documentos. As coleções utilizadas no projeto são:
 
 ### usuários
 
-Cada documento representa um usuário e seu ID coincide com o UID do Authentication. Exemplo de estrutura:
+Cada documento representa um usuário e seu `ID` coincide com o `UID` do `Authentication`. Exemplo de estrutura:
 
 ```plaintext
 ID do Documento: [ID único gerado pelo Firebase]
@@ -79,7 +81,7 @@ Estrutura semelhante à coleção "fotos".
 
 ### categorias
 
-Cada categoria possui um conjunto de IDs que fazem referência a fotos e vídeos relacionados.
+Cada categoria possui um conjunto de `IDs` que fazem referência a fotos e vídeos relacionados.
 
 Exemplo de estrutura:
 
@@ -98,11 +100,11 @@ videos: [Array de IDs de vídeos que pertencem a essa categoria]
 
 ## 1.2 Chaves, Instalação de Biblioteca no Node.js e Conexão
 
-Para integrar sua aplicação Node.js ao Firebase, você precisa instalar a biblioteca correspondente e configurar com uma chave privada. Aqui estão os passos para fazer isso:
+Para integrar sua aplicação `Node.js` ao `Firebase`, você precisa instalar a biblioteca correspondente e configurar com uma chave privada. Aqui estão os passos para fazer isso:
 
 ### 1. Instalação da Biblioteca
 
-Primeiro, vamos instalar a biblioteca do Firebase Admin para Node.js. No terminal ou prompt de comando, navegue até a pasta do seu projeto e execute o seguinte comando:
+Primeiro, vamos instalar a biblioteca do `Firebase Admin` para `Node.js`. No terminal ou *prompt* de comando, navegue até a pasta do seu projeto e execute o seguinte comando:
 
 ```bash
 npm install firebase-admin --save
@@ -124,8 +126,8 @@ npm install firebase-admin --save
 
 ### 4. Conexão com o Firebase
 
-Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes em seu projeto, são responsáveis por estabelecer a conexão entre o Node.js e o Firebase. Certificando-se de que a chave `firebaseKey.json` esteja na pasta correta, esses arquivos cuidarão do resto!
+Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes em seu projeto, são responsáveis por estabelecer a conexão entre o `Node.js` e o `Firebase`. Certificando-se de que a chave `firebaseKey.json` esteja na pasta correta, esses arquivos cuidarão do resto!
 
 > ⚠️ **Atenção**: Nunca compartilhe ou cometa seu arquivo `firebaseKey.json` em repositórios públicos, pois ele contém informações sensíveis.
 
-Pronto! Agora sua aplicação Node.js está pronta para se conectar e interagir com o Firebase.
+Pronto! Agora sua aplicação `Node.js` está pronta para se conectar e interagir com o `Firebase`.
