@@ -35,21 +35,31 @@ const getUserFromFirestore = async (uid) => {
   }
 };
 
-const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura, uid) => {
+const updateSubscriptionStatus = async (uid, status) => {
   const usersCollection = admin.firestore().collection('usuários');
   
+  // Buscar o documento com base no uid
+  const querySnapshot = await usersCollection.where('uid', '==', uid).get();
+  
+  if (!querySnapshot.empty) {
+    const doc = querySnapshot.docs[0];
+    await doc.ref.update({ assinaturaAtiva: status });
+  } else {
+    throw boom.notFound(`Documento não encontrado para o UID: ${uid}`);
+  }
+};
+
+const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura, uid) => {  
   if (!assinaturaAtiva) {
     return 'Assinatura inativa. Por favor, assine para usar o serviço.';
   }
   
   const currentDate = new Date();
-  const subscriptionExpiryDate = new Date(dataExpiracaoAssinatura);
-
+  const subscriptionExpiryDate = new Date(dataExpiracaoAssinatura._seconds * 1000);
+  
   if (currentDate >= subscriptionExpiryDate) {
     // Atualiza o valor de assinaturaAtiva para false
-    await usersCollection.doc(uid).update({
-      assinaturaAtiva: false,
-    });
+    await updateSubscriptionStatus(uid, false);
 
     return 'Assinatura expirada. Por favor, renove sua assinatura para continuar usando o serviço.';
   }
