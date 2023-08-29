@@ -66,7 +66,7 @@ Os usuários devem ser capazes de adquirir uma assinatura, realizando o pagament
 
 O `banco de dados` do projeto foi desenvolvido utilizando o `Firebase`, uma plataforma de desenvolvimento que oferece várias ferramentas como autenticação, armazenamento e banco de dados em tempo real. Abaixo detalhamos a estrutura utilizada no `Firebase` para que o projeto funcione corretamente.
 
-O `README` referente ao **Firebase** pode ser acessado [aqui](backend/Firebase.md).
+O `README` detalhado sobre nossa integração com o **Firebase**, abrangendo configurações, fluxos e práticas recomendadas, pode ser encontrado [aqui](../Firebase.md).
 
 ## API do Mercado Pago
 
@@ -74,7 +74,7 @@ O `Mercado Pago` é uma das soluções de pagamento mais reconhecidas e utilizad
 
 A integração com a `API do Mercado Pago` é essencial para garantir que os pagamentos sejam processados corretamente, e que toda a lógica de negócios associada a pagamentos (como validação, notificações de pagamento, gestão de assinaturas, entre outros) seja adequadamente tratada.
 
-Para uma visão detalhada da nossa integração com a `API do Mercado Pago`, incluindo configurações, fluxos e melhores práticas, consulte o `README` específico sobre esta integração, acessível [aqui](backend/MercadoPago.md).
+Para uma visão detalhada da nossa integração com a `API do Mercado Pago`, incluindo configurações, fluxos e melhores práticas, consulte o `README` específico sobre esta integração, acessível [aqui](../MercadoPago.md).
 
 ## Tecnologias e Ferramentas Utilizadas
 

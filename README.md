@@ -11,8 +11,9 @@ O __Project-Private-Media__ é uma aplicação dedicada à exibição de mídias
     - [Visão Geral de Funcionalidades](#visão-geral-de-funcionalidades)
   - [Como rodar a aplicação e detalhes do funcionamento](#como-rodar-a-aplicação-e-detalhes-do-funcionamento)
     - [Início Rápido](#início-rápido)
-    - [Frontend](#frontend)
     - [Backend](#backend)
+    - [Frontend](#frontend)
+    - [Firebase e Mercado Pago](#firebase-e-mercado-pago)
   - [Notas](#notas)
     - [Git, GitHub e Histórico de Commits](#git-github-e-histórico-de-commits)
 
@@ -68,13 +69,17 @@ Para começar, clone o repositório em sua máquina local.
 
 </details>
 
+### Backend
+
+O `README` referente ao __Backend__ pode ser acessado [aqui](backend/README.md).
+
 ### Frontend
 
 O `README` referente ao __Frontend__ pode ser acessado [aqui](frontend/README.md).
 
-### Backend
+### Firebase e Mercado Pago
 
-O `README` referente ao __Backend__ pode ser acessado [aqui](backend/README.md).
+Você também pode acessar os `READMEs` específicos para o `Firebase` e o `Mercado Pago` [aqui](Firebase.md) e [aqui](MercadoPago.md), respectivamente.
 
 ## Notas
 

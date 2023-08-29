@@ -98,19 +98,13 @@ videos: [Array de IDs de vídeos que pertencem a essa categoria]
 
 </div>
 
-## 1.2 Chaves, Instalação de Biblioteca no Node.js e Conexão
+## 1.2 Chaves e Conexão com Firebase
 
-Para integrar sua aplicação `Node.js` ao `Firebase`, você precisa instalar a biblioteca correspondente e configurar com uma chave privada. Aqui estão os passos para fazer isso:
+Para integrar sua aplicação ao `Firebase`, é necessário configurar as chaves apropriadas, tanto no `frontend` quanto no `backend`. Abaixo estão os detalhes para cada caso:
 
-### 1. Instalação da Biblioteca
+### Backend
 
-Primeiro, vamos instalar a biblioteca do `Firebase Admin` para `Node.js`. No terminal ou *prompt* de comando, navegue até a pasta do seu projeto e execute o seguinte comando:
-
-```bash
-npm install firebase-admin --save
-```
-
-### 2. Gerando a Chave Privada
+#### 1. Gerando a Chave Privada
 
 1. Acesse o [Firebase Console](https://console.firebase.google.com/).
 2. Selecione seu projeto.
@@ -118,16 +112,30 @@ npm install firebase-admin --save
 4. Na aba `Service accounts`, clique no botão `Generate new private key`.
 5. Um arquivo `.json` será baixado. Este arquivo contém sua chave privada e outras informações importantes para a conexão.
 
-### 3. Configurando a Chave no Projeto
+#### 2. Configurando a Chave no Projeto
 
 1. Renomeie o arquivo baixado para `firebaseKey.json`.
 2. Transfira ou cole este arquivo dentro da pasta `backend/src/database` do seu projeto.
 3. Certifique-se de que o arquivo `firebaseKey.json` esteja na mesma pasta e ao lado dos arquivos `connection.js` e `loadFirebaseConfig.js`.
 
-### 4. Conexão com o Firebase
+#### 3. Conexão com o Firebase
 
-Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes em seu projeto, são responsáveis por estabelecer a conexão entre o `Node.js` e o `Firebase`. Certificando-se de que a chave `firebaseKey.json` esteja na pasta correta, esses arquivos cuidarão do resto!
+Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes em seu projeto backend são responsáveis por estabelecer a conexão entre o `Node.js` e o `Firebase`. Certificando-se de que a chave `firebaseKey.json` esteja na pasta correta, esses arquivos cuidarão do resto!
 
 > ⚠️ **Atenção**: Nunca compartilhe ou cometa seu arquivo `firebaseKey.json` em repositórios públicos, pois ele contém informações sensíveis.
 
-Pronto! Agora sua aplicação `Node.js` está pronta para se conectar e interagir com o `Firebase`.
+### Frontend
+
+#### 1. Obtendo Configurações de Inicialização
+
+1. Acesse o [Firebase Console](https://console.firebase.google.com/).
+2. Selecione seu projeto.
+3. No menu lateral, clique em `Configurações` (ícone de engrenagem) e escolha a opção `Configurações gerais`.
+4. Sob `Firebase SDK snippet`, selecione a opção `Config`.
+5. Anote as configurações apresentadas. Elas serão usadas na sua aplicação frontend.
+
+> **Nota**: No README do ([frontend](frontend/README.md), serão fornecidas instruções detalhadas sobre como inserir estas informações como variáveis de ambiente, garantindo que elas não estejam expostas.
+
+Com essas configurações, sua aplicação está pronta para se conectar e interagir com o `Firebase`.
+
+[⬅ Voltar para o README principal](./README.md)
