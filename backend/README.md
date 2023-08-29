@@ -10,13 +10,10 @@
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
-  - [Instalar dependências](#instalar-dependências)
-    - [Configuração Local](#configuração-local)
-    - [Configuração Docker](#configuração-docker)
-  - [Executando com Docker](#executando-com-docker)
-  - [Executando sem Docker](#executando-sem-docker)
+  - [Instalação de Dependências](#instalação-de-dependências)
+  - [Configuração de Variáveis de Ambiente](#configuração-de-variáveis-de-ambiente)
+  - [Execução](#execução)
   - [Lint](#lint)
-  - [Testes](#testes)
 
 ## Contexto
 
@@ -78,18 +75,12 @@ Para uma visão detalhada da nossa integração com a `API do Mercado Pago`, inc
 
 ## Tecnologias e Ferramentas Utilizadas
 
-Na construção do `Backend`, optei por utilizar uma variedade de tecnologias e ferramentas, selecionadas por suas vantagens específicas:
+As tecnologias de`Backend` selecionadas para este projeto, por conta de suas vantagens específicas, foram:
 
 - [Node.js](https://nodejs.org/en): A plataforma de desenvolvimento em `JavaScript` foi escolhida para a construção do `backend` devido à sua alta performance, facilidade de aprendizado e ampla adoção na comunidade de desenvolvimento.
-- [MongoDB](https://www.mongodb.com/): O `MongoDB`, um banco de dados não-relacional, foi utilizado devido à sua flexibilidade e escalabilidade, perfeitamente adequado para aplicativos modernos.
-- [Mongoose](https://mongoosejs.com/): Uma biblioteca para `MongoDB` e `Node.js` que proporciona uma solução direta, baseada em esquemas, para modelar os dados da aplicação.
 - [Joi](https://github.com/sideway/joi): Esta biblioteca de validação de dados em `JavaScript` foi escolhida por sua facilidade de uso e versatilidade na validação de diversos tipos de dados.
 - [Express](https://expressjs.com/): Este `framework web` para `Node.js` foi escolhido devido à sua simplicidade e eficácia na criação de rotas e endpoints do backend.
-- [JWT](https://jwt.io/): `JSON Web Tokens` é um padrão **RFC 7519**, que define uma forma compacta e autossuficiente para transmitir informações com segurança entre as partes como um objeto `JSON`.
 - [@hapi/boom](https://github.com/hapijs/boom): Utilizei a biblioteca `Boom` para lidar com erros `HTTP` de forma mais fácil e organizada, permitindo uma melhor manipulação e apresentação dos erros para os usuários.
-- [Mocha](https://mochajs.org/): `Mocha` é um framework de testes `JavaScript` flexível e de fácil utilização, com suporte para testes síncronos e assíncronos.
-- [Chai](https://www.chaijs.com/): `Chai` é uma biblioteca de asserção para `Node.js` que proporciona um rico conjunto de asserções que podem ser usadas para escrever testes de forma mais legível e expressiva.
-- [Sinon](https://sinonjs.org/): `Sinon` é uma biblioteca de testes que oferece recursos como *spies*, *stubs* e *mocks*, facilitando a criação de testes unitários e de integração.
 
 ## Instalação e Execução
 
@@ -98,15 +89,15 @@ Na construção do `Backend`, optei por utilizar uma variedade de tecnologias e 
 Primeiro, você precisa fazer o clone do repositório do projeto. Para isso, use o comando:
 
 ```bash
-git clone git@github.com:imsamuelcovalero/Project-Our-Shop-App-Angular.git
+git clone git@github.com:imsamuelcovalero/Project-Private-Media
 ```
 
-### Instalar dependências
+### Instalação de Dependências
 
-Em seguida, navegue até o diretório `backend` e instale as dependências necessárias com os seguintes comandos:
+Após clonar o projeto, navegue até o diretório `backend` e instale as dependências necessárias com os seguintes comandos:
 
 ```bash
-cd Project-Our-Shop-App-Angular
+cd Project-Private-Media
 
 cd backend
 npm install
@@ -114,73 +105,43 @@ npm install
 
 Esses comandos instalam todas as dependências listadas no arquivo `package.json`, que são necessárias para a execução do projeto.
 
-<details>
-<summary>Configuração de Variáveis de Ambiente</summary>
+### Configuração de Variáveis de Ambiente
 
-  O projeto utiliza variáveis de ambiente para configuração de valores sensíveis ou específicos do ambiente, como chaves secretas, nomes de usuário e senhas.
+O projeto utiliza variáveis de ambiente para configuração de valores sensíveis ou específicos do ambiente, como chaves secretas, nomes de usuário e senhas.
 
-  No diretório do `backend`, você encontrará dois arquivos `.env.example` e `.docker.example.env`. Esses arquivos contêm exemplos das variáveis de ambiente que o projeto espera.
+No diretório do `backend`, você encontrará o arquivo `.env.example`, que contêm exemplos das variáveis de ambiente que o projeto espera.
 
-#### Configuração Local
-
-  1. Renomeie o arquivo `.env.example` para `.env`.
-  2. Substitua os valores conforme necessário. As variáveis incluem:
-
-  ```bash
-  #### SECRET VARIABLES
-  JWT_SECRET=suaSenhaSecreta
-
-  MONGO_INITDB_DATABASE=mongodb # name_db
-  MONGO_INITDB_ROOT_USERNAME=root # probably root
-  MONGO_INITDB_ROOT_PASSWORD=suaSenha # probably password
-  MONGO_URI=mongodb://localhost:27017/mongodb # mongodb://localhost:27017/name_db
-  ```
-
-#### Configuração Docker
-
-  1. Renomeie o arquivo `.docker.example.env` para `.env`.
-  2. Substitua os valores conforme necessário. As variáveis incluem:
-
-  ```bash
-  #### SECRET VARIABLES
-  JWT_SECRET=suaSenhaSecreta
-
-  MONGO_INITDB_DATABASE=mongodb # name_db
-  MONGO_INITDB_ROOT_USERNAME=root # probably root
-  MONGO_INITDB_ROOT_PASSWORD=suaSenha # probably password
-  MONGO_URI=mongodb://mongodb:27017/mongodb # mongodb://mongodb:27017/name_db
-  ```
-
-  Substitua cada valor com os detalhes do seu próprio ambiente.
-
-  **Nota:** As variáveis `MONGO_INITDB_DATABASE`, `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD` e `MONGO_URI` são usadas para configurar a conexão com o **MongoDB**. Lembre-se de usar valores que correspondam à configuração do seu banco de dados.
-
-</details>
-
-### Executando com Docker
-
-Para executar o projeto utilizando `Docker`, assegure-se de ter o `Docker` e o `Docker Compose` instalados em sua máquina. Em seguida, no diretório raiz do projeto, execute o seguinte comando:
+1. Renomeie o arquivo `.env.example` para `.env`.
+2. Substitua os valores conforme necessário. As variáveis incluem:
 
 ```bash
-docker-compose up -d
+PORT= # porta da aplicação
+
+#### API MERCADO PAGO CHAVE PRIVADA
+MERCADOPAGO_ACCESS_TOKEN=suaChavePrivada # a chave privada do Mercado Pago deve vir aqui
+
+#### FIREBASE # não é necessário inserir as variáveis de ambiente do Firebase, pois elas são carregadas automaticamente pelo arquivo loadFirebaseConfig.js
+FIREBASE_TYPE=
+FIREBASE_PROJECT_ID=
+FIREBASE_PRIVATE_KEY_ID=
+FIREBASE_PRIVATE_KEY=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_CLIENT_ID=
+FIREBASE_AUTH_URI=
+FIREBASE_TOKEN_URI=
+FIREBASE_AUTH_PROVIDER_X509_CERT_URL=
+FIREBASE_CLIENT_X509_CERT_URL=
 ```
 
-**Importante:** Note que se já tiver executado este comando no `frontend`, não será necessário executá-lo novamente, pois o `Docker Compose` já terá criado os containers necessários para a execução do projeto.
+### Execução
 
-O `serviço backend` será executado na porta 3001.
-
-### Executando sem Docker
-
-Caso prefira executar o projeto sem `Docker`, após a instalação das dependências, você pode iniciar a aplicação com o seguinte comando:
+Após a instalação das dependências e a configuração das variáveis de ambiente, você pode iniciar a aplicação com o seguinte comando:
 
 ```bash
-cd Project-Our-Shop-App-Angular
-
-cd backend
 npm run dev
 ```
 
-Este comando inicia o servidor de desenvolvimento e ficará disponível na porta 3001, geralmente acessível através do endereço `http://localhost:3001` no navegador.
+Este comando inicia o servidor de desenvolvimento e ficará disponível na porta definida na variável PORT do .env ou 3001, caso não tenha sido definida. O backend estará acessível através do endereço `http://localhost:${PORT}` ou `http://localhost:3001` no navegador.
 
 ### Lint
 
@@ -190,19 +151,11 @@ Para verificar a qualidade do código com o linter, use o comando:
 npm run lint
 ```
 
-### Testes
-
-Para assegurar a qualidade do código e o funcionamento correto das funcionalidades, foram escritos testes unitários utilizando Mocha, Chai e Sinon. Você pode executar os testes com o seguinte comando:
-
-```bash
-npm test
-```
-
 - O `backend` foi desenvolvido seguindo os padrões de código JavaScript com o uso do [ESLint](https://eslint.org/), utilizando a extensão 'trybe-backend' e algumas regras personalizadas para promover um código limpo e bem estruturado.
 
 É importante lembrar que, ao encontrar problemas durante a instalação ou execução, uma boa prática é verificar as mensagens de erro que aparecem no terminal. Elas geralmente fornecem pistas sobre o que pode estar errado. Também é recomendável manter todas as dependências atualizadas e garantir que seu ambiente de desenvolvimento esteja configurado corretamente. Além disso, é aconselhável consultar a documentação oficial das dependências usadas no projeto em caso de problemas.
 
-Em caso de dúvidas, não hesite em abrir uma [issue](https://github.com/imsamuelcovalero/Desafio_Shopper/issues) no GitHub ou me contatar diretamente. Estou à disposição para ajudar.
+Em caso de dúvidas, não hesite em abrir uma [issue](https://github.com/imsamuelcovalero/Project-Private-Media/issues) no GitHub ou me contatar diretamente. Estou à disposição para ajudar.
 
 Espero que estas instruções sejam úteis para a instalação e execução do projeto. Se houver mais alguma coisa em que eu possa ajudar, por favor, me avise.
 
