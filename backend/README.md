@@ -14,6 +14,11 @@
       - [fotos](#fotos)
       - [videos](#videos)
       - [categorias](#categorias)
+- [1.2 Chaves, Instalação de Biblioteca no Node.js e Conexão](#12-chaves-instalação-de-biblioteca-no-nodejs-e-conexão)
+  - [1. Instalação da Biblioteca](#1-instalação-da-biblioteca)
+  - [2. Gerando a Chave Privada](#2-gerando-a-chave-privada)
+  - [3. Configurando a Chave no Projeto](#3-configurando-a-chave-no-projeto)
+  - [4. Conexão com o Firebase](#4-conexão-com-o-firebase)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
@@ -45,7 +50,7 @@ Detalhes adicionais sobre a integração com o `Firebase`, `Mercado Pago`, e out
 
 ## Regras de Negócio
 
-Estamos utilizando principalmente o __Joi__ para aplicar as regras de negócios e validações. O __Joi__ é um validador de dados para `JavaScript` que utiliza um esquema para descrever a forma de dados que são permitidos e que serão validados. O __Joi__ é extremamente poderoso e flexível, e pode ser utilizado para validar dados de forma consistente e confiável.
+Estamos utilizando principalmente o **Joi** para aplicar as regras de negócios e validações. O **Joi** é um validador de dados para `JavaScript` que utiliza um esquema para descrever a forma de dados que são permitidos e que serão validados. O **Joi** é extremamente poderoso e flexível, e pode ser utilizado para validar dados de forma consistente e confiável.
 
 <details>
 <summary>Requisitos levantados</summary>
@@ -113,6 +118,39 @@ Cada categoria possui um conjunto de IDs que fazem referência a fotos e vídeos
 
 Foto4
 
+## 1.2 Chaves, Instalação de Biblioteca no Node.js e Conexão
+
+Para integrar sua aplicação Node.js ao Firebase, você precisa instalar a biblioteca correspondente e configurar com uma chave privada. Aqui estão os passos para fazer isso:
+
+### 1. Instalação da Biblioteca
+
+Primeiro, vamos instalar a biblioteca do Firebase Admin para Node.js. No terminal ou prompt de comando, navegue até a pasta do seu projeto e execute o seguinte comando:
+
+```bash
+npm install firebase-admin --save
+```
+
+### 2. Gerando a Chave Privada
+
+1. Acesse o [Firebase Console](https://console.firebase.google.com/).
+2. Selecione seu projeto.
+3. No menu lateral, clique em `Configurações` (ícone de engrenagem) e escolha a opção `Configurações do projeto`.
+4. Na aba `Service accounts`, clique no botão `Generate new private key`.
+5. Um arquivo `.json` será baixado. Este arquivo contém sua chave privada e outras informações importantes para a conexão.
+
+### 3. Configurando a Chave no Projeto
+
+1. Renomeie o arquivo baixado para `firebaseKey.json`.
+2. Transfira ou cole este arquivo dentro da pasta `backend/src/database` do seu projeto.
+3. Certifique-se de que o arquivo `firebaseKey.json` esteja na mesma pasta e ao lado dos arquivos `connection.js` e `loadFirebaseConfig.js`.
+
+### 4. Conexão com o Firebase
+
+Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes em seu projeto, são responsáveis por estabelecer a conexão entre o Node.js e o Firebase. Certificando-se de que a chave `firebaseKey.json` esteja na pasta correta, esses arquivos cuidarão do resto!
+
+> ⚠️ **Atenção**: Nunca compartilhe ou cometa seu arquivo `firebaseKey.json` em repositórios públicos, pois ele contém informações sensíveis.
+
+Pronto! Agora sua aplicação Node.js está pronta para se conectar e interagir com o Firebase.
 
 ## Tecnologias e Ferramentas Utilizadas
 
@@ -123,7 +161,7 @@ Na construção do `Backend`, optei por utilizar uma variedade de tecnologias e 
 - [Mongoose](https://mongoosejs.com/): Uma biblioteca para `MongoDB` e `Node.js` que proporciona uma solução direta, baseada em esquemas, para modelar os dados da aplicação.
 - [Joi](https://github.com/sideway/joi): Esta biblioteca de validação de dados em `JavaScript` foi escolhida por sua facilidade de uso e versatilidade na validação de diversos tipos de dados.
 - [Express](https://expressjs.com/): Este `framework web` para `Node.js` foi escolhido devido à sua simplicidade e eficácia na criação de rotas e endpoints do backend.
-- [JWT](https://jwt.io/): `JSON Web Tokens` é um padrão __RFC 7519__, que define uma forma compacta e autossuficiente para transmitir informações com segurança entre as partes como um objeto `JSON`.
+- [JWT](https://jwt.io/): `JSON Web Tokens` é um padrão **RFC 7519**, que define uma forma compacta e autossuficiente para transmitir informações com segurança entre as partes como um objeto `JSON`.
 - [@hapi/boom](https://github.com/hapijs/boom): Utilizei a biblioteca `Boom` para lidar com erros `HTTP` de forma mais fácil e organizada, permitindo uma melhor manipulação e apresentação dos erros para os usuários.
 - [Mocha](https://mochajs.org/): `Mocha` é um framework de testes `JavaScript` flexível e de fácil utilização, com suporte para testes síncronos e assíncronos.
 - [Chai](https://www.chaijs.com/): `Chai` é uma biblioteca de asserção para `Node.js` que proporciona um rico conjunto de asserções que podem ser usadas para escrever testes de forma mais legível e expressiva.
@@ -159,7 +197,7 @@ Esses comandos instalam todas as dependências listadas no arquivo `package.json
 
   No diretório do `backend`, você encontrará dois arquivos `.env.example` e `.docker.example.env`. Esses arquivos contêm exemplos das variáveis de ambiente que o projeto espera.
 
-  #### Configuração Local
+#### Configuração Local
 
   1. Renomeie o arquivo `.env.example` para `.env`.
   2. Substitua os valores conforme necessário. As variáveis incluem:
@@ -174,7 +212,7 @@ Esses comandos instalam todas as dependências listadas no arquivo `package.json
   MONGO_URI=mongodb://localhost:27017/mongodb # mongodb://localhost:27017/name_db
   ```
 
-  #### Configuração Docker
+#### Configuração Docker
 
   1. Renomeie o arquivo `.docker.example.env` para `.env`.
   2. Substitua os valores conforme necessário. As variáveis incluem:
@@ -191,7 +229,7 @@ Esses comandos instalam todas as dependências listadas no arquivo `package.json
 
   Substitua cada valor com os detalhes do seu próprio ambiente.
 
-  __Nota:__ As variáveis `MONGO_INITDB_DATABASE`, `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD` e `MONGO_URI` são usadas para configurar a conexão com o __MongoDB__. Lembre-se de usar valores que correspondam à configuração do seu banco de dados.
+  **Nota:** As variáveis `MONGO_INITDB_DATABASE`, `MONGO_INITDB_ROOT_USERNAME`, `MONGO_INITDB_ROOT_PASSWORD` e `MONGO_URI` são usadas para configurar a conexão com o **MongoDB**. Lembre-se de usar valores que correspondam à configuração do seu banco de dados.
 
 </details>
 
