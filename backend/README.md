@@ -5,8 +5,9 @@
 - [Regras de Negócio](#regras-de-negócio)
   - [Funcionalidade do usuário](#funcionalidade-do-usuário)
   - [Funcionalidade de Assinatura](#funcionalidade-de-assinatura)
-- [Banco de Dados](#banco-de-dados)
-- [API do Mercado Pago](#api-do-mercado-pago)
+- [Firebase e Mercado Pago](#firebase-e-mercado-pago)
+  - [Banco de Dados](#banco-de-dados)
+  - [API do Mercado Pago](#api-do-mercado-pago)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
@@ -27,11 +28,11 @@ O **Backend** deste projeto desempenha um papel essencial para garantir o funcio
   
 - **Respostas de Requisições**: Retorna ao **Frontend** as respostas apropriadas, sejam elas indicativas de sucesso ou erro.
   
-- **Integração com o Firebase**: Automatiza a conexão com o Firebase, carregando e configurando as chaves necessárias para uma integração eficaz.
+- **Integração com o Firebase**: Automatiza a conexão com o `Firebase`, carregando e configurando as chaves necessárias para uma integração eficaz.
   
 - **Integração com o Mercado Pago**: Embora o **Frontend** inicie a interação com a `API` do `Mercado Pago`, o **Backend** é responsável por validar as informações retornadas e finalizar a interação com a `API`, principalmente no que se refere à aquisição de assinaturas.
 
-Detalhes adicionais sobre a integração com o `Firebase`, `Mercado Pago`, e outras especificações técnicas serão explorados nas seções subsequentes.
+Detalhes adicionais sobre a integração com o `Firebase`, `Mercado Pago`, e outras especificações técnicas serão explorados nas seções subsequentes e `READMEs` específicos.
 
 ## Regras de Negócio
 
@@ -59,13 +60,15 @@ Os usuários devem ser capazes de adquirir uma assinatura, realizando o pagament
 
 </details>
 
-## Banco de Dados
+## Firebase e Mercado Pago
+
+### Banco de Dados
 
 O `banco de dados` do projeto foi desenvolvido utilizando o `Firebase`, uma plataforma de desenvolvimento que oferece várias ferramentas como autenticação, armazenamento e banco de dados em tempo real. Abaixo detalhamos a estrutura utilizada no `Firebase` para que o projeto funcione corretamente.
 
 O `README` detalhado sobre nossa integração com o **Firebase**, abrangendo configurações, fluxos e práticas recomendadas, pode ser encontrado [aqui](../Firebase.md).
 
-## API do Mercado Pago
+### API do Mercado Pago
 
 O `Mercado Pago` é uma das soluções de pagamento mais reconhecidas e utilizadas na América Latina. No contexto deste projeto, utilizamos a `API do Mercado Pago` para gerenciar e processar transações de pagamento, permitindo que os usuários realizem pagamentos de forma segura e confiável.
 
