@@ -3,12 +3,17 @@
 - [Sumário](#sumário)
 - [Contexto](#contexto)
 - [Regras de Negócio](#regras-de-negócio)
+  - [Funcionalidade do usuário](#funcionalidade-do-usuário)
+  - [Funcionalidade de Assinatura](#funcionalidade-de-assinatura)
 - [Banco de Dados](#banco-de-dados)
-  - [Diagrama](#diagrama)
-- [API](#api)
-  - [Acesso Online](#acesso-online)
-  - [Acesso Local](#acesso-local)
-  - [Autenticação](#autenticação)
+  - [Estrutura e Criação](#estrutura-e-criação)
+    - [Storage](#storage)
+    - [Authentication](#authentication)
+    - [Firestore Database](#firestore-database)
+      - [usuários](#usuários)
+      - [fotos](#fotos)
+      - [videos](#videos)
+      - [categorias](#categorias)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
@@ -22,16 +27,21 @@
 
 ## Contexto
 
-Neste projeto, o __Backend__ desempenha diversas funções fundamentais, tais como:
+O **Backend** deste projeto desempenha um papel essencial para garantir o funcionamento apropriado da aplicação e para integrar-se com diversos serviços externos, como o Firebase e o Mercado Pago. Algumas de suas principais funções são:
 
-- Montar a estrutura inicial das tabelas e relações através do [`Mongoose`](https://mongoosejs.com/).
-- Possui alguns *scripts* no `package.json` para cuidar da organização e inicialização correta da aplicação, dando a opção de reiniciar o banco de dados ou manter os dados existentes.
-- Validar a requisição e registrar um novo usuário no banco de dados, caso seja criado pelo `Frontend`.
-- Receber do `Frontend` as entradas de dados e aplicar as validações e regras de negócio, em caso de uma nova ordem de compra.
-- Devolver para o `Frontend` as respostas das requisições, sejam elas de sucesso ou de erro.
-- Cuidar da integridade e legitimidade dos dados.
-- Ao receber uma nova ordem de compra, gravar as informações pertinentes no `banco de dados`, inclusive o valor atualizado do saldo de *cashback* do cliente.
-- Prover para o `Frontend` o histórico de compras do cliente, com as informações de cada compra e o valor de *cashback* acumulado.
+- **Validação de Dados e Registração de Usuários**: Valida os dados das requisições e, quando adequado, registra um novo usuário, conforme as informações recebidas do **Frontend**.
+  
+- **Validação de Dados de Login**: Enquanto a autenticação inicial é realizada pelo `Firebase`, o `token` gerado é encaminhado ao **Backend**. Este, por sua vez, realiza verificações adicionais, garantindo a autenticidade e, posteriormente, retorna informações complementares sobre o usuário necessárias para a lógica do **Frontend**.
+  
+- **Integração e Legitimidade de Dados**: Funciona como intermediário entre o **Frontend** e o banco de dados, certificando-se de que todas as informações a serem inseridas ou atualizadas são legítimas e estão íntegras.
+  
+- **Respostas de Requisições**: Retorna ao **Frontend** as respostas apropriadas, sejam elas indicativas de sucesso ou erro.
+  
+- **Integração com o Firebase**: Automatiza a conexão com o Firebase, carregando e configurando as chaves necessárias para uma integração eficaz.
+  
+- **Integração com o Mercado Pago**: Embora o **Frontend** inicie a interação com a `API` do `Mercado Pago`, o **Backend** é responsável por validar as informações retornadas e finalizar a interação com a `API`, principalmente no que se refere à aquisição de assinaturas.
+
+Detalhes adicionais sobre a integração com o `Firebase`, `Mercado Pago`, e outras especificações técnicas serão explorados nas seções subsequentes.
 
 ## Regras de Negócio
 
@@ -40,57 +50,69 @@ Estamos utilizando principalmente o __Joi__ para aplicar as regras de negócios 
 <details>
 <summary>Requisitos levantados</summary>
 
-1. __Funcionalidade do usuário__: Os usuários devem ser capazes de fazer login, registrar-se e visualizar seu histórico de pedidos. A validação de novos usuários e o registro de suas informações no banco de dados são responsabilidade do backend. O sistema deve ser capaz de lidar com informações de usuário únicas, como nome de usuário e e-mail.
+### Funcionalidade do usuário
 
-2. __Funcionalidade de produtos__: Os usuários devem ser capazes de visualizar e escolher produtos para comprar. O sistema deve garantir que cada produto tenha um nome único e deve ser capaz de lidar com o preço e a imagem do produto.
+Os usuários devem ser capazes de:
 
-3. __Funcionalidade de carrinho de compras__: Os usuários devem ser capazes de adicionar produtos ao carrinho de compras e efetuar o checkout. Durante o checkout, os usuários devem ter a opção de usar seu cashback para reduzir o valor total da compra. O backend deve receber as entradas de dados do frontend e aplicar as validações e regras de negócio necessárias.
+- **Login e Logout:** Autenticar-se no sistema e deslogar quando necessário.
+- **Registro:** Criar um novo perfil de usuário.
+- **Edição de Perfil:** Atualizar informações pessoais.
+- **Validação de Token:** Após a autenticação via Firebase, o backend deve validar o token gerado e retornar informações relacionadas ao status de assinatura do usuário e outras informações pertinentes.
+- **Aquisição de Assinatura:** Adquirir assinatura, com validação do pagamento e consequente atualização do status de assinatura do usuário.
 
-4. __Funcionalidade de cashback__: Após cada compra, o sistema deve calcular e atualizar o saldo de cashback do cliente. Este saldo deve ser registrado no banco de dados e estar disponível para consulta na página de histórico de ordens.
+### Funcionalidade de Assinatura
 
-5. __Funcionalidade de pontos de retirada__: Os usuários devem ter a opção de escolher um ponto de retirada durante o checkout. Cada ponto de retirada deve ter um nome e um endereço únicos.
+Os usuários devem ser capazes de adquirir uma assinatura, realizando o pagamento único pelo plano mensal, tendo as opções de cartão de crédito ou pix. O backend é responsável por:
 
-6. __Funcionalidade de histórico de ordens__: Os usuários devem ser capazes de consultar o histórico de ordens, que inclui informações sobre cada compra e o valor de cashback acumulado. O backend deve fornecer essas informações para o frontend.
+- **Validação do Pagamento:** Confirmar que o pagamento foi bem-sucedido.
+- **Atualização de Status:** Atualizar o status da assinatura do usuário para ativo e adicionar 1 mês de assinatura ao perfil do usuário.
 
 </details>
 
 ## Banco de Dados
 
-O banco de dados foi criado utilizando o `MongoDB` e o `Mongoose` para gerenciar as tabelas e relações. O diagrama abaixo representa a estrutura do banco de dados:
+O banco de dados do projeto foi desenvolvido utilizando o Firebase, uma plataforma de desenvolvimento que oferece várias ferramentas como autenticação, armazenamento e banco de dados em tempo real. Abaixo detalhamos a estrutura utilizada no Firebase para que o projeto funcione corretamente.
 
-### Diagrama
+### Estrutura e Criação
 
-<div align="center">
+#### Storage
 
-![Diagrama do banco de dados](https://github.com/imsamuelcovalero/Project-Our-Shop-App-Angular/assets/98184355/0064391a-778b-4a36-8478-92263db5ee76)
+O Storage é a solução do Firebase para armazenar arquivos como imagens, vídeos e outros conteúdos. É neste local que os clientes irão fazer o upload de suas mídias para uso na aplicação. Cada mídia carregada gera uma URL que será posteriormente utilizada no Firestore Database nas coleções "fotos" e "videos".
 
-</div>
-  
-## API
+#### Authentication
 
-A `API` é documentada e fácil de usar, graças ao `Swagger`, uma ferramenta que permite a exploração dos endpoints da `API` e os esquemas de dados associados por meio de uma interface interativa. Além disso, foi realizado o *__deploy__* da aplicação no `Railway`.
+O Authentication é a ferramenta do Firebase para autenticação de usuários. A estrutura é a seguinte:
 
-Você pode acessar a documentação da `API` *__online__* ou __localmente__.
+Foto1
 
-### Acesso Online
+Nota: O UID gerado é essencial, pois ele é utilizado como identificador único em outros lugares, como no Firestore Database.
 
-A documentação `Swagger` está hospedada e pode ser acessada no seguinte link: [API Documentation](https://our-shop-app-backend-production.up.railway.app/docs/).
+#### Firestore Database
 
-### Acesso Local
+Este é o banco de dados em tempo real do Firebase. Ele é organizado em coleções e documentos. As coleções utilizadas no projeto são:
 
-Caso deseje rodar a aplicação localmente e acessar a documentação, siga estes passos:
+##### usuários
 
-1. Certifique-se que a aplicação está rodando. Por padrão, ela deve estar rodando na `porta 3001`.
+Cada documento representa um usuário e seu ID coincide com o UID do Authentication. Exemplo de estrutura:
 
-2. Abra um navegador web e acesse a URL `http://localhost:3001/docs`.
+Foto2
 
-A interface do `Swagger` deve aparecer, fornecendo acesso a informações detalhadas sobre a `API` e permitindo que você experimente os diferentes *endpoints*.
+##### fotos
 
-### Autenticação
+Exemplo de estrutura:
 
-Alguns *endpoints* requerem autenticação. Quando um usuário realiza o *login*, um __*token*__ é gerado e retornado como parte da resposta. Este __*token*__ deve ser fornecido no campo de __*Authorization*__ do `Swagger` para acessar esses *endpoints*.
+Foto3
 
-Por favor, note que a autenticação é necessária para garantir a segurança dos dados e permitir que apenas usuários autorizados acessem determinadas funcionalidades.
+##### videos
+
+Estrutura semelhante à coleção "fotos".
+
+##### categorias
+
+Cada categoria possui um conjunto de IDs que fazem referência a fotos e vídeos relacionados.
+
+Foto4
+
 
 ## Tecnologias e Ferramentas Utilizadas
 

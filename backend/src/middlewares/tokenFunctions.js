@@ -1,18 +1,10 @@
 /* tokenFunctions.js  em backend/src/middlewares */
-const jwt = require('jsonwebtoken');
 const boom = require('@hapi/boom');
 const admin = require('firebase-admin');
 require('dotenv').config();
 
-const secret = process.env.JWT_SECRET || 'secret';
-
 const tokenFunctions = {
-  // apenas para testar o funcionamento da rota de login
-  generateMockIdToken: (uid) => {
-    const mockIdToken = jwt.sign({ uid }, secret, { expiresIn: '12h' });
-    return mockIdToken;
-  },
-
+  // Função que decodifica o token
   decode: async (req, _res, next) => {
     // console.log('req.cookies', req.cookies);
     let token = req.cookies['token'];
