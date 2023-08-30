@@ -16,11 +16,11 @@ O `Storage` é a solução do `Firebase` para armazenar arquivos como imagens, v
 
 O **Authentication** é a ferramenta do `Firebase` para autenticação de usuários. A estrutura, juntamente com os tipos de dados esperados para cada campo, é a seguinte:
 
-- **Identificador (string)**: Corresponde ao e-mail do usuário.
-- **Provedores (array of strings)**: Inclui os métodos de autenticação usados, neste caso, e-mail e senha.
+- **Identificador (string)**: Corresponde ao `e-mail` do usuário.
+- **Provedores (array of strings)**: Inclui os métodos de autenticação usados, neste caso, `e-mail` e senha.
 - **Data de criação (timestamp)**: Representa a data e a hora em que o documento de autenticação do usuário foi criado.
 - **Último login (timestamp)**: Indica a data e a hora do último login do usuário.
-- **UID do usuário (string)**: É um ID gerado automaticamente pelo Firebase. Esse UID deve ser associado ao uid do documento correspondente na coleção de usuários.
+- **UID do usuário (string)**: É um `ID` gerado automaticamente pelo `Firebase`. Esse `UID do usuário` deve ser associado ao `uid` do documento correspondente na coleção de usuários.
 
 <div align="center">
 
@@ -39,13 +39,13 @@ Este é o banco de dados em tempo real do `Firebase`. Ele é organizado em cole�
 
 Cada documento representa um usuário e seu `ID` coincide com o `UID` do `Authentication`. A estrutura, incluindo os tipos de dados esperados para cada campo, é apresentada a seguir:
 
-- **ID do Documento (string)**: ID único gerado pelo Firebase para cada documento.
+- **ID do Documento (string)**: ID único gerado pelo `Firebase` para cada documento.
 - **assinaturaAtiva (boolean)**: Indica se a assinatura do usuário está ativa. Verdadeiro para ativo e falso para inativo.
 - **dataCriacao (timestamp)**: Representa a data e a hora em que o documento do usuário foi criado.
 - **dataExpiracaoAssinatura (timestamp)**: Indica a data e a hora de expiração da assinatura do usuário.
-- **email (string)**: Corresponde ao e-mail do usuário.
+- **email (string)**: Corresponde ao `e-mail` do usuário.
 - **nome (string)**: Reflete o nome do usuário.
-- **uid (string)**: É um ID gerado automaticamente pelo Firebase. Esse UID deve ser associado ao UID do documento correspondente na seção Authentication.
+- **uid (string)**: Esse `uid` deve ser associado ao `UID do usuário` correspondente na seção Authentication.
 
 <div align="center">
 
@@ -57,11 +57,11 @@ Cada documento representa um usuário e seu `ID` coincide com o `UID` do `Authen
 
 A estrutura, incluindo os tipos de dados esperados para cada campo, é apresentada a seguir:
 
-- **ID do Documento (string)**: ID único gerado pelo Firebase para cada documento.
-- **categoriaId (string)**: ID que indica a categoria à qual a foto pertence.
+- **ID do Documento (string)**: `ID` único gerado pelo `Firebase` para cada documento.
+- **categoriaId (string)**:`ID` que indica a categoria à qual a foto pertence.
 - **dataCriacao (timestamp)**: Representa a data e a hora em que o documento da foto foi criado.
 - **descricao (string, opcional)**: Uma descrição opcional associada à foto.
-- **url (string)**: URL direcionando para o local no Firebase Storage onde a imagem está armazenada.
+- **url (string)**: `URL` direcionando para o local no `Firebase Storage` onde a imagem está armazenada.
 
 
 <div align="center">
@@ -78,10 +78,10 @@ Estrutura semelhante à coleção "fotos".
 
 Cada categoria é associada a um conjunto de IDs que se referem a fotos e vídeos relacionados. A estrutura, com os tipos de dados esperados para cada campo, é:
 
-- **ID do Documento (string)**: ID único gerado pelo Firebase para cada documento.
-- **categoriaId (string)**: ID único designado para identificar distintamente cada categoria.
-- **fotos (array of strings)**: Array contendo os IDs das fotos que são associadas a essa categoria específica.
-- **videos (array of strings)**: Array contendo os IDs dos vídeos que são associados a essa categoria.
+- **ID do Documento (string)**: `ID` único gerado pelo `Firebase` para cada documento.
+- **categoriaId (string)**: `ID` único designado para identificar distintamente cada categoria.
+- **fotos (array of strings)**: `Array` contendo os `IDs` das fotos que são associadas a essa categoria específica.
+- **videos (array of strings)**: `Array` contendo os `IDs` dos vídeos que são associados a essa categoria.
 
 <div align="center">
 
