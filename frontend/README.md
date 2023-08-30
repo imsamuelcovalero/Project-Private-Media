@@ -7,8 +7,8 @@
   - [Registro](#registro)
   - [Edição de Perfil](#edição-de-perfil)
 - [Firebase e Mercado Pago](#firebase-e-mercado-pago)
-  - [Banco de Dados](#banco-de-dados)
-  - [API do Mercado Pago](#api-do-mercado-pago)
+  - [Firebase](#firebase)
+  - [Integração com Mercado Pago](#integração-com-mercado-pago)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
@@ -85,19 +85,17 @@ Estas validações são essenciais para garantir que os dados enviados ao `Fireb
 
 ## Firebase e Mercado Pago
 
-### Banco de Dados
+### Firebase
 
-O `banco de dados` do projeto foi desenvolvido utilizando o `Firebase`, uma plataforma de desenvolvimento que oferece várias ferramentas como autenticação, armazenamento e banco de dados em tempo real. Abaixo detalhamos a estrutura utilizada no `Firebase` para que o projeto funcione corretamente.
+O projeto se beneficia amplamente do `Firebase`, uma solução versátil que nos oferece recursos como autenticação, armazenamento, e um banco de dados em tempo real. A integração com o Firebase garante uma experiência de usuário otimizada e a possibilidade de atualizações em tempo real.
 
-O `README` detalhado sobre nossa integração com o **Firebase**, abrangendo configurações, fluxos e práticas recomendadas, pode ser encontrado [aqui](../Firebase.md).
+Se desejar compreender a fundo como implementamos o **Firebase** no frontend e obter informações sobre configurações, fluxos e boas práticas, convidamos você a ler nosso `README` detalhado, disponível [aqui](../Firebase.md).
 
-### API do Mercado Pago
+### Integração com Mercado Pago
 
-O `Mercado Pago` é uma das soluções de pagamento mais reconhecidas e utilizadas na América Latina. No contexto deste projeto, utilizamos a `API do Mercado Pago` para gerenciar e processar transações de pagamento, permitindo que os usuários realizem pagamentos de forma segura e confiável.
+A integração com o `Mercado Pago`, uma das plataformas de pagamento líderes na América Latina, foi crucial para proporcionar uma experiência de compra segura e eficiente aos nossos usuários. Através desta parceria, o projeto permite transações práticas e confiáveis.
 
-A integração com a `API do Mercado Pago` é essencial para garantir que os pagamentos sejam processados corretamente, e que toda a lógica de negócios associada a pagamentos (como validação, notificações de pagamento, gestão de assinaturas, entre outros) seja adequadamente tratada.
-
-Para uma visão detalhada da nossa integração com a `API do Mercado Pago`, incluindo configurações, fluxos e melhores práticas, consulte o `README` específico sobre esta integração, acessível [aqui](../MercadoPago.md).
+É fundamental entender como o frontend se comunica e trabalha em conjunto com a `API do Mercado Pago` para processar pagamentos e garantir que os usuários tenham uma experiência de compra excepcional. Para mergulhar nos detalhes desta integração e familiarizar-se com as configurações, fluxos e recomendações, veja o `README` dedicado, que pode ser acessado [aqui](../MercadoPago.md).
 
 ## Tecnologias e Ferramentas Utilizadas
 
@@ -163,7 +161,7 @@ Para verificar a qualidade do código com o `linter`, use o comando:
 ng lint
 ```
 
-- O `frontend` foi desenvolvido seguindo os padrões de código __TypeScript__ com o uso do [ESLint](https://eslint.org/), juntamente com os plugins ['@typescript-eslint/parser' e '@typescript-eslint/eslint-plugin'](https://github.com/typescript-eslint/typescript-eslint). Essa combinação permite o linting efetivo do código __TypeScript__, promovendo um código limpo e bem estruturado.
+- O `frontend` foi desenvolvido seguindo os padrões de código JavaScript com o uso do [ESLint](https://eslint.org/), utilizando a extensão 'trybe-frontend' e algumas regras personalizadas para promover um código limpo e bem estruturado.
 
 É importante lembrar que, ao encontrar problemas durante a instalação ou execução, uma boa prática é verificar as mensagens de erro que aparecem no terminal. Elas geralmente fornecem pistas sobre o que pode estar errado. Também é recomendável manter todas as dependências atualizadas e garantir que seu ambiente de desenvolvimento esteja configurado corretamente. Além disso, é aconselhável consultar a documentação oficial das dependências usadas no projeto em caso de problemas.
 

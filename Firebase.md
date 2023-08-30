@@ -129,4 +129,6 @@ Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes e
 
 Com essas configurações, sua aplicação está pronta para se conectar e interagir com o `Firebase`.
 
+> ⚠️ **Atenção**: Lembre-se de seguir as instruções detalhadas nos READMEs do frontend e backend, e de definir corretamente as variáveis de ambiente!
+
 [⬅ Voltar para o README principal](./README.md)

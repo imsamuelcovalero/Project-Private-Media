@@ -26,6 +26,8 @@ As instruções detalhadas para definir e gerenciar essas credenciais podem ser 
 
 Ao seguir estes passos, sua aplicação estará corretamente configurada para processar pagamentos através do Mercado Pago. Qualquer dúvida ou problema, não hesite em me contactar. Para mais informações e detalhes específicos, consulte a [documentação completa do Mercado Pago](https://www.mercadopago.com.br/developers/pt/guides).
 
+> ⚠️ **Atenção**: Lembre-se de seguir as instruções detalhadas nos READMEs do frontend e backend, e de definir corretamente as variáveis de ambiente!
+
 ## Opções de Pagamento
 
 Dentro desta aplicação, disponibilizamos duas principais opções de pagamento: **Cartão de Crédito** e **Pix**.
