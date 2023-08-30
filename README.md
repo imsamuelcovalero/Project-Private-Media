@@ -11,9 +11,10 @@ O __Project-Private-Media__ é uma aplicação dedicada à exibição de mídias
     - [Visão Geral de Funcionalidades](#visão-geral-de-funcionalidades)
   - [Como rodar a aplicação e detalhes do funcionamento](#como-rodar-a-aplicação-e-detalhes-do-funcionamento)
     - [Início Rápido](#início-rápido)
-    - [Backend](#backend)
-    - [Frontend](#frontend)
-    - [Firebase e Mercado Pago](#firebase-e-mercado-pago)
+    - [READMEs](#readmes)
+      - [Backend](#backend)
+      - [Frontend](#frontend)
+      - [Firebase e Mercado Pago](#firebase-e-mercado-pago)
   - [Notas](#notas)
     - [Git, GitHub e Histórico de Commits](#git-github-e-histórico-de-commits)
 
@@ -69,17 +70,21 @@ Para começar, clone o repositório em sua máquina local.
 
 </details>
 
-### Backend
+### READMEs
 
-O `README` referente ao __Backend__ pode ser acessado [aqui](backend/README.md).
+Recomendo iniciar a configuração e familiarização do projeto pelo `README` do `backend`, seguido pelo `frontend`. Isso se deve ao fato de que a configuração do `frontend` depende do `backend`.
 
-### Frontend
+#### Backend
 
-O `README` referente ao __Frontend__ pode ser acessado [aqui](frontend/README.md).
+O `README` do __backend__ fornece informações detalhadas sobre a configuração e os recursos do lado do servidor. Acesse-o [aqui](backend/README.md).
 
-### Firebase e Mercado Pago
+#### Frontend
 
-Você também pode acessar os `READMEs` específicos para o `Firebase` e o `Mercado Pago` [aqui](Firebase.md) e [aqui](MercadoPago.md), respectivamente.
+Após configurar o `backend`, você pode prosseguir com o `README` do __frontend__. Acesse-o [aqui](frontend/README.md).
+
+#### Firebase e Mercado Pago
+
+Além disso, temos `READMEs` específicos para o [Firebase](Firebase.md) e o [Mercado Pago](MercadoPago.md). É crucial associá-los às configurações dos `READMEs` de `frontend` e `backend` para garantir o funcionamento adequado do projeto.
 
 ## Notas
 
