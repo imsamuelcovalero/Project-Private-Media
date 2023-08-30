@@ -63,7 +63,6 @@ A estrutura, incluindo os tipos de dados esperados para cada campo, é apresenta
 - **descricao (string, opcional)**: Uma descrição opcional associada à foto.
 - **url (string)**: `URL` direcionando para o local no `Firebase Storage` onde a imagem está armazenada.
 
-
 <div align="center">
 
 ![fotos](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/ede7cfc7-afe0-458d-bc35-5b686d21e771)
@@ -125,10 +124,12 @@ Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes e
 4. Sob `Firebase SDK snippet`, selecione a opção `Config`.
 5. Anote as configurações apresentadas. Elas serão usadas na sua aplicação frontend.
 
-> **Nota**: No README do ([frontend](frontend/README.md), serão fornecidas instruções detalhadas sobre como inserir estas informações como variáveis de ambiente, garantindo que elas não estejam expostas.
+> **Nota1**: No README do ([frontend](frontend/README.md), serão fornecidas instruções detalhadas sobre como inserir estas informações como variáveis de ambiente, garantindo que elas não estejam expostas.
 
 Com essas configurações, sua aplicação está pronta para se conectar e interagir com o `Firebase`.
 
+> **Nota2**: Para mais informações sobre o `Firebase`, acesse a [documentação oficial](https://firebase.google.com/docs).
+---
 > ⚠️ **Atenção**: Lembre-se de seguir as instruções detalhadas nos READMEs do frontend e backend, e de definir corretamente as variáveis de ambiente!
 
 [⬅ Voltar para o README principal](./README.md)
