@@ -134,7 +134,7 @@ Esses comandos instalam todas as dependências listadas no arquivo `package.json
 
 ### Configuração de Variáveis de Ambiente
 
-O projeto requer a configuração de variáveis de ambiente para lidar com informações sensíveis e específicas, como chaves de API, nomes de usuário e senhas.
+O projeto requer a configuração de variáveis de ambiente para lidar com informações sensíveis e específicas, como `chaves de API`, nomes de usuário e senhas.
 
 Dentro do diretório do `frontend`, há um arquivo chamado `.env.example`, que contém exemplos de todas as variáveis de ambiente necessárias para o projeto.
 
