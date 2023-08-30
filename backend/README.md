@@ -176,11 +176,11 @@ Após a instalação das dependências e a configuração das variáveis de ambi
 npm run dev
 ```
 
-Este comando inicia o servidor de desenvolvimento e ficará disponível na porta definida na variável PORT do .env ou 3001, caso não tenha sido definida. O backend estará acessível através do endereço `http://localhost:${PORT}` ou `http://localhost:3001` no navegador.
+Este comando inicia o servidor de desenvolvimento e ficará disponível na porta definida na variável `PORT` do `.env` ou `3001`, caso não tenha sido definida. O `backend` estará acessível através do endereço `http://localhost:${PORT}` ou `http://localhost:3001` no navegador.
 
 ### Lint
 
-Para verificar a qualidade do código com o linter, use o comando:
+Para verificar a qualidade do código com o `linter`, use o comando:
 
 ```bash
 npm run lint
