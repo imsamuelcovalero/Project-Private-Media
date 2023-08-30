@@ -28,9 +28,10 @@ Ao seguir estes passos, sua aplicação estará corretamente configurada para pr
 
 ## Opções de Pagamento
 
-Nesta aplicação, foram implementadas as opções de pagamento com `Cartão de Crédito` e `Pix`.
+Dentro desta aplicação, disponibilizamos duas principais opções de pagamento: **Cartão de Crédito** e **Pix**.
 
-- **Cartão de Crédito**: O pagamento é identificado na hora, e a assinatura ativada imediatamente, em caso de sucesso. Também foi adicionada à compra, a descrição e o `ID` da aplicação, para facilitar a identificação da compra no extrato do cartão de crédito e facilitar a aprovação pelo banco.
-- **Pix**: O pagamento pelo `Pix` acontece em dois momentos, primeiro o usuário gera um `QR Code` e o status da transação fica como pendente, e após o usuário realizar o pagamento, o status da transação é atualizado para aprovado, e a assinatura é ativada, adicionando 30 dias de acesso ao conteúdo premium.
+- **Cartão de Crédito**: Ao escolher esta opção, a identificação do pagamento é imediata. Assim que a transação for bem-sucedida, a assinatura é ativada sem demora. Além disso, incluímos na fatura a descrição e o `ID` da aplicação, a fim de que o usuário possa identificar facilmente a compra em seu extrato do cartão. Isso também contribui para uma maior probabilidade de aprovação da transação pelo banco emissor do cartão.
+
+- **Pix**: A transação via Pix ocorre em dois passos distintos. Primeiramente, o usuário gera um `QR Code` e, nesse momento, o status da transação é definido como "pendente". Após o usuário concluir o pagamento pelo aplicativo bancário ou outro método compatível, o status da transação muda para "aprovado". Com a aprovação, a assinatura é ativada, concedendo ao usuário 30 dias de acesso ao conteúdo premium.
 
 [⬅ Voltar para o README principal](./README.md)
