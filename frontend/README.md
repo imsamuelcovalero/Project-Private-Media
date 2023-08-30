@@ -169,7 +169,7 @@ ng lint
 
 Em caso de dúvidas, não hesite em abrir uma [issue](https://github.com/imsamuelcovalero/Project-Our-Shop-App-Angular/issues) no GitHub. Além disso, estou disponível para contato direto para mais esclarecimentos.
 
-Espero que essas orientações tenham sido úteis. Caso necessite de suporte adicional ou tenha outras questões, por favor, me avise.
+Espero que estas instruções sejam úteis para a instalação e execução do projeto. Não se esqueça de verificar o `README` do [backend](../backend/README.md) e realizar as configurações necessárias para que o projeto funcione corretamente. Se houver mais alguma coisa em que eu possa ajudar, por favor, me avise.
 
 [⬆ Voltar ao topo](#sumário)<br>
 [⬅ Voltar para a página anterior](../README.md)

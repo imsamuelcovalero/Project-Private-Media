@@ -192,7 +192,7 @@ npm run lint
 
 Em caso de dúvidas, não hesite em abrir uma [issue](https://github.com/imsamuelcovalero/Project-Private-Media/issues) no GitHub ou me contatar diretamente. Estou à disposição para ajudar.
 
-Espero que estas instruções sejam úteis para a instalação e execução do projeto. Se houver mais alguma coisa em que eu possa ajudar, por favor, me avise.
+Espero que estas instruções sejam úteis para a instalação e execução do projeto. Não se esqueça de verificar o `README` do [frontend](../frontend/README.md) e realizar as configurações necessárias para que o projeto funcione corretamente. Se houver mais alguma coisa em que eu possa ajudar, por favor, me avise.
 
 [⬆ Voltar ao topo](#sumário)<br>
 [⬅ Voltar para a página anterior](../README.md)
