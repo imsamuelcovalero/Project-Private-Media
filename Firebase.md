@@ -14,15 +14,13 @@ O `Storage` é a solução do `Firebase` para armazenar arquivos como imagens, v
 
 ## Authentication
 
-O **Authentication** é a ferramenta do `Firebase` para autenticação de usuários. A estrutura é a seguinte:
+O **Authentication** é a ferramenta do `Firebase` para autenticação de usuários. A estrutura, juntamente com os tipos de dados esperados para cada campo, é a seguinte:
 
-```plaintext
-Identificador: [e-mail do usuário]
-Provedores: [e-mail e senha]
-Data de criação: [data da criação do documento]
-Último login: [data do último login]
-UID do usuário: [ID gerado automaticamente pelo Firebase, deve ser linkado ao uid do documento da coleção usuários correspondente]
-```
+- **Identificador (string)**: Corresponde ao e-mail do usuário.
+- **Provedores (array of strings)**: Inclui os métodos de autenticação usados, neste caso, e-mail e senha.
+- **Data de criação (timestamp)**: Representa a data e a hora em que o documento de autenticação do usuário foi criado.
+- **Último login (timestamp)**: Indica a data e a hora do último login do usuário.
+- **UID do usuário (string)**: É um ID gerado automaticamente pelo Firebase. Esse UID deve ser associado ao uid do documento correspondente na coleção de usuários.
 
 <div align="center">
 
@@ -39,17 +37,15 @@ Este é o banco de dados em tempo real do `Firebase`. Ele é organizado em cole�
 
 ### usuários
 
-Cada documento representa um usuário e seu `ID` coincide com o `UID` do `Authentication`. Exemplo de estrutura:
+Cada documento representa um usuário e seu `ID` coincide com o `UID` do `Authentication`. A estrutura, incluindo os tipos de dados esperados para cada campo, é apresentada a seguir:
 
-```plaintext
-ID do Documento: [ID único gerado pelo Firebase]
-assinaturaAtiva: [Indica se a assinatura do usuário está ativa]
-dataCriacao: [Data e hora de criação do documento]
-dataExpiracaoAssinatura: [Data e hora de expiração da assinatura]
-email: [E-mail do usuário]
-nome: [Nome completo do usuário]
-uid: [ID gerado automaticamente pelo Firebase, deve ser linkado ao UID do Authentication]
-```
+- **ID do Documento (string)**: ID único gerado pelo Firebase para cada documento.
+- **assinaturaAtiva (boolean)**: Indica se a assinatura do usuário está ativa. Verdadeiro para ativo e falso para inativo.
+- **dataCriacao (timestamp)**: Representa a data e a hora em que o documento do usuário foi criado.
+- **dataExpiracaoAssinatura (timestamp)**: Indica a data e a hora de expiração da assinatura do usuário.
+- **email (string)**: Corresponde ao e-mail do usuário.
+- **nome (string)**: Reflete o nome do usuário.
+- **uid (string)**: É um ID gerado automaticamente pelo Firebase. Esse UID deve ser associado ao UID do documento correspondente na seção Authentication.
 
 <div align="center">
 
@@ -59,15 +55,14 @@ uid: [ID gerado automaticamente pelo Firebase, deve ser linkado ao UID do Authen
 
 ### fotos
 
-Exemplo de estrutura:
+A estrutura, incluindo os tipos de dados esperados para cada campo, é apresentada a seguir:
 
-```plaintext
-ID do Documento: [ID único gerado pelo Firebase]
-categoriaId: [ID da categoria à qual a foto pertence]
-dataCriacao: [Data e hora de criação do documento]
-descricao: [Descrição opcional da foto]
-url: [URL do Storage onde a imagem está armazenada]
-```
+- **ID do Documento (string)**: ID único gerado pelo Firebase para cada documento.
+- **categoriaId (string)**: ID que indica a categoria à qual a foto pertence.
+- **dataCriacao (timestamp)**: Representa a data e a hora em que o documento da foto foi criado.
+- **descricao (string, opcional)**: Uma descrição opcional associada à foto.
+- **url (string)**: URL direcionando para o local no Firebase Storage onde a imagem está armazenada.
+
 
 <div align="center">
 
@@ -81,16 +76,12 @@ Estrutura semelhante à coleção "fotos".
 
 ### categorias
 
-Cada categoria possui um conjunto de `IDs` que fazem referência a fotos e vídeos relacionados.
+Cada categoria é associada a um conjunto de IDs que se referem a fotos e vídeos relacionados. A estrutura, com os tipos de dados esperados para cada campo, é:
 
-Exemplo de estrutura:
-
-```plaintext
-ID do Documento: [ID único gerado pelo Firebase]
-categoriaId: [ID único para a categoria]
-fotos: [Array de IDs de fotos que pertencem a essa categoria]
-videos: [Array de IDs de vídeos que pertencem a essa categoria]
-```
+- **ID do Documento (string)**: ID único gerado pelo Firebase para cada documento.
+- **categoriaId (string)**: ID único designado para identificar distintamente cada categoria.
+- **fotos (array of strings)**: Array contendo os IDs das fotos que são associadas a essa categoria específica.
+- **videos (array of strings)**: Array contendo os IDs dos vídeos que são associados a essa categoria.
 
 <div align="center">
 
