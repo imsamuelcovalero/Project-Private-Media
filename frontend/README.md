@@ -12,9 +12,9 @@
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
-  - [Instalar dependências](#instalar-dependências)
-  - [Executando com Docker](#executando-com-docker)
-  - [Executando sem Docker](#executando-sem-docker)
+  - [Instalação de Dependências](#instalação-de-dependências)
+  - [Configuração de Variáveis de Ambiente](#configuração-de-variáveis-de-ambiente)
+  - [Execução](#execução)
 - [Lint](#lint)
 
 ## Contexto
@@ -101,9 +101,13 @@ A integração com o `Mercado Pago`, uma das plataformas de pagamento líderes n
 
 O `Frontend` foi desenvolvido com o uso das seguintes tecnologias e ferramentas:
 
-- [Angular](https://angular.io/docs): Utilizei o __Angular__, um *framework* `JavaScript` robusto e amplamente adotado para a criação de aplicações *web* de página única (SPA). A escolha se deu pelo fato de que o __Angular__ oferece um ecossistema completo, incluindo ferramentas para roteamento, formulários, testes unitários e *end-to-end*, entre outras funcionalidades.
-- [Angular Material](https://material.angular.io/): O __Angular Material__ foi utilizado para fornecer estilos `CSS` pré-construídos e componentes de interface do usuário reutilizáveis. Isso ajudou a acelerar o processo de desenvolvimento e garantir a consistência visual em toda a aplicação. Além disso, __Angular Material__ adere aos princípios de design do __Material Design da Google__, garantindo uma experiência do usuário de alta qualidade.
-- [Ngx-toastr](https://www.npmjs.com/package/ngx-toastr): Usamos o __Toastr__ para fornecer feedback ao usuário por meio de notificações. O __Toastr__ é uma biblioteca `JavaScript` que permite exibir mensagens de notificação de forma simples e elegante.
+- [React](https://reactjs.org/): Optei pelo **React**, uma biblioteca `JavaScript` para a construção de interfaces de usuário. Reconhecido por sua eficiência e flexibilidade, o `React` nos permite criar componentes reutilizáveis, tornando o desenvolvimento mais modular e a manutenção mais simples.
+  
+- [Styled Components](https://styled-components.com/): O **Styled Components** auxilia na estilização dos componentes `React`. Através dele, é possível criar componentes estilizados reutilizáveis, garantindo que o estilo do aplicativo seja consistente e facilmente gerenciável.
+  
+- [Toast](https://github.com/fkhadra/react-toastify): Utilizei o **Toast** para fornecer feedback ao usuário por meio de notificações. Esta biblioteca permite a apresentação de mensagens de notificação de forma intuitiva e estilizada, melhorando a comunicação com o usuário.
+
+- [axios](https://github.com/axios/axios): O **axios** é uma biblioteca `JavaScript` usada para realizar requisições `HTTP`. Sua interface limpa e capacidade de lidar com solicitações e respostas em `JSON` tornam a comunicação com `backends` e `APIs externas` mais eficiente e direta.
 
 ## Instalação e Execução
 
@@ -112,15 +116,15 @@ O `Frontend` foi desenvolvido com o uso das seguintes tecnologias e ferramentas:
 Primeiro, você precisa fazer o clone do repositório do projeto. Para isso, use o comando:
 
 ```bash
-git clone git@github.com:imsamuelcovalero/Project-Our-Shop-App-Angular.git
+git clone git@github.com:imsamuelcovalero/Project-Private-Media
 ```
 
-### Instalar dependências
+### Instalação de Dependências
 
-Em seguida, navegue até o diretório `frontend` e instale as dependências necessárias com os seguintes comandos:
+Após clonar o projeto, navegue até o diretório `frontend` e instale as dependências necessárias com os seguintes comandos:
 
 ```bash
-cd Project-Our-Shop-App-Angular
+cd Project-Private-Media
 
 cd frontend
 npm install
@@ -128,44 +132,77 @@ npm install
 
 Esses comandos instalam todas as dependências listadas no arquivo `package.json`, que são necessárias para a execução do projeto.
 
-### Executando com Docker
+### Configuração de Variáveis de Ambiente
 
-Para executar o projeto utilizando `Docker`, assegure-se de ter o `Docker` e o `Docker Compose` instalados em sua máquina. Em seguida, no diretório raiz do projeto, execute o seguinte comando:
-  
+O projeto requer a configuração de variáveis de ambiente para lidar com informações sensíveis e específicas, como chaves de API, nomes de usuário e senhas.
+
+Dentro do diretório do `frontend`, há um arquivo chamado `.env.example`, que contém exemplos de todas as variáveis de ambiente necessárias para o projeto.
+
+1. Renomeie `.env.example` para simplesmente `.env`.
+2. Atualize os valores placeholder com as configurações reais. As variáveis incluem:
+
+Conforme detalhado no passo 5 de `**Obtendo Configurações de Inicialização**` no [Firebase](../Firebase.md), você deve coletar essas informações no `Firebase Console` e inseri-las aqui:
+
 ```bash
-docker-compose up
+#### Configuração do Firebase ####
+REACT_APP_FIREBASE_API_KEY=INSIRA_AQUI_SUA_API_KEY
+REACT_APP_FIREBASE_AUTH_DOMAIN=INSIRA_AQUI_SEU_AUTH_DOMAIN
+REACT_APP_FIREBASE_PROJECT_ID=INSIRA_AQUI_SEU_PROJECT_ID
+REACT_APP_FIREBASE_STORAGE_BUCKET=INSIRA_AQUI_SEU_STORAGE_BUCKET
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=INSIRA_AQUI_SEU_MESSAGING_SENDER_ID
+REACT_APP_FIREBASE_APP_ID=INSIRA_AQUI_SUA_APP_ID
+REACT_APP_FIREBASE_MEASUREMENT_ID=INSIRA_AQUI_SUA_MEASUREMENT_ID
 ```
 
-O `serviço frontend` será executado na porta 4200.
+Estas variáveis identificam categorias de mídia no `Firebase`. Certifique-se de que seus valores coincidam com aqueles configurados no `Firebase` e que sejam ***únicos***:
 
-**Importante:** Note que se já tiver executado este comando no `backend`, não será necessário executá-lo novamente, pois o `Docker Compose` já terá criado os containers necessários para a execução do projeto.
-
-### Executando sem Docker
-
-Caso prefira executar o projeto sem `Docker`, após a instalação das dependências, você pode iniciar a aplicação com o seguinte comando:
-  
 ```bash
-cd Project-Our-Shop-App-Angular
-
-cd frontend
-ng serve
+#### Firebase categories ####
+REACT_APP_FIREBASE_CATEGORY_ID1=INSIRA_AQUI_SUA_CATEGORIA_ID1
+REACT_APP_FIREBASE_CATEGORY_ID2=INSIRA_AQUI_SUA_CATEGORIA_ID2
+REACT_APP_FIREBASE_CATEGORY_ID3=INSIRA_AQUI_SUA_CATEGORIA_ID3
+REACT_APP_FIREBASE_CATEGORY_ID4=INSIRA_AQUI_SUA_CATEGORIA_ID4
+REACT_APP_FIREBASE_CATEGORY_ID5=INSIRA_AQUI_SUA_CATEGORIA_ID5
 ```
 
-Este comando inicia o servidor de desenvolvimento e o site ficará disponível na __porta 4200__, geralmente acessível através do endereço `http://localhost:4200` no navegador.
+Baseado no passo 4 de `**Criação e Configuração na Plataforma do Mercado Pago**` no `README` do [Mercado Pago](../MercadoPago.md):
+
+```bash
+#### Mercado Pago ####
+REACT_APP_MERCADOPAGO_PUBLIC_KEY=INSIRA_AQUI_SUA_PUBLIC_KEY
+REACT_APP_MERCADOPAGO_ID=INSIRA_AQUI_O_ID_DO_APLICATIVO
+REACT_APP_SUBSCRIPTION_VALUE=INSIRA_AQUI_O_VALOR_DA_ASSINATURA
+REACT_APP_SUBSCRIPTION_DESCRIPTION=INSIRA_AQUI_A_DESCRICAO_DA_ASSINATURA
+```
+
+- Insira a chave pública em `REACT_APP_MERCADOPAGO_PUBLIC_KEY`.
+- Coloque o `ID` da aplicação em `REACT_APP_MERCADOPAGO_ID`.
+- Defina o valor da assinatura mensal em `REACT_APP_SUBSCRIPTION_VALUE`.
+- Estabeleça a descrição da assinatura em `REACT_APP_SUBSCRIPTION_DESCRIPTION`, que será exibida na fatura do usuário.
+  
+### Execução
+
+Após a instalação das dependências e a configuração das variáveis de ambiente, você pode iniciar a aplicação com o seguinte comando:
+
+```bash
+npm start
+```
+
+Este comando inicia o servidor de desenvolvimento e o site ficará disponível na **porta 3000**, geralmente acessível através do endereço `http://localhost:3000` no navegador.
 
 ## Lint
 
 Para verificar a qualidade do código com o `linter`, use o comando:
 
 ```bash
-ng lint
+npm run lint
 ```
 
 - O `frontend` foi desenvolvido seguindo os padrões de código JavaScript com o uso do [ESLint](https://eslint.org/), utilizando a extensão 'trybe-frontend' e algumas regras personalizadas para promover um código limpo e bem estruturado.
 
 É importante lembrar que, ao encontrar problemas durante a instalação ou execução, uma boa prática é verificar as mensagens de erro que aparecem no terminal. Elas geralmente fornecem pistas sobre o que pode estar errado. Também é recomendável manter todas as dependências atualizadas e garantir que seu ambiente de desenvolvimento esteja configurado corretamente. Além disso, é aconselhável consultar a documentação oficial das dependências usadas no projeto em caso de problemas.
 
-Em caso de dúvidas, não hesite em abrir uma [issue](https://github.com/imsamuelcovalero/Project-Our-Shop-App-Angular/issues) no GitHub. Além disso, estou disponível para contato direto para mais esclarecimentos.
+Em caso de dúvidas, não hesite em abrir uma [issue](https://github.com/imsamuelcovalero/Project-Private-Media/issues) no GitHub. Além disso, estou disponível para contato direto para mais esclarecimentos.
 
 Espero que estas instruções sejam úteis para a instalação e execução do projeto. Não se esqueça de verificar o `README` do [backend](../backend/README.md) e realizar as configurações necessárias para que o projeto funcione corretamente. Se houver mais alguma coisa em que eu possa ajudar, por favor, me avise.
 
