@@ -21,7 +21,7 @@
 O **Backend** deste projeto desempenha um papel essencial para garantir o funcionamento apropriado da aplicação e para integrar-se com diversos serviços externos, como o Firebase e o Mercado Pago. Algumas de suas principais funções são:
 
 - **Validação de Dados e Registração de Usuários**: Valida os dados das requisições e, quando adequado, registra um novo usuário, conforme as informações recebidas do **Frontend**.
-  
+
 - **Validação de Dados de Login**: Enquanto a autenticação inicial é realizada pelo `Firebase`, o `token` gerado é encaminhado ao **Backend**. Este, por sua vez, realiza verificações adicionais, garantindo a autenticidade e, posteriormente, retorna informações complementares sobre o usuário necessárias para a lógica do **Frontend**.
   
 - **Integração e Legitimidade de Dados**: Funciona como intermediário entre o **Frontend** e o banco de dados, certificando-se de que todas as informações a serem inseridas ou atualizadas são legítimas e estão íntegras.
@@ -37,6 +37,38 @@ Detalhes adicionais sobre a integração com o `Firebase`, `Mercado Pago`, e out
 ## Regras de Negócio
 
 Estamos utilizando principalmente o **Joi** para aplicar as regras de negócios e validações. O **Joi** é um validador de dados para `JavaScript` que utiliza um esquema para descrever a forma de dados que são permitidos e que serão validados. O **Joi** é extremamente poderoso e flexível, e pode ser utilizado para validar dados de forma consistente e confiável.
+
+- **Autenticação e Registro**:
+  Em operações de login, registro e atualização, o esquema principal verifica a presença de um token, que é essencial para autenticação no Firebase:
+
+  ```javascript
+  const authSchema = Joi.object({
+    idToken: Joi.string().required(),
+  });
+  ```
+
+- **Pagamento**:  
+  A rota de pagamento exige a validação de diversos dados, incluindo:
+  - `ID` do usuário
+  - Método de pagamento selecionado, que deve ser ou `credit_card` ou `bank_transfer`
+  - Uma referência externa
+  - Detalhes do pagamento, que incluem:
+    - `Token` do cartão (quando o método de pagamento é `credit_card`)
+    - `ID` do método de pagamento
+    - Valor da transação (positivo e com duas casas decimais)
+    - Quantidade de parcelas (quando o método de pagamento é `credit_card`)
+    - Detalhes do pagador, incluindo email
+
+  Os esquemas garantem que os dados necessários sejam fornecidos e estejam no formato correto.
+
+- **Verificação do Status de Pagamento e Cancelamento**:  
+  Estes esquemas validam o `ID` do usuário e o `ID` do pagamento, garantindo que sejam fornecidos e estejam no formato correto.
+
+Estas validações garantem que todas as informações fornecidas ao backend estejam no formato correto, assegurando a integridade dos dados e a segurança das transações. Em especial, o esquema de pagamento assegura que as informações de pagamento sejam não apenas presentes, mas consistentes e seguras, protegendo assim tanto a integridade das transações quanto a experiência do usuário.
+
+---
+
+Esse refinamento destaca a importância das validações no backend, especialmente quando se trata de pagamentos, e a robustez dos esquemas de validação usados para proteger os dados e a integridade das transações.
 
 <details>
 <summary>Requisitos levantados</summary>
