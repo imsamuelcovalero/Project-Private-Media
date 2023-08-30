@@ -6,6 +6,9 @@
   - [Login](#login)
   - [Registro](#registro)
   - [Edição de Perfil](#edição-de-perfil)
+- [Firebase e Mercado Pago](#firebase-e-mercado-pago)
+  - [Banco de Dados](#banco-de-dados)
+  - [API do Mercado Pago](#api-do-mercado-pago)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
   - [Download do projeto](#download-do-projeto)
@@ -79,6 +82,22 @@ Este processo garante que a atualização de informações sensíveis, como a se
 ---
 
 Estas validações são essenciais para garantir que os dados enviados ao `Firebase` estejam corretos e seguros. A robustez dessas validações no **Frontend** também permite uma maior eficiência e segurança, uma vez que o **Backend** apenas lida com tokens, delegando a validação inicial ao **Frontend** e ao `Firebase`.
+
+## Firebase e Mercado Pago
+
+### Banco de Dados
+
+O `banco de dados` do projeto foi desenvolvido utilizando o `Firebase`, uma plataforma de desenvolvimento que oferece várias ferramentas como autenticação, armazenamento e banco de dados em tempo real. Abaixo detalhamos a estrutura utilizada no `Firebase` para que o projeto funcione corretamente.
+
+O `README` detalhado sobre nossa integração com o **Firebase**, abrangendo configurações, fluxos e práticas recomendadas, pode ser encontrado [aqui](../Firebase.md).
+
+### API do Mercado Pago
+
+O `Mercado Pago` é uma das soluções de pagamento mais reconhecidas e utilizadas na América Latina. No contexto deste projeto, utilizamos a `API do Mercado Pago` para gerenciar e processar transações de pagamento, permitindo que os usuários realizem pagamentos de forma segura e confiável.
+
+A integração com a `API do Mercado Pago` é essencial para garantir que os pagamentos sejam processados corretamente, e que toda a lógica de negócios associada a pagamentos (como validação, notificações de pagamento, gestão de assinaturas, entre outros) seja adequadamente tratada.
+
+Para uma visão detalhada da nossa integração com a `API do Mercado Pago`, incluindo configurações, fluxos e melhores práticas, consulte o `README` específico sobre esta integração, acessível [aqui](../MercadoPago.md).
 
 ## Tecnologias e Ferramentas Utilizadas
 
