@@ -151,11 +151,13 @@ No diretório do `backend`, você encontrará o arquivo `.env.example`, que cont
 
 ```bash
 PORT= # porta da aplicação
+#### CORS CONFIGURATION FOR PRODUCTION
+FRONTEND_URL= # https://meusite.com - Substitua por seu próprio endereço do frontend
 
 #### API MERCADO PAGO CHAVE PRIVADA
-MERCADOPAGO_ACCESS_TOKEN=suaChavePrivada # a chave privada do Mercado Pago deve vir aqui
+MERCADOPAGO_ACCESS_TOKEN=suaChavePrivada
 
-#### FIREBASE # não é necessário inserir as variáveis de ambiente do Firebase, pois elas são carregadas automaticamente pelo arquivo loadFirebaseConfig.js
+#### FIREBASE
 FIREBASE_TYPE=
 FIREBASE_PROJECT_ID=
 FIREBASE_PRIVATE_KEY_ID=
@@ -167,6 +169,8 @@ FIREBASE_TOKEN_URI=
 FIREBASE_AUTH_PROVIDER_X509_CERT_URL=
 FIREBASE_CLIENT_X509_CERT_URL=
 ```
+
+Isso garante que, ao definir o `FRONTEND_URL`, o `backend` possa comunicar-se de forma segura com o `frontend` em produção, aumentando a segurança e evitando problemas relacionados ao `CORS`.
 
 ### Execução
 

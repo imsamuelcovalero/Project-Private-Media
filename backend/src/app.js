@@ -9,8 +9,11 @@ const routes = require('./routes');
 
 const app = express();
 
+const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3000';
+console.log(`FRONTEND_URL: ${frontendURL}`);
+
 app.use(cors({
-  origin: 'http://localhost:3000', // substitua com o URL do seu frontend
+  origin: frontendURL,
   credentials: true,
 }));
 app.use(express.json());
