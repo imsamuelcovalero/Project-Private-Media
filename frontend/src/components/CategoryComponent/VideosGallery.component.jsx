@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/media-has-caption */
-/* File: src/components/CategoryComponent/PhotoRender.component.jsx */
+/* File: src/components/CategoryComponent/VideosGallery.component.jsx */
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from '../../context/ReactNodeContext';

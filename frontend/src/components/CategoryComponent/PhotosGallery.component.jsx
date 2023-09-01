@@ -1,4 +1,4 @@
-/* File: src/components/CategoryComponent/PhotoRender.component.jsx */
+/* File: src/components/CategoryComponent/VideosGallery.component.jsx */
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from '../../context/ReactNodeContext';
