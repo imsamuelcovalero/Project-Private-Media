@@ -128,7 +128,6 @@ function LoginComponent() {
           position: 'top-right',
         });
       }
-      // setIsUserLogged(true);
       navigate(currentMainUrl);
     } catch (error) {
       // Check the code property of the error to determine the type of the error

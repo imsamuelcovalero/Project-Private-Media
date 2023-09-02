@@ -27,8 +27,6 @@ function ReactNodeProvider({ children }) {
 
   const [viewMode, setViewMode] = useState(null);
 
-  // const [isEditFormActivated, setIsEditFormActivated] = useState(false);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,20 +37,19 @@ function ReactNodeProvider({ children }) {
     const mainPattern = /^\/main\/([a-zA-Z0-9-_]+)(\/|$)/; // Regex para capturar /main/{categoryId}/
     const matches = path.match(mainPattern);
     if (matches && matches[1]) {
-      console.log('matches[1]', matches[1]);
       setCurrentMainUrl(`/main/${matches[1]}`);
       setCurrentCategory(matches[1]);
     }
   }, []);
 
   useEffect(() => {
-    // Se mediaSelected já estiver definido, não precisamos fazer mais nada
+    /* Se mediaSelected já estiver definido, não precisamos fazer mais nada */
     if (mediaSelected) return;
 
     const pattern = /^\/([a-zA-Z0-9-_]+)\/(fotos|videos)\/([a-zA-Z0-9-_]+)/; // Regex para capturar /{categoryId}/{mediaType}/{mediaId}
     const matches = location.pathname.match(pattern);
 
-    // Se a URL atual não corresponde à URL de uma mídia, saímos do useEffect
+    /* Se a URL atual não corresponde à URL de uma mídia, saímos do useEffect */
     if (!matches) return;
 
     const extractInfoFromURL = () => {
@@ -101,24 +98,16 @@ function ReactNodeProvider({ children }) {
     loadMediaFromURL();
   }, []);
 
-  // console.log('currentCategory', currentCategory);
-  // console.log('currentMainUrl', currentMainUrl);
-
   /* useEffect que verifica se o usuário está logado e tem a assinatura ativa */
   useEffect(() => {
     if (!user) {
-      console.log('usuário não logado');
       setIsUserLogged(false);
       setIsSignatureActive(false);
     } else {
-      // console.log('usuário logado');
       setIsUserLogged(true);
-      // console.log('user', user);
       if (user.assinaturaAtiva.status) {
-        console.log('assinatura ativa');
         setIsSignatureActive(true);
       } else {
-        console.log('assinatura inativa');
         setIsSignatureActive(false);
       }
     }
@@ -129,9 +118,7 @@ function ReactNodeProvider({ children }) {
     try {
       await api.logout();
       removeUserInfo();
-      setUser(null); // Defina o estado do usuário como null depois de fazer logout
-      console.log('user', user);
-      // navigate(`/main/${categoryIds[0]}`);
+      setUser(null);
       if (redirectToHome) {
         navigate(`/main/${categoryIds[0]}`);
       }
@@ -203,8 +190,6 @@ function ReactNodeProvider({ children }) {
   useEffect(() => {
     getCategoryData(currentCategory);
   }, [currentCategory, isUserLogged, isSignatureActive]);
-
-  // console.log('categoryPhotos', categoryPhotos, 'categoryVideos', categoryVideos);
 
   const contextValue = useMemo(() => ({
     theme,

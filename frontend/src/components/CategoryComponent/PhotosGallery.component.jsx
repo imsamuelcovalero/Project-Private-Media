@@ -12,21 +12,19 @@ function PhotosGalleryComponent() {
 
   const navigate = useNavigate();
 
-  // Paginação
+  /* Paginação */
   const [currentPage, setCurrentPage] = useState(1);
   const photosPerPage = 10; // ajuste conforme necessário
 
   const handlePhotoClick = (photo) => {
-    console.log('photo', photo);
     navigate(`${currentMainUrl}/fotos/${photo.id}`);
-    // setSelectedPhoto(photo);
     setMediaSelected({
       mediaType: 'fotos',
       media: photo,
     });
   };
 
-  // Funções para manipular a paginação
+  /* Funções para manipular a paginação */
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
   };
@@ -35,12 +33,11 @@ function PhotosGalleryComponent() {
     setCurrentPage(currentPage - 1);
   };
 
-  // Obter as fotos para a página atual
+  /* Obter as fotos para a página atual */
   const indexOfLastPhoto = currentPage * photosPerPage;
   const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
   const currentPhotos = categoryPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
   const hasNextPage = indexOfLastPhoto < categoryPhotos.length;
-  // console.log('currentPhotos', currentPhotos);
 
   return (
     <div role="main" aria-label="Photo viewer">

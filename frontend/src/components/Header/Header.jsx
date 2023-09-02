@@ -8,13 +8,9 @@ function Header() {
   const {
     user, currentMainUrl, setViewMode, setMediaSelected,
   } = useContext(ReactNodeContext);
-  // console.log('currentMainUrl', currentMainUrl);
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  // const isSignatureActive = user?.assinaturaAtiva?.status;
-  // console.log('isSignatureActive', isSignatureActive);
 
   const handleNavigateToMain = () => {
     setViewMode(null);

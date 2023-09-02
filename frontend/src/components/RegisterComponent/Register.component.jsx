@@ -125,13 +125,11 @@ function RegisterComponent() {
   em caso de sucesso redireciona para a rota principal */
   const signUp = async (event, name, email, password) => {
     event.preventDefault();
-    console.log('isDisabled1', isDisabled);
     try {
       const idToken = await firebaseSignUp({ name, email, password });
       if (!idToken) toast.error('Erro ao tentar fazer o registro');
-      console.log('idToken', idToken);
+
       const response = await api.signUp(idToken);
-      // console.log('response', response);
 
       const { id, nome, assinaturaAtiva } = response;
 
@@ -242,7 +240,6 @@ function RegisterComponent() {
           </label>
         </div>
         <button
-          // id="registerButton"
           className="primary"
           type="submit"
           disabled={isDisabled || serverError === 'email'}
@@ -256,7 +253,6 @@ function RegisterComponent() {
           Cadastrar
         </button>
         <button
-          // id="backBtn"
           className="secondary"
           type="button"
           onClick={() => navigate(-1)}

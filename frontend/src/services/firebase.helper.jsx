@@ -28,12 +28,10 @@ const firebaseGetCategory = async (categoryId) => {
       }
     });
 
-    // Se a categoria não foi encontrada, retorne null
     if (!categoryData) {
       return null;
     }
 
-    // Agora, para cada foto e vídeo, obtenha os dados correspondentes
     const fotosPromises = categoryData.fotos.map((idFoto) => getDoc(doc(db, 'fotos', idFoto)));
     const fotosDocs = await Promise.all(fotosPromises);
     const fotosData = fotosDocs.map((fotoDoc) => ({ id: fotoDoc.id, ...fotoDoc.data() }));
@@ -42,7 +40,6 @@ const firebaseGetCategory = async (categoryId) => {
     const videosDocs = await Promise.all(videosPromises);
     const videosData = videosDocs.map((videoDoc) => ({ id: videoDoc.id, ...videoDoc.data() }));
 
-    // Atualize categoryData para incluir os dados reais de fotos e vídeos, não apenas os IDs
     categoryData = {
       ...categoryData,
       fotos: fotosData,
@@ -83,10 +80,9 @@ const firebaseSendPasswordResetEmail = async (email) => {
 const firebaseSignUp = async ({ name: nome, email, password }) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log('userCredential', userCredential);
     const idToken = await getIdToken(userCredential.user);
 
-    // Cria um novo usuário na coleção 'usuários' do Firestore
+    /* Cria um novo usuário na coleção 'usuários' do Firestore */
     const usuarioDoc = doc(db, 'usuários', userCredential.user.uid);
     await setDoc(usuarioDoc, {
       uid: userCredential.user.uid,
@@ -109,21 +105,20 @@ const firebaseUpdateProfile = async ({ name, password }) => {
   try {
     const user = auth.currentUser;
 
-    // Verifica se o nome foi fornecido e o atualiza se necessário
+    /* Verifica se o nome foi fornecido e o atualiza se necessário */
     if (name) {
       await updateProfile(user, { displayName: name });
 
-      // Atualiza o nome na coleção 'usuários' do Firestore
+      /* Atualiza o nome na coleção 'usuários' do Firestore */
       const usuarioDoc = doc(db, 'usuários', user.uid);
       await updateDoc(usuarioDoc, { nome: name });
     }
 
-    // Verifica se a senha foi fornecida e a atualiza se necessário
+    /* Verifica se a senha foi fornecida e a atualiza se necessário */
     if (password) {
       await updatePassword(user, password);
     }
 
-    // Retorna o idToken atualizado
     const idToken = await getIdToken(user);
     return idToken;
   } catch (error) {
@@ -153,7 +148,6 @@ const firebaseGetMediaByCategoryAndId = async (categoriaId, mediaType, mediaId) 
       return null;
     }
 
-    // Primeiro, obtenha o documento da categoria baseado no categoriaId
     const categoryQuery = query(collection(db, 'categorias'), where('categoriaId', '==', categoriaId));
     const categorySnapshot = await getDocs(categoryQuery);
 
@@ -162,7 +156,6 @@ const firebaseGetMediaByCategoryAndId = async (categoriaId, mediaType, mediaId) 
       return null;
     }
 
-    // Asumindo que categoriaId é único e só há um documento correspondente
     const categoryDoc = categorySnapshot.docs[0];
     const mediaList = categoryDoc.data()[mediaType];
 
@@ -171,7 +164,7 @@ const firebaseGetMediaByCategoryAndId = async (categoriaId, mediaType, mediaId) 
       return null;
     }
 
-    // Se o media existir na lista, obtenha o documento na respectiva coleção (fotos ou videos)
+    /* Se o media existir na lista, obtenha o documento na respectiva coleção (fotos ou videos) */
     const mediaDoc = await getDoc(doc(db, mediaType, mediaId));
     if (!mediaDoc.exists) {
       console.error(`${mediaType.slice(0, -1)} document does not exist`);

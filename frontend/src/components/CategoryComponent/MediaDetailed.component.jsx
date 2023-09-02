@@ -12,9 +12,9 @@ function MediaDetailedComponent() {
 
   const navigate = useNavigate();
 
-  // const [selectedPhoto, setSelectedPhoto] = useState(null);
   if (!mediaSelected) return null;
 
+  /* Funções para renderizar o conteúdo da mídia de acordo com o tipo */
   const renderMediaContent = () => {
     if (mediaSelected.mediaType === 'fotos') {
       return <img className="selectedMedia" src={mediaSelected.media.url} alt="Selected" />;
@@ -27,8 +27,8 @@ function MediaDetailedComponent() {
     return null;
   };
 
+  /* Função para lidar com o clique no botão de voltar */
   const handleBackClick = () => {
-    // setSelectedPhoto(null);
     setMediaSelected(null);
     navigate(-1);
   };

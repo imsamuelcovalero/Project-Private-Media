@@ -14,6 +14,7 @@ const LoadingSpinnerS = styled(motion.div)`
   border-radius: 8px;
 `;
 
+/* LoadingSpinner é um componente que exibe um spinner de carregamento customizado */
 export default function LoadingSpinner() {
   return (
     <LoadingSpinnerS

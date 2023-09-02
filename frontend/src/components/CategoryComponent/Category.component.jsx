@@ -16,8 +16,6 @@ function CategoryComponent() {
   const navigate = useNavigate();
   const { categoryId } = useParams();
 
-  // console.log('categoryId', categoryId);
-
   return (
     <CategoryS>
       <div id="content">

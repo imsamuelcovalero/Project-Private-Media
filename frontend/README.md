@@ -141,6 +141,13 @@ Dentro do diretório do `frontend`, há um arquivo chamado `.env.example`, que c
 1. Renomeie `.env.example` para simplesmente `.env`.
 2. Atualize os valores placeholder com as configurações reais. As variáveis incluem:
 
+Após realizar o deploy da aplicação, é essencial que a `URL` do `backend` seja definida no arquivo `.env` do `frontend`:
+
+```bash
+#### API Url ####
+REACT_APP_API_URL=https://meusite.com # Substitua por seu próprio endereço do backend
+```
+
 Conforme detalhado no passo 5 de `**Obtendo Configurações de Inicialização**` no [Firebase](../Firebase.md), você deve coletar essas informações no `Firebase Console` e inseri-las aqui:
 
 ```bash

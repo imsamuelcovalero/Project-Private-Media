@@ -11,7 +11,7 @@ function ThemeComponent() {
     setTheme(mode);
   };
 
-  // cria função para chamar o setMode e trocar o tema
+  /* cria função para chamar o setMode e trocar o tema */
   const themeToggler = () => {
     if (theme === 'light') {
       setMode('dark');

@@ -8,7 +8,7 @@ async function handleRequest(requestFunc, errorMessage) {
     const result = await requestFunc();
 
     if (![200, 201].includes(result.status)) {
-      console.log('result.status', result.status);
+      // console.log('result.status', result.status);
       throw new Error(`HTTP error! Status: ${result.status}`);
     }
 

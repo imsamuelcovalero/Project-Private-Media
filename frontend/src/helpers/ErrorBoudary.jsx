@@ -2,6 +2,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * ErrorBoundary é um componente wrapper que captura erros em seus componentes filhos
+ * e exibe uma IU alternativa com uma mensagem de erro personalizada.
+ * Ele previne que um erro em um componente cause falha em toda a aplicação.
+ *
+ * Uso:
+ * <ErrorBoundary>
+ *   <SeuComponente />
+ * </ErrorBoundary>
+ */
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);

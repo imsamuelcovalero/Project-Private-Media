@@ -68,6 +68,7 @@ const ConfirmationModalS = styled.div`
   }
 `;
 
+/* ConfirmationModal é um componente que exibe um modal de confirmação customizado */
 function ConfirmationModal({
   show, title, message, onConfirm, onCancel,
 }) {

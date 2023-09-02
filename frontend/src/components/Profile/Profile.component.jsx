@@ -16,7 +16,6 @@ function ProfileComponent() {
     const verifyToken = async () => {
       try {
         await api.checkToken();
-        // console.log('data', data);
       } catch (error) {
         console.error(error);
         logout();
@@ -29,8 +28,6 @@ function ProfileComponent() {
   const handleLogout = async () => {
     await logout();
   };
-
-  console.log('user', user);
 
   return (
     <ProfileS>

@@ -1,3 +1,5 @@
+/* Desc: Este arquivo contém a configuração para que o
+Toast Container seja estilizado com styled-components. */
 import styled from 'styled-components';
 import { ToastContainer } from 'react-toastify';
 

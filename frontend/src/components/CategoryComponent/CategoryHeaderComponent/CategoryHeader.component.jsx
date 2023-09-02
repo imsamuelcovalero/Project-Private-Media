@@ -7,13 +7,11 @@ import ReactNodeContext from '../../../context/ReactNodeContext';
 import { CategoryHeaderS, BtnCategory } from './CategoryHeader.style';
 
 function CategoryHeaderComponent() {
-  // const { categoryId } = useParams();
   const {
     categoryIds, setViewMode, setMediaSelected, setCurrentMainUrl,
     currentCategory, setCurrentCategory, logout, setIsUserLogged,
     setIsSignatureActive,
   } = useContext(ReactNodeContext);
-  // const [categoryId, setCategoryId] = useState(currentCategory);
 
   const navigate = useNavigate();
 
@@ -36,8 +34,8 @@ function CategoryHeaderComponent() {
     verifyToken();
   }, []);
 
+  /* função que lida com a mudança de categoria */
   const handleCategoryChange = (id) => {
-    // Redefinindo o estado ao mudar de categoria
     setViewMode(null);
     setMediaSelected(false);
     setCurrentMainUrl(`/main/${id}`);

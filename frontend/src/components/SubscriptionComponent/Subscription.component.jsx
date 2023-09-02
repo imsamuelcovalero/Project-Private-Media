@@ -24,7 +24,6 @@ function SubscriptionComponent() {
   const navigate = useNavigate();
 
   const subscriptionValue = parseFloat(process.env.REACT_APP_SUBSCRIPTION_VALUE);
-  // const externalReference = process.env.REACT_APP_MERCADOPAGO_ID;
 
   /* useEffect que verifica se existe um token válido */
   useEffect(() => {
@@ -42,7 +41,6 @@ function SubscriptionComponent() {
 
   /* Função responsável por verificar o status do pagamento */
   const getStatusPayment = async () => {
-    console.log('paymentId', paymentId);
     setIsLoading(true);
     try {
       const response = await api.processPaymentStatus(user.id, paymentId);
@@ -79,10 +77,7 @@ function SubscriptionComponent() {
         external_reference: process.env.REACT_APP_MERCADOPAGO_ID,
       });
 
-      console.log('response', response);
-
       if (response && response.status === 'approved') {
-        // addPaymentId(response.id);
         setPaymentStatus('approved');
         setPaymentId(response.id);
         toast.success('Pagamento processado com sucesso!');
@@ -111,8 +106,6 @@ function SubscriptionComponent() {
         external_reference: process.env.REACT_APP_MERCADOPAGO_ID,
       });
 
-      console.log('response', response);
-
       if (response && response.status === 'pending') {
         addPaymentId(response.id);
         setPaymentId(response.id);
@@ -133,7 +126,6 @@ function SubscriptionComponent() {
 
   /* Função que é chamada quando o usuário clica em pagar */
   const onSubmit = async ({ selectedPaymentMethod, formData }) => {
-    console.log('formData', formData);
     setModalMessage('Tem certeza que deseja efetuar o pagamento?');
     setModalCallback(() => () => {
       setIsLoading(true);
@@ -171,7 +163,7 @@ function SubscriptionComponent() {
     setShowModal(true);
   };
 
-  const onError = async (error) => {
+  const onError = (error) => {
     console.log(error);
     toast.error('Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.');
   };
@@ -232,14 +224,6 @@ function SubscriptionComponent() {
         <button type="button" className="secondary" id="cancelButton" onClick={() => handleCancel()}>Cancelar Pagamento</button>
       </>
       )}
-      {/* <button
-        type="button"
-        className="secondary"
-        id="backButton"
-        onClick={() => navigate(-1)}
-      >
-        Voltar
-      </button> */}
     </SubscriptionS>
   );
 }

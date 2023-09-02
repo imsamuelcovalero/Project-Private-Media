@@ -1,18 +1,22 @@
 /* File: src/helpers/localStorage.helper.jsx */
+
+/* função que retorna o usuário armazenado no localStorage */
 export const getUserInfo = () => {
   const userInfo = localStorage.getItem('reactNodeUser');
   return userInfo ? JSON.parse(userInfo) : null;
 };
 
+/* função que armazena o usuário no localStorage */
 export const saveUserInfo = (userInfo) => {
   localStorage.setItem('reactNodeUser', JSON.stringify(userInfo));
 };
 
+/* função que remove o usuário do localStorage */
 export const removeUserInfo = () => {
   localStorage.removeItem('reactNodeUser');
 };
 
-// Armazena as mídias e o tempo no localStorage
+/* função que armazena as mídias e o tempo no localStorage */
 export const addMediasTimeToLocalStorage = (categoryId, mediaType, medias) => {
   const storedMediaData = localStorage.getItem('reactNodeMediaData')
     ? JSON.parse(localStorage.getItem('reactNodeMediaData'))
@@ -30,31 +34,18 @@ export const addMediasTimeToLocalStorage = (categoryId, mediaType, medias) => {
   localStorage.setItem('reactNodeMediaData', JSON.stringify(storedMediaData));
 };
 
-// Pega as mídias e o tempo do localStorage para uma determinada categoria e tipo
+/* função que retorna as mídias e o tempo armazenados no localStorage */
 export const getMediasTime = (categoryId, mediaType) => {
   const storedMediaDataRaw = localStorage.getItem('reactNodeMediaData');
 
   if (!storedMediaDataRaw) return null;
 
-  const storedMediaData = JSON.parse(storedMediaDataRaw); // Parse the JSON string
+  const storedMediaData = JSON.parse(storedMediaDataRaw);
 
   return storedMediaData[categoryId] && storedMediaData[categoryId][mediaType]
     ? storedMediaData[categoryId][mediaType]
     : null;
 };
-
-// export const addMediaTimeToLocalStorage = (media) => {
-//   const mediaTime = {
-//     data: media.data,
-//     time: media.time,
-//   };
-//   localStorage.setItem('reactNodeMediaTime', JSON.stringify(mediaTime));
-// };
-
-// export const getMediaTime = () => {
-//   const mediaTime = localStorage.getItem('reactNodeMediaTime');
-//   return mediaTime ? JSON.parse(mediaTime) : null;
-// };
 
 /* função que armazena o PaymentId no localStorage */
 export const addPaymentId = (PaymentId) => {

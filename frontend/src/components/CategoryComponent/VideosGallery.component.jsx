@@ -12,7 +12,7 @@ function VideosGalleryComponent() {
 
   const navigate = useNavigate();
 
-  // Paginação
+  /* Paginação */
   const [currentPage, setCurrentPage] = useState(1);
   const videosPerPage = 10; // ajuste conforme necessário
 
@@ -25,7 +25,7 @@ function VideosGalleryComponent() {
     });
   };
 
-  // Funções para manipular a paginação
+  /* Funções para manipular a paginação */
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
   };
@@ -34,7 +34,7 @@ function VideosGalleryComponent() {
     setCurrentPage(currentPage - 1);
   };
 
-  // Obter os vídeos para a página atual
+  /* Obter os vídeos para a página atual */
   const indexOfLastVideo = currentPage * videosPerPage;
   const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
   const currentVideos = categoryVideos.slice(indexOfFirstVideo, indexOfLastVideo);

@@ -63,7 +63,6 @@ function ProfileEditComponent() {
     const verifyToken = async () => {
       try {
         await api.checkToken();
-        // console.log('data', data);
       } catch (error) {
         console.error(error);
         logout();
@@ -182,8 +181,6 @@ function ProfileEditComponent() {
     const hasNumber = /\d/.test(password);
 
     let error = '';
-
-    // console.log('formProfile.newPassword', formProfile.newPassword);
 
     if (!formProfile.newPassword) return 'Campo de senha é obrigatório. ';
     if (!hasEightCharacters) error += 'Senha deve ter ao menos 8 caracteres. ';
@@ -316,8 +313,6 @@ function ProfileEditComponent() {
       setCanChangePassword(false);
     }
   };
-
-  console.log('touchedName', touchedName);
 
   return (
     <ProfileEditS>
