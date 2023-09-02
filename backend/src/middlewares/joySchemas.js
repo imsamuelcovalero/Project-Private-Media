@@ -3,31 +3,24 @@ const joi = require('joi');
 
 const INVALID_TOKEN = '400|O token é necessário';
 
-// esquema para login
-const loginSchema = joi.object({
+/* esquema base para idToken */
+const idTokenSchema = joi.object({
   idToken: joi.string().required().messages({
     'string.empty': INVALID_TOKEN,
     'any.required': INVALID_TOKEN,
   }),
 });
 
-// esquema para registro
-const registerSchema = joi.object({
-  idToken: joi.string().required().messages({
-    'string.empty': INVALID_TOKEN,
-    'any.required': INVALID_TOKEN,
-  }),
-});
+/* esquema para login */
+const loginSchema = idTokenSchema;
 
-// esquema para update
-const updateSchema = joi.object({
-  idToken: joi.string().required().messages({
-    'string.empty': INVALID_TOKEN,
-    'any.required': INVALID_TOKEN,
-  }),
-});
+/* esquema para registro */
+const registerSchema = idTokenSchema;
 
-// esquema para pagamento
+/* esquema para update */
+const updateSchema = idTokenSchema;
+
+/* esquema para pagamento */
 const paymentSchema = joi.object({
   userId: joi.string().required().messages({
     'string.empty': 'UserID is required',
@@ -90,7 +83,7 @@ const paymentSchema = joi.object({
   }).required()
 });
 
-// esquema para verificação de status do pagamento
+/* esquema para verificação de status do pagamento */
 const paymentStatusSchema = joi.object({
   userId: joi.string().required().messages({
     'string.empty': 'UserID is required',
@@ -102,7 +95,7 @@ const paymentStatusSchema = joi.object({
   }),
 });
 
-// esquema para cancelamento de pagamento
+/* esquema para cancelamento de pagamento */
 const cancelPaymentSchema = joi.object({
   paymentId: joi.number().integer().required().messages({
     'number.base': 'Payment ID must be a number',

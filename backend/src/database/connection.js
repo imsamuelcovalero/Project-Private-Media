@@ -5,7 +5,7 @@ const boom = require('@hapi/boom');
 let db;
 
 try {
-  // Inicialize o aplicativo Firebase Admin com as credenciais de serviço
+  /* Inicializando o Firebase Admin */
   admin.initializeApp({
     credential: admin.credential.cert({
       projectId: process.env.FIREBASE_PROJECT_ID,

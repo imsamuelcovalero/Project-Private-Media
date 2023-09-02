@@ -62,13 +62,10 @@ const processPixPayment = async (paymentData) => {
   
   try {
     const pixPayment = await mercadopago.payment.create(pixPaymentData);
-    console.log('pixPayment', pixPayment);
     
-    // Desestruturação atualizada
     const { status, status_detail, id, point_of_interaction, external_reference } = pixPayment.body;
     const transaction_data = point_of_interaction.transaction_data;
 
-    console.log('status', status, 'status_detail', status_detail, 'id', id, 'external_reference', external_reference);
     return { status, status_detail, id, transaction_data, external_reference };
   } catch (error) {
     console.error('Erro ao processar o pagamento com Pix:', error);
@@ -80,7 +77,6 @@ const processPixPayment = async (paymentData) => {
 /* Função que processa o pagamento com cartão de crédito */
 const processCreditCardPayment = async (paymentData) => {
   const { paymentDetails, description, external_reference } = paymentData;
-  // console.log('description', description);
 
   const creditCardPaymentData = {
     description,
@@ -89,13 +85,9 @@ const processCreditCardPayment = async (paymentData) => {
     ...paymentDetails
   };
 
-  // console.log('creditCardPaymentData', creditCardPaymentData);
-
   try {
     const creditCardPayment = await mercadopago.payment.save(creditCardPaymentData);
-
     const { status, status_detail, id } = creditCardPayment.body;
-    console.log('status', status, 'status_detail', status_detail, 'id', id);
 
     if (status === 'approved') {
       await updateSubscription(paymentData.userId);
@@ -111,7 +103,6 @@ const processCreditCardPayment = async (paymentData) => {
 
 /* Função que verifica o status do pagamento */
 const verifyPaymentStatus = async (transactionData) => {
-  // console.log('transactionData', transactionData);
   const { paymentId } = transactionData;
   
   try {

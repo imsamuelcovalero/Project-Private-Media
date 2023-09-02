@@ -1,40 +1,41 @@
 // File: userService.js em backend/src/services
 const admin = require('firebase-admin');
 const boom = require('@hapi/boom');
+const { th } = require('date-fns/locale');
 
+/* função responsável por verificar o token do usuário */
 const getUserByToken = async (idToken) => {
-  // console.log('idToken2', idToken);
   try {
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    // console.log('decodedIdToken', decodedIdToken);
+
     return decodedIdToken;
   } catch (error) {
     throw boom.internal('Erro ao validar o ID token', error);
   }
 };
 
+/* função responsável por buscar o usuário no banco de dados */
 const getUserFromFirestore = async (uid) => {
   try {
     const usersCollection = admin.firestore().collection('usuários');
     const snapshot = await usersCollection.where('uid', '==', uid).get();
 
     if (snapshot.empty) {
-      console.log('No such document!');
-      return null;
+      throw boom.notFound(`Documento não encontrado para o UID: ${uid}`);
     } else {
       let user = null;
       snapshot.forEach(doc => {
-        console.log(doc.id, '=>', doc.data());
+        // console.log(doc.id, '=>', doc.data());
         user = doc.data();
       });
       return user;
     }
   } catch (error) {
-    console.log('Error getting document', error);
-    throw error;
+    throw boom.internal('Erro ao buscar o usuário no banco de dados', error);
   }
 };
 
+/* função responsável por atualizar o status da assinatura do usuário */
 const updateSubscriptionStatus = async (uid, status) => {
   const usersCollection = admin.firestore().collection('usuários');
   
@@ -49,6 +50,7 @@ const updateSubscriptionStatus = async (uid, status) => {
   }
 };
 
+/* função responsável por verificar se a assinatura do usuário está ativa ou não */
 const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura, uid) => {  
   if (!assinaturaAtiva) {
     return 'Assinatura inativa. Por favor, assine para usar o serviço.';
@@ -67,15 +69,13 @@ const checkSubscription = async (assinaturaAtiva, dataExpiracaoAssinatura, uid) 
   return 'OK';
 };
 
+/* função responsável por fazer o login do usuário */
 const login = async (userData) => {
   const { idToken } = userData;
-  // console.log('idToken', idToken);
 
   const decodedIdToken = await getUserByToken(idToken);
-  // console.log('decodedIdToken', decodedIdToken.uid);
 
   const user = await getUserFromFirestore(decodedIdToken.uid);
-  // console.log('user', user);
 
   if (!user) throw boom.notFound('Usuário não encontrado');
 
@@ -86,31 +86,27 @@ const login = async (userData) => {
     message: check,
   } };
 
-  // console.log('result', result);
   return result;
 };
 
-// função responsável por criar um novo usuário no banco de dados
+/* função responsável por criar ou atualizar um usuário no banco de dados */
 const createAndUpdateUser = async (userData) => {
   const { idToken } = userData;
-  // console.log('idToken', idToken);
 
   const decodedIdToken = await getUserByToken(idToken);
-  // console.log('decodedIdToken', decodedIdToken.uid);
 
   const user = await getUserFromFirestore(decodedIdToken.uid);
-  console.log('user', user);
 
   const result = { token: idToken, id: user.uid, email: user.email, nome: user.nome, assinaturaAtiva: {
     status: user.assinaturaAtiva,
   } };
-  // console.log('result', result);
+
   return result;
 };
 
+/* função responsável por verificar o usuário o status da assinatura */
 const verifyUser = async (userId) => {
   const user = await getUserFromFirestore(userId);
-  // console.log('user', user);
 
   if (!user) throw boom.notFound('Usuário não encontrado');
 
