@@ -1,5 +1,5 @@
 /* File: src/components/CategoryComponent/VideosGallery.component.jsx */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import {
@@ -7,14 +7,24 @@ import {
 } from './Style';
 
 function PhotosGalleryComponent() {
-  const { categoryPhotos, setMediaSelected, currentMainUrl } = useContext(ReactNodeContext);
-  console.log('categoryPhotos', categoryPhotos);
+  const { setMediaSelected, currentMainUrl, getCategoryData } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
 
   /* Paginação */
   const [currentPage, setCurrentPage] = useState(1);
+  const [categoryPhotos, setCategoryPhotos] = useState([]);
   const photosPerPage = 10; // ajuste conforme necessário
+
+  // Carregar as fotos sempre que a página atual mudar
+  useEffect(() => {
+    const fetchData = async () => {
+      const photosData = await getCategoryData('fotos', currentPage);
+      setCategoryPhotos(photosData);
+    };
+
+    fetchData();
+  }, [currentPage, currentMainUrl]);
 
   const handlePhotoClick = (photo) => {
     navigate(`${currentMainUrl}/fotos/${photo.id}`);

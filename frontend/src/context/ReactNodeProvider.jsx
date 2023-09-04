@@ -8,6 +8,7 @@ import api from '../services';
 import { firebaseGetCategory, firebaseGetMediaByCategoryAndId } from '../services/firebase.helper';
 import {
   getUserInfo, removeUserInfo, getMediasTime, addMediasTimeToLocalStorage,
+  getLastMediaDocs, storeLastMediaDocs,
 } from '../helpers/localStorage.helper';
 import categoryIds from '../helpers/categoryIds.helper';
 
@@ -143,49 +144,72 @@ function ReactNodeProvider({ children }) {
 
   /* Função que busca as fotos e vídeos da categoria categoryId no Firebase, em caso de ainda
   não terem sido buscadas ou de já terem passado 2 horas desde a última busca */
-  const getMediaFromFirebase = async (categoryId) => {
-    const data = await firebaseGetCategory(categoryId);
-    console.log('data', data);
-    const randomPhotos = getRandomElements(data.fotos, 5);
-    console.log('randomPhotos', randomPhotos);
-    const randomVideos = getRandomElements(data.videos, 5);
-    console.log('randomVideos', randomVideos);
+  // const getMediaFromFirebase = async (categoryId) => {
+  //   const data = await firebaseGetCategory(categoryId);
+  //   console.log('data', data);
+  //   const randomPhotos = getRandomElements(data.fotos, 5);
+  //   console.log('randomPhotos', randomPhotos);
+  //   const randomVideos = getRandomElements(data.videos, 5);
+  //   console.log('randomVideos', randomVideos);
 
-    setCategoryPhotos(randomPhotos);
-    setCategoryVideos(randomVideos);
+  //   setCategoryPhotos(randomPhotos);
+  //   setCategoryVideos(randomVideos);
 
-    addMediasTimeToLocalStorage(categoryId, 'fotos', randomPhotos);
-    addMediasTimeToLocalStorage(categoryId, 'videos', randomVideos);
+  //   addMediasTimeToLocalStorage(categoryId, 'fotos', randomPhotos);
+  //   addMediasTimeToLocalStorage(categoryId, 'videos', randomVideos);
+  // };
+
+  const getMediaFromFirebase = async (mediaType, categoryId) => {
+    try {
+      // Buscar os últimos documentos do localstorage
+      const lastMediaDoc = getLastMediaDocs(categoryId, mediaType);
+
+      // Consultar os dados com base nos últimos documentos
+      const data = await firebaseGetCategory(mediaType, categoryId, lastMediaDoc);
+
+      // Armazena o último documento para futuras consultas
+      if (data.mediaType.length) {
+        storeLastMediaDocs(categoryId, 'mediaType', data.mediaType[data.mediaType.length - 1]);
+      }
+      // if (data.videos.length) {
+      //   storeLastMediaDocs(categoryId, 'videos', data.videos[data.videos.length - 1]);
+      // }
+
+      // Seleciona aleatoriamente se a assinatura não estiver ativa
+      const randomMedia = getRandomElements(data.mediaType, 5);
+      // const randomVideos = getRandomElements(data.videos, 5);
+      addMediasTimeToLocalStorage(categoryId, mediaType, randomMedia);
+      return randomMedia;
+    } catch (error) {
+      console.error('Error fetching media from Firebase:', error);
+      return null;
+    }
   };
 
   /* Função que busca as fotos e vídeos da categoria categoryId no Firebase, em caso de o usuário
   estar logado e ter a assinatura ativa */
-  const getMediaForSubscribedUsers = async (categoryId) => {
-    const data = await firebaseGetCategory(categoryId);
+  const getMediaForSubscribedUsers = async (mediaType, page, categoryId) => {
+    const data = await firebaseGetCategory(mediaType, categoryId, page);
     setCategoryPhotos(data.fotos);
     setCategoryVideos(data.videos);
   };
 
   /* Função principal de busca de mídias, que faz as verificações iniciais e chama as funções
   específicas para cada caso */
-  const getCategoryData = async (categoryId) => {
+  const getCategoryData = async (mediaType, page, currentCategory) => {
     try {
       if (isSignatureActive) {
-        getMediaForSubscribedUsers(categoryId);
-      } else {
-        const storedPhotos = getMediasTime(categoryId, 'fotos');
-        console.log('storedPhotos', storedPhotos);
-        const twoHours = 2 * 60 * 60 * 1000;
-
-        if (storedPhotos && (Date.now() - storedPhotos.time) < twoHours) {
-          setCategoryPhotos(storedPhotos.data);
-          const storedVideos = getMediasTime(categoryId, 'videos');
-          console.log('storedVideos', storedVideos);
-          setCategoryVideos(storedVideos.data);
-        } else {
-          getMediaFromFirebase(categoryId);
-        }
+        const categoryMedia = getMediaForSubscribedUsers(mediaType, page, currentCategory);
+        return categoryMedia;
       }
+      const storedMedias = getMediasTime(currentCategory, mediaType);
+      console.log('storedMedias', storedMedias);
+      const twoHours = 2 * 60 * 60 * 1000;
+
+      if (storedMedias && (Date.now() - storedMedias.time) < twoHours) {
+        return storedMedias.data;
+      }
+      getMediaFromFirebase(mediaType, currentCategory);
     } catch (error) {
       console.error('Error fetching category data:', error);
     }

@@ -10,12 +10,31 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import {
-  collection, doc, getDocs, getDoc, setDoc, updateDoc, query, where,
+  collection, doc, getDocs, getDoc, setDoc, updateDoc, query, where, orderBy,
 } from 'firebase/firestore';
 import { auth, db } from './firebase.config';
 
+/*
+* Trecho para buscar as fotos e vídeos de uma categoria específica
+*/
+
+/* Função auxiliar que busca as fotos e vídeos de uma categoria específica */
+const fetchMedia = async (mediaType, categoryId, startAfter = null, limit = 10) => {
+  let mediaQuery = query(collection(db, mediaType), where('categoriaId', '==', categoryId), orderBy('dataCriacao'), limit(limit));
+  if (startAfter) {
+    mediaQuery = query(collection(db, mediaType), where('categoriaId', '==', categoryId), orderBy('dataCriacao'), startAfter(startAfter), limit(limit));
+  }
+  const mediaSnapshot = await getDocs(mediaQuery);
+  return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+};
+
 /* Função que busca as fotos e vídeos de uma categoria específica */
-const firebaseGetCategory = async (categoryId) => {
+const firebaseGetCategory = async (
+  categoryId,
+  startAfterPhoto = null,
+  startAfterVideo = null,
+  limit = 10,
+) => {
   try {
     const categoriesCollection = collection(db, 'categorias');
     const snapshot = await getDocs(categoriesCollection);
@@ -32,13 +51,8 @@ const firebaseGetCategory = async (categoryId) => {
       return null;
     }
 
-    const fotosPromises = categoryData.fotos.map((idFoto) => getDoc(doc(db, 'fotos', idFoto)));
-    const fotosDocs = await Promise.all(fotosPromises);
-    const fotosData = fotosDocs.map((fotoDoc) => ({ id: fotoDoc.id, ...fotoDoc.data() }));
-
-    const videosPromises = categoryData.videos.map((idVideo) => getDoc(doc(db, 'videos', idVideo)));
-    const videosDocs = await Promise.all(videosPromises);
-    const videosData = videosDocs.map((videoDoc) => ({ id: videoDoc.id, ...videoDoc.data() }));
+    const fotosData = await fetchMedia('fotos', categoryId, startAfterPhoto, limit);
+    const videosData = await fetchMedia('videos', categoryId, startAfterVideo, limit);
 
     categoryData = {
       ...categoryData,

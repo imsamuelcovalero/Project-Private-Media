@@ -130,7 +130,7 @@ Nesta estrutura:
 - **`data`**: é um array contendo até 5 mídias selecionadas aleatoriamente.
 - **`time`**: é um registro de quando essa informação foi armazenada no `LocalStorage`.
 
-A função responsável por armazenar essas informações no LocalStorage é:
+A função responsável por armazenar essas informações no `LocalStorage` é:
 
 ```javascript
 /* função que armazena as mídias e o tempo no localStorage */
