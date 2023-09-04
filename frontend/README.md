@@ -8,6 +8,7 @@
   - [Edição de Perfil](#edição-de-perfil)
 - [Firebase e Mercado Pago](#firebase-e-mercado-pago)
   - [Firebase](#firebase)
+  - [LocalStorage](#localstorage)
   - [Integração com Mercado Pago](#integração-com-mercado-pago)
 - [Tecnologias e Ferramentas Utilizadas](#tecnologias-e-ferramentas-utilizadas)
 - [Instalação e Execução](#instalação-e-execução)
@@ -90,6 +91,68 @@ Estas validações são essenciais para garantir que os dados enviados ao `Fireb
 O projeto se beneficia amplamente do `Firebase`, uma solução versátil que nos oferece recursos como autenticação, armazenamento, e um banco de dados em tempo real. A integração com o Firebase garante uma experiência de usuário otimizada e a possibilidade de atualizações em tempo real.
 
 Se desejar compreender a fundo como implementamos o **Firebase** no frontend e obter informações sobre configurações, fluxos e boas práticas, convidamos você a ler nosso `README` detalhado, disponível [aqui](../Firebase.md).
+
+### LocalStorage
+
+O `LocalStorage` é utilizado para otimizar a experiência de usuários visitantes ou daqueles sem uma assinatura ativa. Com ele, conseguimos armazenar, de forma temporária e segura, metadados sobre as mídias exibidas, permitindo um acesso rápido e reduzindo a necessidade de consultas constantes ao `Firebase`. O processo de busca por novas mídias é realizado apenas após 2 horas da consulta prévia, evitando repetições frequentes e economizando recursos.
+
+Com a introdução do sistema de paginação, as consultas ao `Firebase` são ainda mais otimizadas. Em vez de buscar aleatoriamente no banco de dados completo, a consulta é feita em páginas específicas de mídias, equilibrando a variedade do conteúdo exibido com a eficiência da consulta.
+
+A estrutura armazenada no `LocalStorage` é organizada da seguinte maneira:
+
+```json
+{
+  "<categoryId>": {
+    "<mediaType>": {
+      "data": [
+        {
+          "categoriaId": "cat1",
+          "dataCriacao": {
+            "seconds": 1692659463,
+            "nanoseconds": 411000000
+          },
+          "descricao": "",
+          "id": "rT8UPo7C1BxOyOE9f7rF",
+          "url": "https://firebasestorage.googleapis.com/v0/b/plataforma-node-e-react.appspot.com/o/gato3.png?alt=media&token=32c2541e-144f-48dd-8c4f-ee3d3f11addd"
+        },
+        ...
+      ],
+      "time": <timestamp>
+    }
+  }
+}
+```
+
+Nesta estrutura:
+
+- **`<categoryId>`**: é o identificador da categoria da mídia
+- **`<mediaType>`**: É o tipo de mídia, que pode ser `fotos` ou `videos`.
+- **`data`**: é um array contendo até 5 mídias selecionadas aleatoriamente.
+- **`time`**: é um registro de quando essa informação foi armazenada no `LocalStorage`.
+
+A função responsável por armazenar essas informações no LocalStorage é:
+
+```javascript
+/* função que armazena as mídias e o tempo no localStorage */
+export const addMediasTimeToLocalStorage = (categoryId, mediaType, medias) => {
+  const storedMediaData = localStorage.getItem('reactNodeMediaData')
+    ? JSON.parse(localStorage.getItem('reactNodeMediaData'))
+    : {};
+
+  if (!storedMediaData[categoryId]) {
+    storedMediaData[categoryId] = {};
+  }
+
+  storedMediaData[categoryId][mediaType] = {
+    data: medias,
+    time: Date.now(),
+  };
+
+  localStorage.setItem('reactNodeMediaData', JSON.stringify(storedMediaData));
+};
+```
+
+> ⚠️ **Reforçando**: O `LocalStorage` é utilizado apenas para armazenar metadados (informações leves) sobre as mídias exibidas, não as mídias em si. As mídias são armazenadas no `Firebase Storage` e são acessadas através de `URLs` que apontam para o local onde estão armazenadas.
 
 ### Integração com Mercado Pago
 

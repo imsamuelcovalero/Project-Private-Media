@@ -145,8 +145,11 @@ function ReactNodeProvider({ children }) {
   não terem sido buscadas ou de já terem passado 2 horas desde a última busca */
   const getMediaFromFirebase = async (categoryId) => {
     const data = await firebaseGetCategory(categoryId);
+    console.log('data', data);
     const randomPhotos = getRandomElements(data.fotos, 5);
+    console.log('randomPhotos', randomPhotos);
     const randomVideos = getRandomElements(data.videos, 5);
+    console.log('randomVideos', randomVideos);
 
     setCategoryPhotos(randomPhotos);
     setCategoryVideos(randomVideos);
@@ -171,11 +174,13 @@ function ReactNodeProvider({ children }) {
         getMediaForSubscribedUsers(categoryId);
       } else {
         const storedPhotos = getMediasTime(categoryId, 'fotos');
+        console.log('storedPhotos', storedPhotos);
         const twoHours = 2 * 60 * 60 * 1000;
 
         if (storedPhotos && (Date.now() - storedPhotos.time) < twoHours) {
           setCategoryPhotos(storedPhotos.data);
           const storedVideos = getMediasTime(categoryId, 'videos');
+          console.log('storedVideos', storedVideos);
           setCategoryVideos(storedVideos.data);
         } else {
           getMediaFromFirebase(categoryId);
