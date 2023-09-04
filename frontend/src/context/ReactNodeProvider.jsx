@@ -196,22 +196,24 @@ function ReactNodeProvider({ children }) {
 
   /* Função principal de busca de mídias, que faz as verificações iniciais e chama as funções
   específicas para cada caso */
-  const getCategoryData = async (mediaType, page, currentCategory) => {
+  const getCategoryData = async (mediaType, page) => {
     try {
       if (isSignatureActive) {
-        const categoryMedia = getMediaForSubscribedUsers(mediaType, page, currentCategory);
+        const categoryMedia = await getMediaForSubscribedUsers(mediaType, page, currentCategory);
         return categoryMedia;
       }
-      const storedMedias = getMediasTime(currentCategory, mediaType);
+      const storedMedias = await getMediasTime(mediaType, currentCategory);
       console.log('storedMedias', storedMedias);
       const twoHours = 2 * 60 * 60 * 1000;
 
       if (storedMedias && (Date.now() - storedMedias.time) < twoHours) {
         return storedMedias.data;
       }
-      getMediaFromFirebase(mediaType, currentCategory);
+      const categoryMedia = await getMediaFromFirebase(mediaType, currentCategory);
+      return categoryMedia;
     } catch (error) {
       console.error('Error fetching category data:', error);
+      return null;
     }
   };
 
