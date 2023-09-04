@@ -126,6 +126,22 @@ Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes e
 
 > **Nota1**: No README do ([frontend](frontend/README.md), serão fornecidas instruções detalhadas sobre como inserir estas informações como variáveis de ambiente, garantindo que elas não estejam expostas.
 
+#### Configurando Índices Compostos no Firestore
+
+Ao realizar consultas mais complexas no Firestore, como aquelas que usam múltiplos campos para filtrar e ordenar, é possível que seja necessário configurar índices compostos para garantir que as consultas sejam executadas corretamente e com eficiência.
+
+##### Identificando a Necessidade de Índices Compostos
+
+Ao executar o projeto, se você encontrar um erro que indica a necessidade de criar um índice composto, a mensagem de erro fornecerá um link direto para a criação deste índice no Firebase Console.
+
+##### Criação do Índice Composto
+
+1. Clique no link fornecido na mensagem de erro. Ele irá redirecionar você para o Firebase Console, especificamente na página de criação de índices compostos.
+2. Os campos da consulta que causou o erro já estarão pré-selecionados. Confirme e prossiga com a criação do índice composto.
+3. Aguarde até que o índice seja construído. Isso pode levar alguns minutos.
+
+> ⚠️ **Atenção**: Ao configurar o projeto pela primeira vez ou após realizar mudanças nas consultas do Firestore, é uma boa prática testar todas as funcionalidades e certificar-se de que todas as consultas estão executando corretamente. Isso ajudará a identificar rapidamente a necessidade de índices compostos adicionais.
+
 Com essas configurações, sua aplicação está pronta para se conectar e interagir com o `Firebase`.
 
 > **Nota2**: Para mais informações sobre o `Firebase`, acesse a [documentação oficial](https://firebase.google.com/docs).

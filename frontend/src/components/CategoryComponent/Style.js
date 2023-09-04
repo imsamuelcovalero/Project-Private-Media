@@ -53,6 +53,13 @@ export const PaginationContainerS = styled.div`
   margin-bottom: 30px;
 `;
 
+export const NoMediasMessageS = styled.div`
+  text-align: center;
+  margin-top: 20px;
+  font-size: 16px;
+  color: #888;
+`;
+
 export const PhotosDivS = styled.div`
   /* border: 1px solid blue; */
   display: flex;

@@ -3,7 +3,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import {
-  PhotosDivS, PhotoCardS, PaginationButtonS, PaginationContainerS, GalleryContainerS,
+  PhotosDivS, PhotoCardS, PaginationButtonS, PaginationContainerS,
+  GalleryContainerS, NoMediasMessageS,
 } from './Style';
 
 function PhotosGalleryComponent() {
@@ -20,6 +21,7 @@ function PhotosGalleryComponent() {
   useEffect(() => {
     const fetchData = async () => {
       const photosData = await getCategoryData('fotos', currentPage);
+      console.log('photosData', photosData);
       setCategoryPhotos(photosData);
     };
 
@@ -58,6 +60,8 @@ function PhotosGalleryComponent() {
               <img id={`photo-${photo.id}`} src={photo.url} alt="Thumbnail" />
             </PhotoCardS>
           ))}
+          {categoryPhotos === null
+          && <NoMediasMessageS>Não há mais fotos disponíveis nesta categoria.</NoMediasMessageS>}
         </PhotosDivS>
         <PaginationContainerS>
           <PaginationButtonS type="button" disabled={currentPage === 1} onClick={handlePreviousPage}>Página anterior</PaginationButtonS>

@@ -20,8 +20,8 @@ function ReactNodeProvider({ children }) {
   const [currentCategory, setCurrentCategory] = useState(categoryIds[0]);
   const [mediaSelected, setMediaSelected] = useState(null);
 
-  const [categoryPhotos, setCategoryPhotos] = useState([]);
-  const [categoryVideos, setCategoryVideos] = useState([]);
+  // const [categoryPhotos, setCategoryPhotos] = useState([]);
+  // const [categoryVideos, setCategoryVideos] = useState([]);
 
   const [isSignatureActive, setIsSignatureActive] = useState(false);
   const [isUserLogged, setIsUserLogged] = useState(false);
@@ -134,6 +134,12 @@ function ReactNodeProvider({ children }) {
 
   /* Função que embaralha um array e retorna os primeiros count elementos */
   const getRandomElements = (arr, count) => {
+    console.log('getRandomElements', arr, count);
+    if (!Array.isArray(arr)) {
+      console.error('getRandomElements expects an array as the first argument.');
+      return [];
+    }
+
     const shuffled = arr.slice(0);
     for (let i = arr.length - 1; i > 0; i -= 1) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -159,39 +165,55 @@ function ReactNodeProvider({ children }) {
   //   addMediasTimeToLocalStorage(categoryId, 'videos', randomVideos);
   // };
 
-  const getMediaFromFirebase = async (mediaType, categoryId) => {
+  const getMediaFromFirebase = async (categoryId, mediaType) => {
     try {
       // Buscar os últimos documentos do localstorage
-      const lastMediaDoc = getLastMediaDocs(categoryId, mediaType);
+      const lastMediaDocResult = getLastMediaDocs(categoryId, mediaType);
+      console.log('lastMediaDocResult', lastMediaDocResult);
+
+      if (lastMediaDocResult && lastMediaDocResult.errorCode) {
+        toast.error(lastMediaDocResult.message);
+        return null;
+      }
 
       // Consultar os dados com base nos últimos documentos
-      const data = await firebaseGetCategory(mediaType, categoryId, lastMediaDoc);
+      let data = await firebaseGetCategory(mediaType, categoryId, lastMediaDocResult);
+      console.log('data', data);
+
+      // Se os dados retornados são menos do que 10, reinicie a busca
+      if (!data[mediaType] || data[mediaType].length < 10) {
+        storeLastMediaDocs(categoryId, mediaType, null); // Reset o último documento
+        data = await firebaseGetCategory(mediaType, categoryId, null);
+      }
 
       // Armazena o último documento para futuras consultas
-      if (data.mediaType.length) {
-        storeLastMediaDocs(categoryId, 'mediaType', data.mediaType[data.mediaType.length - 1]);
+      if (data && data[mediaType] && data[mediaType].length) {
+        const storeResult = storeLastMediaDocs(
+          categoryId,
+          mediaType,
+          data[mediaType][data[mediaType].length - 1],
+        );
+        if (storeResult && storeResult.errorCode) {
+          toast.error(storeResult.message);
+          return null;
+        }
       }
-      // if (data.videos.length) {
-      //   storeLastMediaDocs(categoryId, 'videos', data.videos[data.videos.length - 1]);
-      // }
 
       // Seleciona aleatoriamente se a assinatura não estiver ativa
-      const randomMedia = getRandomElements(data.mediaType, 5);
-      // const randomVideos = getRandomElements(data.videos, 5);
-      addMediasTimeToLocalStorage(categoryId, mediaType, randomMedia);
+      const randomMedia = getRandomElements(data[mediaType], 5);
+      console.log('randomMedia', randomMedia);
+      const result = addMediasTimeToLocalStorage(categoryId, mediaType, randomMedia);
+
+      if (result && result.errorCode) {
+        toast.error(result.message);
+      }
+
       return randomMedia;
     } catch (error) {
       console.error('Error fetching media from Firebase:', error);
+      toast.error('Erro ao buscar mídias no Firebase.');
       return null;
     }
-  };
-
-  /* Função que busca as fotos e vídeos da categoria categoryId no Firebase, em caso de o usuário
-  estar logado e ter a assinatura ativa */
-  const getMediaForSubscribedUsers = async (mediaType, page, categoryId) => {
-    const data = await firebaseGetCategory(mediaType, categoryId, page);
-    setCategoryPhotos(data.fotos);
-    setCategoryVideos(data.videos);
   };
 
   /* Função principal de busca de mídias, que faz as verificações iniciais e chama as funções
@@ -199,28 +221,35 @@ function ReactNodeProvider({ children }) {
   const getCategoryData = async (mediaType, page) => {
     try {
       if (isSignatureActive) {
-        const categoryMedia = await getMediaForSubscribedUsers(mediaType, page, currentCategory);
-        return categoryMedia;
+        return await firebaseGetCategory(currentCategory, mediaType, page, 10, isSignatureActive);
       }
-      const storedMedias = await getMediasTime(mediaType, currentCategory);
+
+      const storedMedias = await getMediasTime(currentCategory, mediaType);
       console.log('storedMedias', storedMedias);
+
+      if (storedMedias && storedMedias.errorCode) {
+        toast.error(storedMedias.message);
+        return null;
+      }
+
       const twoHours = 2 * 60 * 60 * 1000;
 
       if (storedMedias && (Date.now() - storedMedias.time) < twoHours) {
         return storedMedias.data;
       }
-      const categoryMedia = await getMediaFromFirebase(mediaType, currentCategory);
-      return categoryMedia;
+
+      return await getMediaFromFirebase(currentCategory, mediaType);
     } catch (error) {
       console.error('Error fetching category data:', error);
+      toast.error('Erro ao buscar dados da categoria.');
       return null;
     }
   };
 
   /* useEffect encarregado de buscar as mídias da categoria atual */
-  useEffect(() => {
-    getCategoryData(currentCategory);
-  }, [currentCategory, isUserLogged, isSignatureActive]);
+  // useEffect(() => {
+  //   getCategoryData(currentCategory);
+  // }, [currentCategory, isUserLogged, isSignatureActive]);
 
   const contextValue = useMemo(() => ({
     theme,
@@ -229,8 +258,6 @@ function ReactNodeProvider({ children }) {
     setUser,
     logout: handleLogout,
     getCategoryData,
-    categoryPhotos,
-    categoryVideos,
     categoryIds,
     mediaSelected,
     setMediaSelected,
@@ -244,7 +271,7 @@ function ReactNodeProvider({ children }) {
     setIsSignatureActive,
     isUserLogged,
     setIsUserLogged,
-  }), [theme, user, categoryPhotos, categoryVideos, categoryIds, mediaSelected,
+  }), [theme, user, categoryIds, mediaSelected,
     viewMode, currentMainUrl, currentCategory, isSignatureActive, isUserLogged]);
 
   ReactNodeProvider.propTypes = {

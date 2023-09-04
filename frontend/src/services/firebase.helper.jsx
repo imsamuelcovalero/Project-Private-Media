@@ -10,7 +10,8 @@ import {
   sendPasswordResetEmail,
 } from 'firebase/auth';
 import {
-  collection, doc, getDocs, getDoc, setDoc, updateDoc, query, where, orderBy, startAfter,
+  collection, doc, getDocs, getDoc, setDoc, updateDoc, query, where, orderBy,
+  startAfter, limit,
 } from 'firebase/firestore';
 import { auth, db } from './firebase.config';
 
@@ -19,17 +20,37 @@ import { auth, db } from './firebase.config';
 */
 
 /* Função auxiliar que busca as fotos e vídeos de uma categoria específica */
-const fetchMedia = async (mediaType, categoryId, page = null, limit = 10) => {
-  let mediaQuery = query(
-    collection(db, mediaType),
-    where('categoriaId', '==', categoryId),
-    orderBy('dataCriacao'),
-    limit(limit),
-  );
+const fetchMedia = async (
+  mediaType,
+  categoryId,
+  pageOrLastDoc = 1,
+  maxResults = 10,
+  isSubscribed = false,
+) => {
+  // Se o usuário tem uma assinatura
+  if (isSubscribed) {
+    console.log('pageOrLastDoc', pageOrLastDoc);
 
-  // Caso de paginação (usuário com assinatura)
-  if (page) {
-    const skipCount = (page - 1) * limit;
+    // Caso esteja na primeira página, busque apenas os maxResults iniciais
+    if (pageOrLastDoc === 1) {
+      const mediaQuery = query(
+        collection(db, mediaType),
+        where('categoriaId', '==', categoryId),
+        orderBy('dataCriacao'),
+        limit(maxResults),
+      );
+
+      const mediaSnapshot = await getDocs(mediaQuery);
+      console.log('mediaSnapshot1', mediaSnapshot);
+      const result = mediaSnapshot.docs
+        .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+      console.log('result', result);
+      return result;
+    }
+
+    // Caso contrário, pule os documentos anteriores e busque os próximos maxResults
+    const skipCount = (pageOrLastDoc - 1) * maxResults;
+
     const skipSnapshot = await getDocs(
       query(
         collection(db, mediaType),
@@ -39,21 +60,35 @@ const fetchMedia = async (mediaType, categoryId, page = null, limit = 10) => {
       ),
     );
 
-    // Se temos mais documentos para pular do que existem, então não há mais páginas
-    if (skipCount >= skipSnapshot.size) {
-      return [];
+    // Se o número de documentos que temos é menor do que o que queremos pular, não há mais páginas
+    if (skipSnapshot.size < skipCount) {
+      return null;
     }
 
+    // O último documento na "skipSnapshot" é onde começaremos nossa próxima busca
     const lastDocument = skipSnapshot.docs[skipSnapshot.docs.length - 1];
-    mediaQuery = query(
+
+    const mediaQuery = query(
       collection(db, mediaType),
       where('categoriaId', '==', categoryId),
       orderBy('dataCriacao'),
       startAfter(lastDocument),
-      limit(limit),
+      limit(maxResults),
     );
+
+    const mediaSnapshot = await getDocs(mediaQuery);
+    console.log('mediaSnapshot2', mediaSnapshot);
+    return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
   }
-  // Caso do último documento (usuário sem assinatura) permanece igual.
+
+  // Usuários sem assinatura
+  const mediaQuery = query(
+    collection(db, mediaType),
+    where('categoriaId', '==', categoryId),
+    orderBy('dataCriacao'),
+    ...(pageOrLastDoc ? [startAfter(pageOrLastDoc)] : []),
+    limit(maxResults),
+  );
 
   const mediaSnapshot = await getDocs(mediaQuery);
   return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
@@ -62,36 +97,44 @@ const fetchMedia = async (mediaType, categoryId, page = null, limit = 10) => {
 /* Função que busca as fotos e vídeos de uma categoria específica */
 const firebaseGetCategory = async (
   categoryId,
-  pageOrLastDocPhoto = null,
-  pageOrLastDocVideo = null,
-  limit = 10,
+  mediaType,
+  pageOrLastDoc = null,
+  maxResults = 10,
+  isSubscribed = false,
 ) => {
   try {
-    const categoriesCollection = collection(db, 'categorias');
-    const snapshot = await getDocs(categoriesCollection);
-    let categoryData = null;
+    // Criando uma query para buscar diretamente pela categoria desejada
+    // const categoryQuery = query(
+    //   collection(db, 'categorias'),
+    //   where('categoriaId', '==', categoryId),
+    // );
+    // // console.log('categoryQuery', categoryQuery);
+    // const categorySnapshot = await getDocs(categoryQuery);
+    // // console.log('categorySnapshot', categorySnapshot);
+    // let categoryData = null;
 
-    snapshot.forEach((document) => {
-      const data = document.data();
-      if (data.categoriaId === categoryId) {
-        categoryData = data;
-      }
-    });
+    // if (!categorySnapshot.empty) {
+    //   categoryData = categorySnapshot.docs[0].data();
+    //   // console.log('categoryData', categoryData);
+    // } else {
+    //   return null;
+    // }
 
-    if (!categoryData) {
-      return null;
-    }
+    const mediaData = await fetchMedia(
+      mediaType,
+      categoryId,
+      pageOrLastDoc,
+      maxResults,
+      isSubscribed,
+    );
+    console.log('mediaData', mediaData);
 
-    const fotosData = await fetchMedia('fotos', categoryId, pageOrLastDocPhoto, limit);
-    const videosData = await fetchMedia('videos', categoryId, pageOrLastDocVideo, limit);
+    // categoryData = {
+    //   ...categoryData,
+    //   [mediaType]: mediaData,
+    // };
 
-    categoryData = {
-      ...categoryData,
-      fotos: fotosData,
-      videos: videosData,
-    };
-
-    return categoryData;
+    return mediaData;
   } catch (error) {
     console.error(error);
     throw error;
