@@ -142,6 +142,12 @@ Ao executar o projeto, se você encontrar um erro que indica a necessidade de cr
 
 **Nota:** É provável que você precise criar, ao menos, índices compostos para as entidades de fotos, vídeos e categorias. Siga os passos acima para estas e outras entidades, conforme necessário.
 
+<div align="center">
+
+![Firebase_index](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/fd914fd3-1efa-4452-920f-34424591f93a)
+
+</div>
+
 > ⚠️ **Atenção**: Ao configurar o projeto pela primeira vez ou após realizar mudanças nas consultas do Firestore, é uma boa prática testar todas as funcionalidades e certificar-se de que todas as consultas estão executando corretamente. Isso ajudará a identificar rapidamente a necessidade de índices compostos adicionais.
 
 Com essas configurações, sua aplicação está pronta para se conectar e interagir com o `Firebase`.
