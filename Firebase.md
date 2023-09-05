@@ -140,6 +140,8 @@ Ao executar o projeto, se você encontrar um erro que indica a necessidade de cr
 2. Os campos da consulta que causou o erro já estarão pré-selecionados. Confirme e prossiga com a criação do índice composto.
 3. Aguarde até que o índice seja construído. Isso pode levar alguns minutos.
 
+**Nota:** É provável que você precise criar, ao menos, índices compostos para as entidades de fotos, vídeos e categorias. Siga os passos acima para estas e outras entidades, conforme necessário.
+
 > ⚠️ **Atenção**: Ao configurar o projeto pela primeira vez ou após realizar mudanças nas consultas do Firestore, é uma boa prática testar todas as funcionalidades e certificar-se de que todas as consultas estão executando corretamente. Isso ajudará a identificar rapidamente a necessidade de índices compostos adicionais.
 
 Com essas configurações, sua aplicação está pronta para se conectar e interagir com o `Firebase`.

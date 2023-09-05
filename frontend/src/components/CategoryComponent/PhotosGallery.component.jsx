@@ -1,4 +1,4 @@
-/* File: src/components/CategoryComponent/VideosGallery.component.jsx */
+/* File: src/components/CategoryComponent/PhotosGallery.component.jsx */
 import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from '../../context/ReactNodeContext';
@@ -15,14 +15,16 @@ function PhotosGalleryComponent() {
   /* Paginação */
   const [currentPage, setCurrentPage] = useState(1);
   const [categoryPhotos, setCategoryPhotos] = useState([]);
-  const photosPerPage = 10; // ajuste conforme necessário
+  const [hasNextPage, setHasNextPage] = useState(false);
 
   // Carregar as fotos sempre que a página atual mudar
   useEffect(() => {
     const fetchData = async () => {
       const photosData = await getCategoryData('fotos', currentPage);
-      // console.log('photosData', photosData);
-      setCategoryPhotos(photosData);
+      if (photosData.data) {
+        setCategoryPhotos(photosData.data);
+        setHasNextPage(photosData.hasNextPage);
+      } else setCategoryPhotos(photosData);
     };
 
     fetchData();
@@ -45,17 +47,11 @@ function PhotosGalleryComponent() {
     setCurrentPage(currentPage - 1);
   };
 
-  /* Obter as fotos para a página atual */
-  const indexOfLastPhoto = currentPage * photosPerPage;
-  const indexOfFirstPhoto = indexOfLastPhoto - photosPerPage;
-  const currentPhotos = categoryPhotos.slice(indexOfFirstPhoto, indexOfLastPhoto);
-  const hasNextPage = indexOfLastPhoto < categoryPhotos.length;
-
   return (
     <div role="main" aria-label="Photo viewer">
       <GalleryContainerS>
         <PhotosDivS>
-          {currentPhotos.map((photo) => (
+          {categoryPhotos.map((photo) => (
             <PhotoCardS key={photo.id} role="button" tabIndex="0" onClick={() => handlePhotoClick(photo)} onKeyDown={(e) => { if (e.key === 'Enter') handlePhotoClick(photo); }}>
               <img id={`photo-${photo.id}`} src={photo.url} alt="Thumbnail" />
             </PhotoCardS>

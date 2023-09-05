@@ -149,7 +149,7 @@ function SubscriptionComponent() {
         await api.cancelPayment(paymentId);
         setPaymentId(null);
         removePaymentId();
-        toast.success('Pagamento cancelado com sucesso.');
+        toast.info('Pagamento cancelado com sucesso.');
       } catch (error) {
         console.error('Error:', error);
         setIsLoading(false);

@@ -1,20 +1,34 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* File: src/components/CategoryComponent/VideosGallery.component.jsx */
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactNodeContext from '../../context/ReactNodeContext';
 import {
-  VideosDivS, VideoCardS, PaginationButtonS, PaginationContainerS, GalleryContainerS,
+  VideosDivS, VideoCardS, PaginationButtonS, PaginationContainerS,
+  GalleryContainerS, NoMediasMessageS,
 } from './Style';
 
 function VideosGalleryComponent() {
-  const { categoryVideos, setMediaSelected, currentMainUrl } = useContext(ReactNodeContext);
+  const { setMediaSelected, currentMainUrl, getCategoryData } = useContext(ReactNodeContext);
 
   const navigate = useNavigate();
 
   /* Paginação */
   const [currentPage, setCurrentPage] = useState(1);
-  const videosPerPage = 10; // ajuste conforme necessário
+  const [categoryVideos, setCategoryVideos] = useState([]);
+  const [hasNextPage, setHasNextPage] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const videosData = await getCategoryData('videos', currentPage);
+      if (videosData.data) {
+        setCategoryVideos(videosData.data);
+        setHasNextPage(videosData.hasNextPage);
+      } else setCategoryVideos(videosData);
+    };
+
+    fetchData();
+  }, [currentPage, currentMainUrl]);
 
   const handleVideoClick = (video) => {
     document.getElementById(`video-${video.id}`).pause();
@@ -34,21 +48,17 @@ function VideosGalleryComponent() {
     setCurrentPage(currentPage - 1);
   };
 
-  /* Obter os vídeos para a página atual */
-  const indexOfLastVideo = currentPage * videosPerPage;
-  const indexOfFirstVideo = indexOfLastVideo - videosPerPage;
-  const currentVideos = categoryVideos.slice(indexOfFirstVideo, indexOfLastVideo);
-  const hasNextPage = indexOfLastVideo < categoryVideos.length;
-
   return (
     <div role="main" aria-label="Video viewer">
       <GalleryContainerS>
         <VideosDivS>
-          {currentVideos.map((video) => (
+          {categoryVideos.map((video) => (
             <VideoCardS key={video.id} role="button" tabIndex="0" onClick={() => handleVideoClick(video)} onKeyDown={(e) => { if (e.key === 'Enter') handleVideoClick(video); }}>
               <video id={`video-${video.id}`} src={video.url} controls preload="none" />
             </VideoCardS>
           ))}
+          {categoryVideos === null
+          && <NoMediasMessageS>Não há mais vídeos disponíveis nesta categoria.</NoMediasMessageS>}
         </VideosDivS>
         <PaginationContainerS>
           <PaginationButtonS type="button" disabled={currentPage === 1} onClick={handlePreviousPage}>Página anterior</PaginationButtonS>

@@ -3,7 +3,7 @@
 // Função auxiliar para obter o tamanho do uso atual do localStorage
 const getLocalStorageUsage = () => {
   const allData = JSON.stringify(localStorage);
-  // Convertendo tamanho de bytes para MBs e retornando
+  // Converte tamanho de bytes para MBs e retora
   return allData ? (allData.length * 16) / (8 * 1024 * 1024) : 0;
 };
 
@@ -57,7 +57,6 @@ export const addMediasTimeToLocalStorage = (categoryId, mediaType, medias) => {
 /* função que retorna as mídias e o tempo armazenados no localStorage */
 export const getMediasTime = (categoryId, mediaType) => {
   const storedMediaDataRaw = localStorage.getItem('reactNodeMediaData');
-  console.log('storedMediaDataRaw', storedMediaDataRaw);
 
   if (!storedMediaDataRaw) return null;
 
@@ -99,7 +98,6 @@ export const storeLastMediaDocs = (categoryId, mediaType, lastDoc) => {
 export const getLastMediaDocs = (categoryId, mediaType) => {
   try {
     const storedLastDocsRaw = localStorage.getItem('reactNodeLastMediaDocs');
-    console.log('storedLastDocsRaw', storedLastDocsRaw);
 
     if (!storedLastDocsRaw) return null;
 

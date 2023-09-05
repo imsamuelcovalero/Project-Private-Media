@@ -20,7 +20,9 @@ function ReactNodeProvider({ children }) {
   const [currentCategory, setCurrentCategory] = useState(categoryIds[0]);
   const [mediaSelected, setMediaSelected] = useState(null);
 
-  const [isSignatureActive, setIsSignatureActive] = useState(false);
+  const userInfo = getUserInfo();
+  const [isSignatureActive, setIsSignatureActive] = useState(userInfo
+    && userInfo.assinaturaAtiva ? userInfo.assinaturaAtiva.status : false);
   const [isUserLogged, setIsUserLogged] = useState(false);
 
   const [viewMode, setViewMode] = useState(null);
@@ -104,10 +106,8 @@ function ReactNodeProvider({ children }) {
     } else {
       setIsUserLogged(true);
       if (user.assinaturaAtiva.status) {
-        console.log('assinatura ativa');
         setIsSignatureActive(true);
       } else {
-        console.log('assinatura inativa');
         setIsSignatureActive(false);
       }
     }
@@ -133,7 +133,6 @@ function ReactNodeProvider({ children }) {
 
   /* Função que embaralha um array e retorna os primeiros count elementos */
   const getRandomElements = (arr, count) => {
-    console.log('getRandomElements', arr, count);
     if (!Array.isArray(arr)) {
       console.error('getRandomElements espera um array como primeiro argumento');
       return [];
@@ -147,41 +146,22 @@ function ReactNodeProvider({ children }) {
     return shuffled.slice(0, count);
   };
 
-  /* Função que busca as fotos e vídeos da categoria categoryId no Firebase, em caso de ainda
-  não terem sido buscadas ou de já terem passado 2 horas desde a última busca */
-  // const getMediaFromFirebase = async (categoryId) => {
-  //   const data = await firebaseGetCategory(categoryId);
-  //   console.log('data', data);
-  //   const randomPhotos = getRandomElements(data.fotos, 5);
-  //   console.log('randomPhotos', randomPhotos);
-  //   const randomVideos = getRandomElements(data.videos, 5);
-  //   console.log('randomVideos', randomVideos);
-
-  //   setCategoryPhotos(randomPhotos);
-  //   setCategoryVideos(randomVideos);
-
-  //   addMediasTimeToLocalStorage(categoryId, 'fotos', randomPhotos);
-  //   addMediasTimeToLocalStorage(categoryId, 'videos', randomVideos);
-  // };
-
   /* Função que busca as fotos ou vídeos de uma categoria específica no Firebase,
   para usuários sem assinatura ativa */
   const getMediaFromFirebase = async (categoryId, mediaType) => {
     try {
       // Buscar os últimos documentos do localstorage
       const lastMediaDocResult = getLastMediaDocs(categoryId, mediaType);
-      console.log('lastMediaDocResult', lastMediaDocResult);
 
       if (lastMediaDocResult && lastMediaDocResult.errorCode) {
         toast.error(lastMediaDocResult.message);
         return null;
       }
 
-      // Consultar os dados com base nos últimos documentos
+      // Consulta os dados com base nos últimos documentos
       let data = await firebaseGetCategory(categoryId, mediaType, lastMediaDocResult);
-      console.log('data', data);
 
-      // Se os dados retornados são menos do que 10, reinicie a busca
+      // Se os dados retornados são menos do que 10, reinicia a busca
       if (!data || data.length < 10) {
         console.log('reiniciando a busca');
         storeLastMediaDocs(categoryId, mediaType, null);
@@ -199,7 +179,6 @@ function ReactNodeProvider({ children }) {
 
       // Seleciona aleatoriamente se a assinatura não estiver ativa
       const randomMedia = getRandomElements(data, 5);
-      console.log('randomMedia', randomMedia);
       const result = addMediasTimeToLocalStorage(categoryId, mediaType, randomMedia);
 
       if (result && result.errorCode) {
@@ -217,7 +196,6 @@ function ReactNodeProvider({ children }) {
   /* Função principal de busca de mídias, que faz as verificações iniciais e chama as funções
   específicas para cada caso */
   const getCategoryData = async (mediaType, page) => {
-    console.log('isSignatureActive', isSignatureActive);
     try {
       if (isSignatureActive) {
         const result = await firebaseGetCategory(
@@ -227,11 +205,10 @@ function ReactNodeProvider({ children }) {
           10,
           isSignatureActive,
         );
-        console.log('result', result);
+
         return result;
       }
       const storedMedias = await getMediasTime(currentCategory, mediaType);
-      console.log('storedMedias', storedMedias);
 
       if (storedMedias && storedMedias.errorCode) {
         toast.error(storedMedias.message);
@@ -245,20 +222,13 @@ function ReactNodeProvider({ children }) {
         return storedMedias.data;
       }
 
-      const result2 = await getMediaFromFirebase(currentCategory, mediaType);
-      console.log('result2', result2);
-      return result2;
+      return await getMediaFromFirebase(currentCategory, mediaType);
     } catch (error) {
       console.error('Error fetching category data:', error);
       toast.error('Erro ao buscar dados da categoria.');
       return null;
     }
   };
-
-  /* useEffect encarregado de buscar as mídias da categoria atual */
-  // useEffect(() => {
-  //   getCategoryData(currentCategory);
-  // }, [currentCategory, isUserLogged, isSignatureActive]);
 
   const contextValue = useMemo(() => ({
     theme,

@@ -27,44 +27,59 @@ const fetchMediaForSubscribedUsers = async (
   maxResults = 10,
 ) => {
   const newPageNumber = !pageNumber ? 1 : pageNumber;
-  console.log('newPageNumber', newPageNumber);
-  if (newPageNumber === 1) {
-    const mediaQuery = query(
+  let lastDocument = null;
+
+  if (newPageNumber !== 1) {
+    const skipCount = (newPageNumber - 1) * maxResults;
+
+    const skipSnapshot = await getDocs(
+      query(
+        collection(db, mediaType),
+        where('categoriaId', '==', categoryId),
+        orderBy('dataCriacao'),
+        limit(skipCount),
+      ),
+    );
+
+    // Se não tivermos documentos suficientes para pular, significa que estamos em uma página vazia
+    if (skipSnapshot.size < skipCount) return { data: [], hasNextPage: false };
+
+    lastDocument = skipSnapshot.docs[skipSnapshot.docs.length - 1];
+  }
+
+  const mediaQuery = lastDocument
+    ? query(
+      collection(db, mediaType),
+      where('categoriaId', '==', categoryId),
+      orderBy('dataCriacao'),
+      startAfter(lastDocument),
+      limit(maxResults),
+    )
+    : query(
       collection(db, mediaType),
       where('categoriaId', '==', categoryId),
       orderBy('dataCriacao'),
       limit(maxResults),
     );
-    const mediaSnapshot = await getDocs(mediaQuery);
-    const result = mediaSnapshot.docs
-      .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
-    console.log('result3', result);
-    return result;
-  }
 
-  const skipCount = (newPageNumber - 1) * maxResults;
-  const skipSnapshot = await getDocs(
-    query(
-      collection(db, mediaType),
-      where('categoriaId', '==', categoryId),
-      orderBy('dataCriacao'),
-      limit(skipCount),
-    ),
-  );
+  const mediaSnapshot = await getDocs(mediaQuery);
+  const resultData = mediaSnapshot.docs
+    .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
 
-  if (skipSnapshot.size < skipCount) return null;
-
-  const lastDocument = skipSnapshot.docs[skipSnapshot.docs.length - 1];
-  const mediaQuery = query(
+  // Consulta para verificar se há uma próxima página
+  const nextPageQuery = query(
     collection(db, mediaType),
     where('categoriaId', '==', categoryId),
     orderBy('dataCriacao'),
-    startAfter(lastDocument),
-    limit(maxResults),
+    startAfter(mediaSnapshot.docs[mediaSnapshot.docs.length - 1] || []),
+    limit(1),
   );
-  const mediaSnapshot = await getDocs(mediaQuery);
-  console.log('mediaSnapshot1', mediaSnapshot);
-  return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+
+  const nextPageSnapshot = await getDocs(nextPageQuery);
+  const hasNextPage = nextPageSnapshot.size > 0;
+
+  return { data: resultData, hasNextPage };
+  // retornamos os dados e a informação de se há próxima página
 };
 
 /* Função auxiliar que busca as fotos e vídeos para usuários sem assinatura */
@@ -84,7 +99,6 @@ const fetchMediaForNonSubscribedUsers = async (
       startAfter(lastDoc),
       limit(maxResults),
     );
-    console.log('mediaQuery1', mediaQuery);
   } else {
     // Se não temos um lastDoc, é a primeira consulta e fazemos
     // igual aos usuários assinantes na primeira página.
@@ -94,13 +108,13 @@ const fetchMediaForNonSubscribedUsers = async (
       orderBy('dataCriacao'),
       limit(maxResults),
     );
-    console.log('mediaQuery2', mediaQuery);
   }
 
   const mediaSnapshot = await getDocs(mediaQuery);
-  const result = mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
-  console.log('result', result);
-  return result;
+  const resultData = mediaSnapshot.docs
+    .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+
+  return { data: resultData };
 };
 
 /* Função auxiliar que busca as fotos e vídeos de uma categoria específica */
@@ -112,29 +126,15 @@ const fetchMedia = async (
   isSubscribed = false,
 ) => {
   if (isSubscribed) {
-    // const mediaQuery = query(
-    //   collection(db, mediaType),
-    //   where('categoriaId', '==', categoryId),
-    //   orderBy('dataCriacao'),
-    //   limit(maxResults),
-    // );
-    // const mediaSnapshot = await getDocs(mediaQuery);
-    // // console.log('mediaSnapshotDirect', mediaSnapshot);
-    // const result = mediaSnapshot.docs
-    //   .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
-    // console.log('result', result);
-    // return result;
-    return fetchMediaForSubscribedUsers(mediaType, categoryId, pageOrLastDoc, maxResults);
+    const result = await fetchMediaForSubscribedUsers(
+      mediaType,
+      categoryId,
+      pageOrLastDoc,
+      maxResults,
+    );
+
+    return result;
   }
-  // const mediaQuery = query(
-  //   collection(db, mediaType),
-  //   where('categoriaId', '==', categoryId),
-  //   orderBy('dataCriacao'),
-  //   limit(maxResults),
-  // );
-  // const mediaSnapshot = await getDocs(mediaQuery);
-  // console.log('mediaSnapshotDirect', mediaSnapshot);
-  // return mediaSnapshot;
   return fetchMediaForNonSubscribedUsers(mediaType, categoryId, pageOrLastDoc, maxResults);
 };
 
@@ -146,7 +146,6 @@ const firebaseGetCategory = async (
   maxResults = 10,
   isSubscribed = false,
 ) => {
-  console.log('categoryId, mediaType, pageOrLastDoc, maxResults, isSubscribed', categoryId, mediaType, pageOrLastDoc, maxResults, isSubscribed);
   try {
     const mediaData = await fetchMedia(
       mediaType,
@@ -155,7 +154,6 @@ const firebaseGetCategory = async (
       maxResults,
       isSubscribed,
     );
-    // console.log('mediaData', mediaData);
 
     return mediaData;
   } catch (error) {
