@@ -128,15 +128,15 @@ Os arquivos `connection.js` e `loadFirebaseConfig.js` que já estão presentes e
 
 #### Configurando Índices Compostos no Firestore
 
-Ao realizar consultas mais complexas no Firestore, como aquelas que usam múltiplos campos para filtrar e ordenar, é possível que seja necessário configurar índices compostos para garantir que as consultas sejam executadas corretamente e com eficiência.
+O `Firestore`, por padrão, cria índices para cada campo individual em seus documentos. Contudo, ao realizar consultas mais complexas que combinam múltiplos campos para filtrar e ordenar, é preciso configurar índices compostos. Estes otimizam e tornam a consulta eficiente, garantindo uma execução rápida e previsível e mantendo o desempenho à medida que o tamanho do conjunto de dados cresce.
 
 ##### Identificando a Necessidade de Índices Compostos
 
-Ao executar o projeto, se você encontrar um erro que indica a necessidade de criar um índice composto, a mensagem de erro fornecerá um link direto para a criação deste índice no Firebase Console.
+Ao executar o projeto, se você encontrar um erro que indica a necessidade de criar um índice composto, a mensagem de erro fornecerá um *link* direto para a criação deste índice no `Firebase Console`.
 
 ##### Criação do Índice Composto
 
-1. Clique no link fornecido na mensagem de erro. Ele irá redirecionar você para o Firebase Console, especificamente na página de criação de índices compostos.
+1. Clique no *link* fornecido na mensagem de erro. Ele irá redirecionar você para o `Firebase Console`, especificamente na página de criação de índices compostos.
 2. Os campos da consulta que causou o erro já estarão pré-selecionados. Confirme e prossiga com a criação do índice composto.
 3. Aguarde até que o índice seja construído. Isso pode levar alguns minutos.
 

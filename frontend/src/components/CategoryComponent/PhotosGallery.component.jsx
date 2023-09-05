@@ -21,7 +21,7 @@ function PhotosGalleryComponent() {
   useEffect(() => {
     const fetchData = async () => {
       const photosData = await getCategoryData('fotos', currentPage);
-      console.log('photosData', photosData);
+      // console.log('photosData', photosData);
       setCategoryPhotos(photosData);
     };
 

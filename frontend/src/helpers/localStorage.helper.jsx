@@ -44,7 +44,6 @@ export const addMediasTimeToLocalStorage = (categoryId, mediaType, medias) => {
       data: medias,
       time: Date.now(),
     };
-    console.log('storedMediaData', storedMediaData);
 
     localStorage.setItem('reactNodeMediaData', JSON.stringify(storedMediaData));
 
@@ -100,6 +99,7 @@ export const storeLastMediaDocs = (categoryId, mediaType, lastDoc) => {
 export const getLastMediaDocs = (categoryId, mediaType) => {
   try {
     const storedLastDocsRaw = localStorage.getItem('reactNodeLastMediaDocs');
+    console.log('storedLastDocsRaw', storedLastDocsRaw);
 
     if (!storedLastDocsRaw) return null;
 

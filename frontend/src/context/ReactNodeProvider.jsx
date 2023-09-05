@@ -20,9 +20,6 @@ function ReactNodeProvider({ children }) {
   const [currentCategory, setCurrentCategory] = useState(categoryIds[0]);
   const [mediaSelected, setMediaSelected] = useState(null);
 
-  // const [categoryPhotos, setCategoryPhotos] = useState([]);
-  // const [categoryVideos, setCategoryVideos] = useState([]);
-
   const [isSignatureActive, setIsSignatureActive] = useState(false);
   const [isUserLogged, setIsUserLogged] = useState(false);
 
@@ -107,8 +104,10 @@ function ReactNodeProvider({ children }) {
     } else {
       setIsUserLogged(true);
       if (user.assinaturaAtiva.status) {
+        console.log('assinatura ativa');
         setIsSignatureActive(true);
       } else {
+        console.log('assinatura inativa');
         setIsSignatureActive(false);
       }
     }
@@ -136,7 +135,7 @@ function ReactNodeProvider({ children }) {
   const getRandomElements = (arr, count) => {
     console.log('getRandomElements', arr, count);
     if (!Array.isArray(arr)) {
-      console.error('getRandomElements expects an array as the first argument.');
+      console.error('getRandomElements espera um array como primeiro argumento');
       return [];
     }
 
@@ -165,6 +164,8 @@ function ReactNodeProvider({ children }) {
   //   addMediasTimeToLocalStorage(categoryId, 'videos', randomVideos);
   // };
 
+  /* Função que busca as fotos ou vídeos de uma categoria específica no Firebase,
+  para usuários sem assinatura ativa */
   const getMediaFromFirebase = async (categoryId, mediaType) => {
     try {
       // Buscar os últimos documentos do localstorage
@@ -177,22 +178,19 @@ function ReactNodeProvider({ children }) {
       }
 
       // Consultar os dados com base nos últimos documentos
-      let data = await firebaseGetCategory(mediaType, categoryId, lastMediaDocResult);
+      let data = await firebaseGetCategory(categoryId, mediaType, lastMediaDocResult);
       console.log('data', data);
 
       // Se os dados retornados são menos do que 10, reinicie a busca
-      if (!data[mediaType] || data[mediaType].length < 10) {
-        storeLastMediaDocs(categoryId, mediaType, null); // Reset o último documento
-        data = await firebaseGetCategory(mediaType, categoryId, null);
+      if (!data || data.length < 10) {
+        console.log('reiniciando a busca');
+        storeLastMediaDocs(categoryId, mediaType, null);
+        data = await firebaseGetCategory(categoryId, mediaType, null);
       }
 
       // Armazena o último documento para futuras consultas
-      if (data && data[mediaType] && data[mediaType].length) {
-        const storeResult = storeLastMediaDocs(
-          categoryId,
-          mediaType,
-          data[mediaType][data[mediaType].length - 1],
-        );
+      if (data && data.length) {
+        const storeResult = storeLastMediaDocs(categoryId, mediaType, data[data.length - 1]);
         if (storeResult && storeResult.errorCode) {
           toast.error(storeResult.message);
           return null;
@@ -200,7 +198,7 @@ function ReactNodeProvider({ children }) {
       }
 
       // Seleciona aleatoriamente se a assinatura não estiver ativa
-      const randomMedia = getRandomElements(data[mediaType], 5);
+      const randomMedia = getRandomElements(data, 5);
       console.log('randomMedia', randomMedia);
       const result = addMediasTimeToLocalStorage(categoryId, mediaType, randomMedia);
 
@@ -219,11 +217,19 @@ function ReactNodeProvider({ children }) {
   /* Função principal de busca de mídias, que faz as verificações iniciais e chama as funções
   específicas para cada caso */
   const getCategoryData = async (mediaType, page) => {
+    console.log('isSignatureActive', isSignatureActive);
     try {
       if (isSignatureActive) {
-        return await firebaseGetCategory(currentCategory, mediaType, page, 10, isSignatureActive);
+        const result = await firebaseGetCategory(
+          currentCategory,
+          mediaType,
+          page,
+          10,
+          isSignatureActive,
+        );
+        console.log('result', result);
+        return result;
       }
-
       const storedMedias = await getMediasTime(currentCategory, mediaType);
       console.log('storedMedias', storedMedias);
 
@@ -234,11 +240,14 @@ function ReactNodeProvider({ children }) {
 
       const twoHours = 2 * 60 * 60 * 1000;
 
-      if (storedMedias && (Date.now() - storedMedias.time) < twoHours) {
+      if (storedMedias && storedMedias.data.length > 0
+        && (Date.now() - storedMedias.time) < twoHours) {
         return storedMedias.data;
       }
 
-      return await getMediaFromFirebase(currentCategory, mediaType);
+      const result2 = await getMediaFromFirebase(currentCategory, mediaType);
+      console.log('result2', result2);
+      return result2;
     } catch (error) {
       console.error('Error fetching category data:', error);
       toast.error('Erro ao buscar dados da categoria.');

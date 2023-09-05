@@ -19,79 +19,123 @@ import { auth, db } from './firebase.config';
 * Trecho para buscar as fotos e vídeos de uma categoria específica
 */
 
-/* Função auxiliar que busca as fotos e vídeos de uma categoria específica */
-const fetchMedia = async (
+/* Função auxiliar que busca as fotos e vídeos para usuários com assinatura */
+const fetchMediaForSubscribedUsers = async (
   mediaType,
   categoryId,
-  pageOrLastDoc = 1,
+  pageNumber = 1,
   maxResults = 10,
-  isSubscribed = false,
 ) => {
-  // Se o usuário tem uma assinatura
-  if (isSubscribed) {
-    console.log('pageOrLastDoc', pageOrLastDoc);
-
-    // Caso esteja na primeira página, busque apenas os maxResults iniciais
-    if (pageOrLastDoc === 1) {
-      const mediaQuery = query(
-        collection(db, mediaType),
-        where('categoriaId', '==', categoryId),
-        orderBy('dataCriacao'),
-        limit(maxResults),
-      );
-
-      const mediaSnapshot = await getDocs(mediaQuery);
-      console.log('mediaSnapshot1', mediaSnapshot);
-      const result = mediaSnapshot.docs
-        .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
-      console.log('result', result);
-      return result;
-    }
-
-    // Caso contrário, pule os documentos anteriores e busque os próximos maxResults
-    const skipCount = (pageOrLastDoc - 1) * maxResults;
-
-    const skipSnapshot = await getDocs(
-      query(
-        collection(db, mediaType),
-        where('categoriaId', '==', categoryId),
-        orderBy('dataCriacao'),
-        limit(skipCount),
-      ),
-    );
-
-    // Se o número de documentos que temos é menor do que o que queremos pular, não há mais páginas
-    if (skipSnapshot.size < skipCount) {
-      return null;
-    }
-
-    // O último documento na "skipSnapshot" é onde começaremos nossa próxima busca
-    const lastDocument = skipSnapshot.docs[skipSnapshot.docs.length - 1];
-
+  const newPageNumber = !pageNumber ? 1 : pageNumber;
+  console.log('newPageNumber', newPageNumber);
+  if (newPageNumber === 1) {
     const mediaQuery = query(
       collection(db, mediaType),
       where('categoriaId', '==', categoryId),
       orderBy('dataCriacao'),
-      startAfter(lastDocument),
       limit(maxResults),
     );
-
     const mediaSnapshot = await getDocs(mediaQuery);
-    console.log('mediaSnapshot2', mediaSnapshot);
-    return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+    const result = mediaSnapshot.docs
+      .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+    console.log('result3', result);
+    return result;
   }
 
-  // Usuários sem assinatura
+  const skipCount = (newPageNumber - 1) * maxResults;
+  const skipSnapshot = await getDocs(
+    query(
+      collection(db, mediaType),
+      where('categoriaId', '==', categoryId),
+      orderBy('dataCriacao'),
+      limit(skipCount),
+    ),
+  );
+
+  if (skipSnapshot.size < skipCount) return null;
+
+  const lastDocument = skipSnapshot.docs[skipSnapshot.docs.length - 1];
   const mediaQuery = query(
     collection(db, mediaType),
     where('categoriaId', '==', categoryId),
     orderBy('dataCriacao'),
-    ...(pageOrLastDoc ? [startAfter(pageOrLastDoc)] : []),
+    startAfter(lastDocument),
     limit(maxResults),
   );
+  const mediaSnapshot = await getDocs(mediaQuery);
+  console.log('mediaSnapshot1', mediaSnapshot);
+  return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+};
+
+/* Função auxiliar que busca as fotos e vídeos para usuários sem assinatura */
+const fetchMediaForNonSubscribedUsers = async (
+  mediaType,
+  categoryId,
+  lastDoc,
+  maxResults = 10,
+) => {
+  let mediaQuery;
+  if (lastDoc) {
+    // Se temos um lastDoc, usamos ele como ponto de partida para a próxima consulta.
+    mediaQuery = query(
+      collection(db, mediaType),
+      where('categoriaId', '==', categoryId),
+      orderBy('dataCriacao'),
+      startAfter(lastDoc),
+      limit(maxResults),
+    );
+    console.log('mediaQuery1', mediaQuery);
+  } else {
+    // Se não temos um lastDoc, é a primeira consulta e fazemos
+    // igual aos usuários assinantes na primeira página.
+    mediaQuery = query(
+      collection(db, mediaType),
+      where('categoriaId', '==', categoryId),
+      orderBy('dataCriacao'),
+      limit(maxResults),
+    );
+    console.log('mediaQuery2', mediaQuery);
+  }
 
   const mediaSnapshot = await getDocs(mediaQuery);
-  return mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+  const result = mediaSnapshot.docs.map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+  console.log('result', result);
+  return result;
+};
+
+/* Função auxiliar que busca as fotos e vídeos de uma categoria específica */
+const fetchMedia = async (
+  mediaType,
+  categoryId,
+  pageOrLastDoc,
+  maxResults = 10,
+  isSubscribed = false,
+) => {
+  if (isSubscribed) {
+    // const mediaQuery = query(
+    //   collection(db, mediaType),
+    //   where('categoriaId', '==', categoryId),
+    //   orderBy('dataCriacao'),
+    //   limit(maxResults),
+    // );
+    // const mediaSnapshot = await getDocs(mediaQuery);
+    // // console.log('mediaSnapshotDirect', mediaSnapshot);
+    // const result = mediaSnapshot.docs
+    //   .map((mediaDoc) => ({ id: mediaDoc.id, ...mediaDoc.data() }));
+    // console.log('result', result);
+    // return result;
+    return fetchMediaForSubscribedUsers(mediaType, categoryId, pageOrLastDoc, maxResults);
+  }
+  // const mediaQuery = query(
+  //   collection(db, mediaType),
+  //   where('categoriaId', '==', categoryId),
+  //   orderBy('dataCriacao'),
+  //   limit(maxResults),
+  // );
+  // const mediaSnapshot = await getDocs(mediaQuery);
+  // console.log('mediaSnapshotDirect', mediaSnapshot);
+  // return mediaSnapshot;
+  return fetchMediaForNonSubscribedUsers(mediaType, categoryId, pageOrLastDoc, maxResults);
 };
 
 /* Função que busca as fotos e vídeos de uma categoria específica */
@@ -102,24 +146,8 @@ const firebaseGetCategory = async (
   maxResults = 10,
   isSubscribed = false,
 ) => {
+  console.log('categoryId, mediaType, pageOrLastDoc, maxResults, isSubscribed', categoryId, mediaType, pageOrLastDoc, maxResults, isSubscribed);
   try {
-    // Criando uma query para buscar diretamente pela categoria desejada
-    // const categoryQuery = query(
-    //   collection(db, 'categorias'),
-    //   where('categoriaId', '==', categoryId),
-    // );
-    // // console.log('categoryQuery', categoryQuery);
-    // const categorySnapshot = await getDocs(categoryQuery);
-    // // console.log('categorySnapshot', categorySnapshot);
-    // let categoryData = null;
-
-    // if (!categorySnapshot.empty) {
-    //   categoryData = categorySnapshot.docs[0].data();
-    //   // console.log('categoryData', categoryData);
-    // } else {
-    //   return null;
-    // }
-
     const mediaData = await fetchMedia(
       mediaType,
       categoryId,
@@ -127,12 +155,7 @@ const firebaseGetCategory = async (
       maxResults,
       isSubscribed,
     );
-    console.log('mediaData', mediaData);
-
-    // categoryData = {
-    //   ...categoryData,
-    //   [mediaType]: mediaData,
-    // };
+    // console.log('mediaData', mediaData);
 
     return mediaData;
   } catch (error) {
