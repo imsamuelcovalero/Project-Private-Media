@@ -27,6 +27,7 @@ export const ProfileS = styled.div`
   }
 
   #paymentButton {
+    border: none;
     margin-bottom: 20px;
   }
 
@@ -131,6 +132,7 @@ export const ErrorMsgS = styled.p`
 `;
 
 export const ButtonS = styled.button`
+  border: none;
   width: 230px;
   height: 30px;
   line-height: 2.5em;

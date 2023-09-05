@@ -159,13 +159,15 @@ function ReactNodeProvider({ children }) {
       }
 
       // Consulta os dados com base nos últimos documentos
-      let data = await firebaseGetCategory(categoryId, mediaType, lastMediaDocResult);
+      let response = await firebaseGetCategory(categoryId, mediaType, lastMediaDocResult);
+      let { data } = response;
 
       // Se os dados retornados são menos do que 10, reinicia a busca
       if (!data || data.length < 10) {
         console.log('reiniciando a busca');
         storeLastMediaDocs(categoryId, mediaType, null);
-        data = await firebaseGetCategory(categoryId, mediaType, null);
+        response = await firebaseGetCategory(categoryId, mediaType, null);
+        data = response.data;
       }
 
       // Armazena o último documento para futuras consultas

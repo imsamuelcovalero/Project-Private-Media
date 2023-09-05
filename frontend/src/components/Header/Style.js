@@ -47,6 +47,7 @@ export const HeaderS = styled.div`
 `;
 
 export const BtnMain = styled.button`
+  border: none;
   height: 100%;
   width: 120px;
   background: var(--buttonStandard);
@@ -82,6 +83,7 @@ export const BtnMain = styled.button`
 `;
 
 export const ButtonS = styled.button`
+  border: none;
   margin-left: auto;
   right: 16px;
   background: var(--buttonStandard);

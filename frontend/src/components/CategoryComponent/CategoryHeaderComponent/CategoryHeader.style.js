@@ -18,6 +18,7 @@ export const CategoryHeaderS = styled.div`
 `;
 
 export const BtnCategory = styled.button`
+  border: none;
   margin-right: 10px;
   height: 100%;
   width: 300px;

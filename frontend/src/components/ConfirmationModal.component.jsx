@@ -31,6 +31,7 @@ const ConfirmationModalS = styled.div`
   }
 
   .modal-content button {
+    border: none;
     margin: 10px;
     display: block;
     margin: 1rem auto 0;
