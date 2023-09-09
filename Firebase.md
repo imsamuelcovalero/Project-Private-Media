@@ -64,8 +64,8 @@ A estrutura, incluindo os tipos de dados esperados para cada campo, é apresenta
 - **url (string)**: `URL` direcionando para o local no `Firebase Storage` onde a imagem está armazenada.
 
 <div align="center">
-
-![fotos](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/c82b4524-997f-4368-ab5e-7aae44143c36)
+  
+![fotos](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/5bc8267b-79ea-427d-b175-6d9990950918)
 
 </div>
 
