@@ -65,7 +65,7 @@ A estrutura, incluindo os tipos de dados esperados para cada campo, é apresenta
 
 <div align="center">
 
-![fotos]](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/c82b4524-997f-4368-ab5e-7aae44143c36)
+![fotos](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/c82b4524-997f-4368-ab5e-7aae44143c36)
 
 </div>
 
