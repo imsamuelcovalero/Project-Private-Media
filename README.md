@@ -64,9 +64,9 @@ Para começar, clone o repositório em sua máquina local.
 5. Agora, acesse o diretório `frontend` e execute `npm install` para instalar as dependências.
 6. Execute `npm start` para iniciar a aplicação frontend.
 7. A aplicação `frontend` estará rodando em `http://localhost:3000`.
-8. Lembre-se de configurar o `Firebase`, registrar sua aplicação no `Mercado Pago` definir as variáveis de ambiente. Instruções detalhadas sobre esses passos estão disponíveis nos `READMEs` específicos de cada diretório.
+8. Lembre-se de configurar o `Firebase`, registrar sua aplicação no `Mercado Pago` e definir as variáveis de ambiente, de acordo com a instruções específicas contidas no `README` de cada diretório.
 
-**Informações detalhadas sobre o funcionamento da aplicação podem ser encontradas nos `README` do `frontend` e do `backend`.**
+**Informações detalhadas sobre o funcionamento da aplicação podem ser encontradas nos `README` do [frontend](frontend/README.md) e do [backend](backend/README.md)..**
 
 </details>
 
@@ -92,6 +92,6 @@ Além disso, temos `READMEs` específicos para o [Firebase](Firebase.md) e o [Me
 
 Este projeto utiliza a [Especificação de Commits Convencionais](https://www.conventionalcommits.org/en/v1.0.0/), com alguns tipos da [convenção Angular](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines). Além disso, foi utilizado o pacote [conventional-commit-cli](https://www.npmjs.com/package/conventional-commit-cli)
 
-Durante o desenvolvimento da aplicação, utilizamos o `Git` como ferramenta de controle de versão e o `GitHub` como plataforma de hospedagem. A `branch develop` foi o principal local de desenvolvimento, e suas mudanças foram periodicamente mescladas à `branch main`.
+Durante o desenvolvimento da aplicação, utilizei o `Git` como ferramenta de controle de versão e o `GitHub` como plataforma de hospedagem. A `branch develop` foi o principal local de desenvolvimento, e suas mudanças foram periodicamente mescladas à `branch main`.
 
 [⬆ Voltar ao topo](#sumário)
