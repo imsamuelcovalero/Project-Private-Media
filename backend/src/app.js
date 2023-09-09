@@ -12,10 +12,12 @@ const app = express();
 const frontendURL = process.env.FRONTEND_URL || 'http://localhost:3000';
 console.log(`FRONTEND_URL: ${frontendURL}`);
 
+/* envia credenciais para o frontend */
 app.use(cors({
   origin: frontendURL,
   credentials: true,
 }));
+
 app.use(express.json());
 
 app.use(cookieParser());

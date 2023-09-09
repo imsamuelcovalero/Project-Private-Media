@@ -2,6 +2,7 @@
 
 - [Sumário](#sumário)
 - [Contexto](#contexto)
+- [Gestão Segura de Tokens](#gestão-segura-de-tokens)
 - [Regras de Negócio](#regras-de-negócio)
   - [Funcionalidade do usuário](#funcionalidade-do-usuário)
   - [Funcionalidade de Assinatura](#funcionalidade-de-assinatura)
@@ -20,7 +21,7 @@
 
 O **Backend** deste projeto desempenha um papel essencial para garantir o funcionamento apropriado da aplicação e para integrar-se com diversos serviços externos, como o Firebase e o Mercado Pago. Algumas de suas principais funções são:
 
-- **Validação de Dados e Registração de Usuários**: Valida os dados das requisições e, quando adequado, registra um novo usuário, conforme as informações recebidas do **Frontend**.
+- **Validação de Dados e Registração/Edição de Usuários**: Valida os dados das requisições e, quando adequado, registra um novo usuário ou atualiza as informações de um usuário existente, conforme os dados recebidos do **Frontend**.
 
 - **Validação de Dados de Login**: Enquanto a autenticação inicial é realizada pelo `Firebase`, o `token` gerado é encaminhado ao **Backend**. Este, por sua vez, realiza verificações adicionais, garantindo a autenticidade e, posteriormente, retorna informações complementares sobre o usuário necessárias para a lógica do **Frontend**.
   
@@ -33,6 +34,32 @@ O **Backend** deste projeto desempenha um papel essencial para garantir o funcio
 - **Integração com o Mercado Pago**: Embora o **Frontend** inicie a interação com a `API` do `Mercado Pago`, o **Backend** é responsável por validar as informações retornadas e finalizar a interação com a `API`, principalmente no que se refere à aquisição de assinaturas.
 
 Detalhes adicionais sobre a integração com o `Firebase`, `Mercado Pago`, e outras especificações técnicas serão explorados nas seções subsequentes e `READMEs` específicos.
+
+## Gestão Segura de Tokens
+
+Para garantir a segurança dos *tokens* de autenticação utilizados em nossa aplicação, adotamos uma estratégia robusta de gerenciamento de *tokens*. Estes *tokens* são armazenados em `cookies httpOnly`, o que significa que os cookies não são acessíveis via `JavaScript` no lado do cliente. Esta abordagem impede potenciais ataques de ***cross-site scripting (XSS)***, pois os malfeitores não conseguem acessar o *token* através de *scripts* maliciosos executados no navegador.
+
+Para permitir que nossa aplicação `frontend` acesse esses `cookies`, temos uma configuração `CORS` específica que envia credenciais para o `frontend`:
+
+```javascript
+/* envia credenciais para o frontend */
+app.use(cors({
+  origin: frontendURL,
+  credentials: true,
+}));
+```
+
+Quando fazemos requisições do `frontend` para o `backend`, usamos a biblioteca `axios` e certificamo-nos de incluir a opção `withCredentials: true`, o que garante que os `cookies` (e, portanto, o *token*) sejam enviados com cada requisição:
+
+```javascript
+/* url base para as requisições, devolve as credenciais em cada uma delas */
+const api = axios.create({
+  withCredentials: true,
+  baseURL,
+});
+```
+
+Esta abordagem não só protege os *tokens* de serem expostos, mas também facilita a gestão dos *tokens* em nossa aplicação, oferecendo um equilíbrio ideal entre segurança e facilidade de uso.
 
 ## Regras de Negócio
 
@@ -115,6 +142,7 @@ As tecnologias de`Backend` selecionadas para este projeto, por conta de suas van
 - [Node.js](https://nodejs.org/en): A plataforma de desenvolvimento em `JavaScript` foi escolhida para a construção do `backend` devido à sua alta performance, facilidade de aprendizado e ampla adoção na comunidade de desenvolvimento.
 - [Joi](https://github.com/sideway/joi): Esta biblioteca de validação de dados em `JavaScript` foi escolhida por sua facilidade de uso e versatilidade na validação de diversos tipos de dados.
 - [Express](https://expressjs.com/): Este `framework web` para `Node.js` foi escolhido devido à sua simplicidade e eficácia na criação de rotas e endpoints do backend.
+- [cors](https://www.npmjs.com/package/cors): Middleware utilizado para habilitar `CORS` com várias opções. Essencial para garantir a comunicação segura entre nosso `frontend` e `backend` quando estão em domínios diferentes.
 - [@hapi/boom](https://github.com/hapijs/boom): Utilizei a biblioteca `Boom` para lidar com erros `HTTP` de forma mais fácil e organizada, permitindo uma melhor manipulação e apresentação dos erros para os usuários.
 
 ## Instalação e Execução

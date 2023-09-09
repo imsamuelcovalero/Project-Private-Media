@@ -217,10 +217,19 @@ function ReactNodeProvider({ children }) {
         return null;
       }
 
+      /*
+        * Este trecho é o que controla quanto tempo uma mídia fica armazenada no localStorage,
+        * antes de uma nova busca
+      */
+
+      /* Definindo o período de duas horas em milissegundos. */
       const twoHours = 2 * 60 * 60 * 1000;
 
+      /* Verificando se existem mídias armazenadas e se o tempo desde o
+      último armazenamento é inferior a duas horas. */
       if (storedMedias && storedMedias.data.length > 0
-        && (Date.now() - storedMedias.time) < twoHours) {
+    && (Date.now() - storedMedias.time) < twoHours) {
+        /* Se o conteúdo foi armazenado há menos de duas horas, retorne os dados armazenados. */
         return storedMedias.data;
       }
 
