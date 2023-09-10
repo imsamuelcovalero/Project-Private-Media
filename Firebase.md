@@ -79,6 +79,7 @@ Cada categoria é associada a um conjunto de IDs que se referem a fotos e vídeo
 
 - **ID do Documento (string)**: `ID` único gerado pelo `Firebase` para cada documento.
 - **categoriaId (string)**: `ID` único designado para identificar distintamente cada categoria.
+> ⚠️ **Atenção**: Lembrando que este campo deve coincidir com o nome das categorias, que será inserido no `.env` do `frontent`. Mais detalhes no `README` correspondente.
 - **fotos (array of strings)**: `Array` contendo os `IDs` das fotos que são associadas a essa categoria específica.
 - **videos (array of strings)**: `Array` contendo os `IDs` dos vídeos que são associados a essa categoria.
 
