@@ -12,7 +12,7 @@
     "axios": "^1.4.0",
     "browserify-fs": "^1.0.0",
     "dotenv-webpack": "^8.0.1",
-    "firebase": "^9.23.0",
+    "firebase": "^10.4.0",
     "firebase-admin": "^11.5.0",
     "formik": "^2.4.3",
     "framer-motion": "^10.15.2",

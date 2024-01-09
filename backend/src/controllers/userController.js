@@ -7,6 +7,9 @@ const handleUserRequest = (serviceFunction, status) => async (req, res, _next) =
   const result = await serviceFunction(req.body);
 
   res.cookie('token', result.token, { httpOnly: true, secure: false, path: '/', maxAge: 3600000 });
+  
+  /* Configuração para o cookie funcionar em produção */
+  // res.cookie('token', result.token, { httpOnly: true, secure: true, path: '/', maxAge: 3600000, sameSite: 'none' });
 
   const { token, ...rest } = result;
   return res.status(status).json(rest);

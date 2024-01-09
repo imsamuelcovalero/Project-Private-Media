@@ -49,6 +49,10 @@ async function updateProfile(idToken) {
   return handleRequest(() => api.post('/update', { idToken }), 'Update error');
 }
 
+/*
+ * Funções axios relacionadas ao Mercado Pago
+ */
+
 /* função axios que envia para o backend as informações do pagamento para serem processadas */
 async function processPayment(paymentDetails) {
   return handleRequest(() => api.post('/process_payment', paymentDetails), 'Payment error');
