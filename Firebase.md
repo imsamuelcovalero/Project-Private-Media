@@ -8,7 +8,7 @@ O `Storage` é a solução do `Firebase` para armazenar arquivos como imagens, v
 
 <div align="center">
 
-![Storage](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/08ffea3b-5059-4261-9f78-7024f1c06720)
+![Firebase1](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/90562cb2-006a-48de-9a96-4509571b16fc)
 
 </div>
 
@@ -24,8 +24,8 @@ O **Authentication** é a ferramenta do `Firebase` para autenticação de usuár
 
 <div align="center">
 
-![Authentication1](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/d719f1cc-78e0-4955-a18d-02eb1d50b54b)
-![Authentication2](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/c5335f28-2969-4e33-a98a-75512fea729f)
+![Authentication1](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/5215849a-f468-40c2-b664-51893c2ada02)
+![Authentication2](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/1b9db887-ef2b-45b3-a996-68bccba1836c)
 
 </div>
 
@@ -49,7 +49,7 @@ Cada documento representa um usuário e seu `ID` coincide com o `UID` do `Authen
 
 <div align="center">
 
-![usuários](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/026455a9-9a20-47a6-a247-6f2cca8bb2c3)
+![usuários](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/90095a2d-80aa-4f5a-b200-f24acb0fc616)
 
 </div>
 
@@ -64,8 +64,8 @@ A estrutura, incluindo os tipos de dados esperados para cada campo, é apresenta
 - **url (string)**: `URL` direcionando para o local no `Firebase Storage` onde a imagem está armazenada.
 
 <div align="center">
-
-![fotos](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/ede7cfc7-afe0-458d-bc35-5b686d21e771)
+  
+![fotos](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/5bc8267b-79ea-427d-b175-6d9990950918)
 
 </div>
 
@@ -79,12 +79,13 @@ Cada categoria é associada a um conjunto de IDs que se referem a fotos e vídeo
 
 - **ID do Documento (string)**: `ID` único gerado pelo `Firebase` para cada documento.
 - **categoriaId (string)**: `ID` único designado para identificar distintamente cada categoria.
+> ⚠️ **Atenção**: Lembrando que este campo deve coincidir com o nome das categorias, que será inserido no `.env` do `frontent`. Mais detalhes no `README` correspondente.
 - **fotos (array of strings)**: `Array` contendo os `IDs` das fotos que são associadas a essa categoria específica.
 - **videos (array of strings)**: `Array` contendo os `IDs` dos vídeos que são associados a essa categoria.
 
 <div align="center">
 
-![categorias](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/67899e81-001e-43ad-a9b3-99de58c5de26)
+![categorias](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/19ad98c3-233f-48e7-a354-0c1fe9001360)
 
 </div>
 
@@ -144,7 +145,7 @@ Ao executar o projeto, se você encontrar um erro que indica a necessidade de cr
 
 <div align="center">
 
-![Firebase_index](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/fd914fd3-1efa-4452-920f-34424591f93a)
+![Firebase_index](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/731edd71-e5cc-4609-9dfc-0554688f8ce6)
 
 </div>
 

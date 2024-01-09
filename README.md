@@ -24,7 +24,7 @@ O __Project-Private-Media__ é uma aplicação dedicada à exibição de mídias
 
 <!-- Adicione a URL da imagem aqui -->
 
-![Project-Private-Media](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/9d4da60a-f1a7-4e6f-84ae-93199ffe8f1b)
+![Project-Private-Media](https://github.com/imsamuelcovalero/Project-Private-Media/assets/98184355/6dfdf1eb-c93b-4a6e-a2eb-1050d60d9f9c)
 
 </div>
 
